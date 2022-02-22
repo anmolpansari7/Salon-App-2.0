@@ -1,40 +1,41 @@
 import React from "react";
+import PageContainer from "../components/container/PageContainer";
 import PriceList from "../components/services/PriceList";
 
 const PricePage = () => {
   return (
-    <div className="flex-1 bg-app-bg font-body px-10 py-5 flex space-x-5">
+    <PageContainer>
       <PriceList
         title="Price List for Male"
         gender="M"
         category="services"
-        height="max-h-[42rem]"
+        height="max-h-[40.5rem]"
         width="w-1/3"
       />
       <PriceList
         title="Price List for Female"
         gender="F"
         category="services"
-        height="max-h-[42rem]"
+        height="max-h-[40.5rem]"
         width="w-1/3"
       />
-      <div className="flex flex-col space-y-7 w-1/3 max-h-[38.5rem]">
+      <div className="flex flex-col justify-between w-1/3 h-[40.5rem]">
         <PriceList
           title="Deal List for Male"
           gender="M"
           category="deals"
-          height="h-1/2 max-h-[42rem]"
+          height="h-1/2 max-h-[19.5rem]"
           width="w-full"
         />
         <PriceList
           title="Deal List for Female"
           gender="F"
           category="deals"
-          height="h-1/2 max-h-[42rem]"
+          height="h-1/2 max-h-[19.5rem]"
           width="w-full"
         />
       </div>
-    </div>
+    </PageContainer>
   );
 };
 

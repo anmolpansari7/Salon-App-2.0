@@ -11,7 +11,7 @@ const RadioButton = ({ name, id, val, label }) => {
         className="self-center accent-black group-hover:cursor-pointer"
         required
       />
-      <label htmlFor={id} className="ml-2 group-hover:cursor-pointer text-base">
+      <label htmlFor={id} className="ml-2 group-hover:cursor-pointer text-sm">
         {label}
       </label>
     </div>

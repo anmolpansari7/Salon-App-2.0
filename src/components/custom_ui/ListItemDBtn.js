@@ -1,20 +1,32 @@
 import React from "react";
-import deleteBtnImage from "./../../assets/delete_btn.svg";
 
-const ListItemDBtn = ({ content, content2 }) => {
+const ListItemDBtn = ({
+  content,
+  content2,
+  showBtn,
+  imageSrc,
+  className,
+  buttonImgClass,
+}) => {
   return (
-    <li className=" flex justify-between border-b border-dashed border-black text-base">
+    <li
+      className={
+        " flex justify-between border-b border-dashed border-black " + className
+      }
+    >
       <div className=" flex justify-between flex-1">
         <p>{content}</p>
         <p>{content2}</p>
       </div>
-      <button>
-        <img
-          className=" h-5 self-center ml-5"
-          src={deleteBtnImage}
-          alt="delete"
-        />
-      </button>
+      {showBtn && (
+        <button>
+          <img
+            className={buttonImgClass + " self-center ml-5"}
+            src={imageSrc}
+            alt="delete"
+          />
+        </button>
+      )}
     </li>
   );
 };

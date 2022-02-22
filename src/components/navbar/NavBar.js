@@ -7,17 +7,7 @@ import NavButton from "./NavButton";
 import LogoutImage from "./../../assets/Logout.svg";
 import SettingsImage from "./../../assets/settings.svg";
 
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
-  Button,
-} from "@chakra-ui/react";
+import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 
 const NavBar = ({
   onShowAddCustomerModal,
@@ -25,7 +15,7 @@ const NavBar = ({
   onShowBranchEditModal,
 }) => {
   return (
-    <div className=" h-16 bg-nav-bar-bg flex px-10 font-tabs text-sm justify-between">
+    <div className=" h-16 min-h-[4rem] bg-nav-bar-bg flex px-10 font-tabs text-sm justify-between">
       <NavSearchBar />
       <NavButton title={"Add Customer"} onClick={onShowAddCustomerModal} />
       <CustomLink to="/price">

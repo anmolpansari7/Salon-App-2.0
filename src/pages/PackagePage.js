@@ -1,10 +1,16 @@
 import React from "react";
+import PageContainer from "../components/container/PageContainer";
+import CreatePackageBox from "../components/package/CreatePackageBox";
+import PackMessagePreviewBox from "../components/package/PackMessagePreviewBox";
+import PreviousPackagesBox from "../components/package/PreviousPackagesBox";
 
 const PackagePage = () => {
   return (
-    <div>
-      <h1>Package Page</h1>
-    </div>
+    <PageContainer>
+      <CreatePackageBox />
+      <PackMessagePreviewBox />
+      <PreviousPackagesBox />
+    </PageContainer>
   );
 };
 
