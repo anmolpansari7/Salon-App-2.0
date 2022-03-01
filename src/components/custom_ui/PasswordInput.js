@@ -11,11 +11,11 @@ const PasswordInput = ({ placeholder }) => {
         pr="4.5rem"
         type={show ? "text" : "password"}
         placeholder={placeholder}
-        size="md"
+        size="sm"
         isRequired
       />
       <InputRightElement width="4.5rem">
-        <Button h="1.75rem" size="sm" onClick={handleClick}>
+        <Button h="1.3rem" size="sm" onClick={handleClick}>
           {show ? "Hide" : "Show"}
         </Button>
       </InputRightElement>

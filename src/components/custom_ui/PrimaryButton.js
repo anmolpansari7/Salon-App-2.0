@@ -1,8 +1,14 @@
 import React from "react";
 
-const PrimaryButton = ({ content }) => {
+const PrimaryButton = ({ type, content, onClick }) => {
   return (
-    <button className=" w-full h-8 bg-nav-active-tab-bg text-white mt-3 rounded-sm">
+    <button
+      type={type}
+      className=" w-full h-8 bg-nav-active-tab-bg text-white mt-3 rounded-sm"
+      onClick={(e) => {
+        onClick(e);
+      }}
+    >
       {content}
     </button>
   );

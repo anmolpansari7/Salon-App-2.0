@@ -1,12 +1,14 @@
 import React from "react";
 
 const ListItemDBtn = ({
+  id,
   content,
   content2,
   showBtn,
   imageSrc,
   className,
   buttonImgClass,
+  onItemDelete,
 }) => {
   return (
     <li
@@ -19,7 +21,11 @@ const ListItemDBtn = ({
         <p>{content2}</p>
       </div>
       {showBtn && (
-        <button>
+        <button
+          onClick={() => {
+            onItemDelete(id);
+          }}
+        >
           <img
             className={buttonImgClass + " self-center ml-5"}
             src={imageSrc}

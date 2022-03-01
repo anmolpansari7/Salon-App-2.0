@@ -12,6 +12,7 @@ const SummaryBox = ({ heading, data, className }) => {
       <div className="flex flex-col space-y-3">
         {data.map((summary) => (
           <ListItemDBtn
+            key={summary.content}
             content={summary.content}
             content2={summary.content2}
             className="text-sm"

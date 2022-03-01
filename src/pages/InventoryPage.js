@@ -1,13 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import PageContainer from "./../components/container/PageContainer";
 import StockItems from "../components/inventory/StockItems";
 import PreviouslySoldItems from "../components/inventory/PreviouslySoldItems";
+import FloatingButton from "./../components/custom_ui/FloatingButton";
+import AddInventoryItemModal from "../components/inventory/AddInventoryItemModal";
 
 const InventoryPage = () => {
+  const [showAddInventoryItemModal, setShowAddInventoryItemModal] =
+    useState(false);
+  const onShowAddInventoryItemModal = () => {
+    setShowAddInventoryItemModal(true);
+  };
+
+  const onHideInventoryItemModal = () => {
+    setShowAddInventoryItemModal(false);
+  };
   return (
     <PageContainer>
       <StockItems />
       <PreviouslySoldItems />
+      <FloatingButton
+        content={"New Item"}
+        className={" right-12 "}
+        onClick={onShowAddInventoryItemModal}
+      />
+      {showAddInventoryItemModal && (
+        <AddInventoryItemModal onHideModal={onHideInventoryItemModal} />
+      )}
     </PageContainer>
   );
 };

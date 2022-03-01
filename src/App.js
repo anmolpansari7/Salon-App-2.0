@@ -15,6 +15,7 @@ import ExpensePage from "./pages/ExpensePage";
 import AddCustomerModal from "./components/customers/AddCustomerModal";
 import ChangePasswordModal from "./components/owner_and_branch/ChangePasswordModal";
 import BranchEditModal from "./components/owner_and_branch/BranchEditModal";
+import CurrentCustomerPage from "./pages/CurrentCustomerPage";
 
 function App() {
   const [showAddCustomerModal, setShowAddCustomerModal] = useState(false);
@@ -57,6 +58,7 @@ function App() {
         <Route path="inventory" element={<InventoryPage />} />
         <Route path="message" element={<MessagePage />} />
         <Route path="expense" element={<ExpensePage />} />
+        <Route path="customer/:id" element={<CurrentCustomerPage />} />
       </Routes>
       {/* <main className="px-10 flex-1 bg-blue-300"></main> */}
       {showAddCustomerModal && <AddCustomerModal onHideModal={onHideModal} />}

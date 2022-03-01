@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import Card from "./../container/Card";
 import RadioButton from "./../custom_ui/RadioButton";
 import { Input } from "@chakra-ui/react";
@@ -7,6 +8,17 @@ import ListItemDBtn from "../custom_ui/ListItemDBtn";
 import crossIcon from "./../../assets/cross_icon.svg";
 
 const CreatePackageBox = () => {
+  const services = useSelector((state) => state.serviceList.services);
+
+  const [packageName, setPackageName] = useState("");
+  const [packageFor, setPackageFor] = useState("");
+  const [selectedServices, setSelectedServices] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [paidAmount, setPaidAmount] = useState(0);
+  const [maxUsage, setMaxUsage] = useState(0);
+  const [validFrom, setValidFrom] = useState("");
+  const [validUpto, setValidUpto] = useState("");
+
   return (
     <Card className=" w-3/12 text-base flex flex-col">
       <h1 className=" text-lg border-b border-dashed border-black mb-5">
@@ -31,9 +43,11 @@ const CreatePackageBox = () => {
         {/* provide value */}
         <Input placeholder="Enter Package Name" size="sm" isRequired />
         <Select placeholder="Select Services for Package" size="sm">
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
+          {services.map((service) => (
+            <option key={service._id} value={service._id}>
+              {service.name}
+            </option>
+          ))}
         </Select>
         <p className=" text-sm text-gray-400">Selected Services - </p>
         <div className=" flex flex-col space-y-3 h-44 border border-gray-400 rounded-md p-3 overflow-auto mb-5">
@@ -71,7 +85,7 @@ const CreatePackageBox = () => {
           />
           <li className="flex justify-between border-b border-dashed border-black ">
             <div className=" flex justify-between flex-1">
-              <p className=" font-medium flex-1 self-end">Content - 1 </p>
+              <p className=" font-medium flex-1 self-end">Package Amount</p>
               <Input
                 size="sm"
                 type={"number"}

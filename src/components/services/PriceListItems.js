@@ -1,42 +1,36 @@
 import React from "react";
 import ListItemDBtn from "../custom_ui/ListItemDBtn";
 import deleteBtn from "./../../assets/delete_btn.svg";
+import { deleteServiceData } from "../../store/services-actions";
+import { useDispatch } from "react-redux";
 
-const PriceListItems = () => {
+const PriceListItems = ({ services, gender, category }) => {
+  const dispatch = useDispatch();
+
+  const onItemDelete = (id) => {
+    dispatch(deleteServiceData(id));
+  };
+
   return (
     <ul className=" flex flex-col flex-1 space-y-4 overflow-auto">
-      <ListItemDBtn
-        content="Regular Haircut"
-        content2="200 Rs."
-        className="text-base"
-        imageSrc={deleteBtn}
-        showBtn={true}
-        buttonImgClass={"h-4"}
-      />
-      <ListItemDBtn
-        content="Regular Haircut"
-        content2="200 Rs."
-        className="text-base"
-        imageSrc={deleteBtn}
-        showBtn={true}
-        buttonImgClass={"h-4"}
-      />
-      <ListItemDBtn
-        content="Regular Haircut"
-        content2="200 Rs."
-        className="text-base"
-        imageSrc={deleteBtn}
-        showBtn={true}
-        buttonImgClass={"h-4"}
-      />
-      <ListItemDBtn
-        content="Regular Haircut"
-        content2="200 Rs."
-        className="text-base"
-        imageSrc={deleteBtn}
-        showBtn={true}
-        buttonImgClass={"h-4"}
-      />
+      {services.map(
+        (service) =>
+          service.gender === gender &&
+          service.category === category &&
+          service.status === "active" && (
+            <ListItemDBtn
+              key={service._id}
+              id={service._id}
+              content={service.name}
+              content2={service.cost + " Rs."}
+              className="text-base"
+              imageSrc={deleteBtn}
+              showBtn={true}
+              buttonImgClass={"h-4"}
+              onItemDelete={onItemDelete}
+            />
+          )
+      )}
     </ul>
   );
 };

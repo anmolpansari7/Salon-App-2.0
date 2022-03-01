@@ -1,6 +1,6 @@
 import React from "react";
 
-const Input = ({ type, id, placeholder, label }) => {
+const Input = ({ type, id, placeholder, label, onChange }) => {
   return (
     <div className=" border-black border-dashed border-b mb-3 flex justify-between">
       <label htmlFor="" className=" mr-2 self-end">
@@ -11,6 +11,9 @@ const Input = ({ type, id, placeholder, label }) => {
         id={id}
         className=" focus:outline-none px-3 text-base"
         placeholder={placeholder}
+        onChange={(e) => {
+          onChange(e);
+        }}
         required
       />
     </div>
