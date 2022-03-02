@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import Card from "./../container/Card";
 import RadioButton from "./../custom_ui/RadioButton";
@@ -7,17 +7,44 @@ import { Select } from "@chakra-ui/react";
 import ListItemDBtn from "../custom_ui/ListItemDBtn";
 import crossIcon from "./../../assets/cross_icon.svg";
 
-const CreatePackageBox = () => {
+const CreatePackageBox = ({
+  packageName,
+  setPackageName,
+  setPackageFor,
+  selectedServices,
+  setSelectedServices,
+  totalAmount,
+  setTotalAmount,
+  packageAmount,
+  setPackageAmount,
+  maxUsage,
+  setMaxUsage,
+  validFrom,
+  setValidFrom,
+  validUpto,
+  setValidUpto,
+}) => {
   const services = useSelector((state) => state.serviceList.services);
 
-  const [packageName, setPackageName] = useState("");
-  const [packageFor, setPackageFor] = useState("");
-  const [selectedServices, setSelectedServices] = useState([]);
-  const [totalAmount, setTotalAmount] = useState(0);
-  const [paidAmount, setPaidAmount] = useState(0);
-  const [maxUsage, setMaxUsage] = useState(0);
-  const [validFrom, setValidFrom] = useState("");
-  const [validUpto, setValidUpto] = useState("");
+  const onItemSelection = (e) => {
+    let currItemId = e.target.value;
+    let selectedItem = services.find((service) => service._id === currItemId);
+    selectedItem = {
+      ...selectedItem,
+      idx: selectedServices.length + Math.floor(Math.random() * 100),
+    };
+    setSelectedServices([...selectedServices, selectedItem]);
+    selectedItem.cost === NaN
+      ? setTotalAmount(totalAmount)
+      : setTotalAmount((state) => state + selectedItem.cost);
+  };
+
+  const onItemDelete = (idx) => {
+    let currItem = selectedServices.find((service) => service.idx === idx);
+    let currList = selectedServices.filter((service) => service.idx !== idx);
+    setSelectedServices(currList);
+    setTotalAmount((state) => state - currItem.cost);
+  };
 
   return (
     <Card className=" w-3/12 text-base flex flex-col">
@@ -32,17 +59,35 @@ const CreatePackageBox = () => {
             id="create-pack-male"
             val="M"
             label="Male"
+            onChange={(e) => {
+              setPackageFor(e.target.value);
+            }}
           />
           <RadioButton
             for="pack-for"
             id="create-pack-female"
             val="F"
             label="Female"
+            onChange={(e) => {
+              setPackageFor(e.target.value);
+            }}
           />
         </div>
         {/* provide value */}
-        <Input placeholder="Enter Package Name" size="sm" isRequired />
-        <Select placeholder="Select Services for Package" size="sm">
+        <Input
+          placeholder="Enter Package Name"
+          size="sm"
+          value={packageName}
+          onChange={(e) => {
+            setPackageName(e.target.value);
+          }}
+          isRequired
+        />
+        <Select
+          placeholder="Select Services for Package"
+          size="sm"
+          onChange={onItemSelection}
+        >
           {services.map((service) => (
             <option key={service._id} value={service._id}>
               {service.name}
@@ -51,35 +96,26 @@ const CreatePackageBox = () => {
         </Select>
         <p className=" text-sm text-gray-400">Selected Services - </p>
         <div className=" flex flex-col space-y-3 h-44 border border-gray-400 rounded-md p-3 overflow-auto mb-5">
-          <ListItemDBtn
-            content="Regular Haircut"
-            content2={"150 Rs."}
-            imageSrc={crossIcon}
-            showBtn={true}
-            buttonImgClass={"h-3"}
-            className=" text-sm"
-          />
-          <ListItemDBtn
-            content="Regular Haircut"
-            content2={"150 Rs."}
-            imageSrc={crossIcon}
-            showBtn={true}
-            buttonImgClass={"h-3"}
-            className=" text-sm"
-          />
-          <ListItemDBtn
-            content="Regular Haircut"
-            content2={"150 Rs."}
-            imageSrc={crossIcon}
-            showBtn={true}
-            buttonImgClass={"h-3"}
-            className=" text-sm"
-          />
+          {selectedServices.map((service) => (
+            <ListItemDBtn
+              content={service.name}
+              content2={service.cost}
+              imageSrc={crossIcon}
+              showBtn={true}
+              buttonImgClass={"h-3"}
+              className=" text-sm"
+              id={service.idx}
+              onItemDelete={() => {
+                onItemDelete(service.idx);
+              }}
+            />
+          ))}
         </div>
+
         <div className="flex flex-col space-y-1">
           <ListItemDBtn
             content="Total"
-            content2={"2050 Rs."}
+            content2={totalAmount + " Rs."}
             showBtn={false}
             className=" font-medium text-base"
           />
@@ -92,6 +128,10 @@ const CreatePackageBox = () => {
                 width="32"
                 placeholder="Amount"
                 textAlign={"right"}
+                value={packageAmount}
+                onChange={(e) => {
+                  setPackageAmount(e.target.value);
+                }}
               />
               <p className=" self-end text-base font-medium"> Rs.</p>
             </div>
@@ -107,6 +147,10 @@ const CreatePackageBox = () => {
                 width="32"
                 placeholder="How many ?"
                 textAlign={"right"}
+                value={maxUsage}
+                onChange={(e) => {
+                  setMaxUsage(e.target.value);
+                }}
               />
             </div>
           </li>
@@ -119,6 +163,10 @@ const CreatePackageBox = () => {
                 width="40"
                 placeholder="How many ?"
                 textAlign={"right"}
+                value={validFrom}
+                onChange={(e) => {
+                  setValidFrom(e.target.value);
+                }}
               />
             </div>
           </li>
@@ -131,6 +179,10 @@ const CreatePackageBox = () => {
                 width="40"
                 placeholder="How many ?"
                 textAlign={"right"}
+                value={validUpto}
+                onChange={(e) => {
+                  setValidUpto(e.target.value);
+                }}
               />
             </div>
           </li>
