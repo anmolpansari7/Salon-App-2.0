@@ -10,7 +10,7 @@ const BranchEditModal = ({ onHideModal }) => {
         Current Branches -
       </h3>
       <CurrentBranchesList />
-      <AddBranchForm />
+      <AddBranchForm onHideModal={onHideModal} />
     </Modal>
   );
 };

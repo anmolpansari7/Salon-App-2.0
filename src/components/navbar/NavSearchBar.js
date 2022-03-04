@@ -27,6 +27,7 @@ const NavSearchBar = () => {
           className="w-44 bg-transparent focus:outline-none px-4"
           value={query}
           onChange={onCustomerSearch}
+          autoComplete={"false"}
         />
         <img src={searchIcon} className="h-4 self-center" alt="Search Icon" />
       </div>

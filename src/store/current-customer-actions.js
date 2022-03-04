@@ -5,7 +5,6 @@ import { currentCustomerActions } from "./current-customer-slice";
 // import { currentCustomerActions } from "./current-customer-slice";
 // require("dotenv").config();
 
-// pass navigate
 export const sendNewCustomerData = (newCustomer, navigate, toast) => {
   return (dispatch) => {
     // const ownerToken = localStorage.getItem("ownerToken");

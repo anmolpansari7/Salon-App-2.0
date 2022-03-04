@@ -1,8 +1,17 @@
 import { Input, Select } from "@chakra-ui/react";
 import React from "react";
 import FilterCard from "./../container/FilterCard";
+import { useSelector } from "react-redux";
 
-const ExpenseFilter = () => {
+const ExpenseFilter = ({
+  startDateFilter,
+  endDateFilter,
+  setBranchFilter,
+  setStartDateFilter,
+  setEndDateFilter,
+}) => {
+  const branches = useSelector((state) => state.branch.branchList);
+
   return (
     <FilterCard className="flex text-sm justify-between">
       <Select
@@ -11,15 +20,39 @@ const ExpenseFilter = () => {
         size={"sm"}
         alignSelf={"center"}
         width={"12rem"}
+        onChange={(e) => {
+          setBranchFilter(e.target.value);
+        }}
       >
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-        <option value="option3">Option 3</option>
+        {branches.map(
+          (branch) =>
+            branch.status === "active" && (
+              <option key={branch._id} value={branch._id}>
+                {branch.name}
+              </option>
+            )
+        )}
       </Select>
       <p className=" self-center">Expense From -</p>
-      <Input type="date" size="sm" width={"9.5rem"} />
+      <Input
+        type="date"
+        size="sm"
+        width={"9.5rem"}
+        value={startDateFilter}
+        onChange={(e) => {
+          setStartDateFilter(e.target.value);
+        }}
+      />
       <p className=" self-center">to</p>
-      <Input type="date" size="sm" width={"9.5rem"} />
+      <Input
+        type="date"
+        size="sm"
+        width={"9.5rem"}
+        value={endDateFilter}
+        onChange={(e) => {
+          setEndDateFilter(e.target.value);
+        }}
+      />
       <button>clear</button>
     </FilterCard>
   );

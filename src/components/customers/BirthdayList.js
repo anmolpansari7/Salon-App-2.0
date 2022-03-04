@@ -2,26 +2,27 @@ import React, { useMemo } from "react";
 import Card from "../container/Card";
 import { useTable } from "react-table";
 
-const BirthdayTable = ({ className }) => {
-  const data = useMemo(
-    () => [
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-      },
-    ],
-    []
+function getAge(dateString) {
+  var today = new Date();
+  var birthDate = new Date(dateString);
+  var age = today.getFullYear() - birthDate.getFullYear();
+  var m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+}
+
+const BirthdayTable = ({ className, todaysBirthday }) => {
+  const data = useMemo(() =>
+    todaysBirthday.map((customer) => {
+      const age = getAge(customer.dob);
+      return {
+        col1: `${customer.name}`,
+        col2: `${customer.gender}`,
+        col3: `${age}`,
+      };
+    })
   );
 
   const columns = useMemo(
@@ -86,13 +87,13 @@ const BirthdayTable = ({ className }) => {
   );
 };
 
-const BirthdayList = () => {
+const BirthdayList = ({ todaysBirthday }) => {
   return (
     <Card className="w-full h-1/2 mb-3 flex-1 overflow-auto">
       <h1 className=" text-base font-medium border-b border-dashed border-black mb-5">
         Today's Birthdays
       </h1>
-      <BirthdayTable className=" w-full" />
+      <BirthdayTable className=" w-full" todaysBirthday={todaysBirthday} />
     </Card>
   );
 };
