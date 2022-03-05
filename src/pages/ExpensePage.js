@@ -27,6 +27,12 @@ const ExpensePage = () => {
     dispatch(getExpenseSummary(branchFilter, startDateFilter, endDateFilter));
   }, [branchFilter, startDateFilter, endDateFilter, dispatch]);
 
+  const reset = () => {
+    setBranchFilter("");
+    setEndDateFilter("");
+    setStartDateFilter("");
+  };
+
   return (
     <PageContainer>
       <div className=" w-1/4 flex flex-col space-y-3">
@@ -41,9 +47,11 @@ const ExpensePage = () => {
         <ExpenseFilter
           startDateFilter={startDateFilter}
           endDateFilter={endDateFilter}
+          selectedBranch={branchFilter}
           setBranchFilter={setBranchFilter}
           setStartDateFilter={setStartDateFilter}
           setEndDateFilter={setEndDateFilter}
+          reset={reset}
         />
         <PreviousExpenses />
       </div>

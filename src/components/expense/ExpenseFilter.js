@@ -9,6 +9,8 @@ const ExpenseFilter = ({
   setBranchFilter,
   setStartDateFilter,
   setEndDateFilter,
+  reset,
+  selectedBranch,
 }) => {
   const branches = useSelector((state) => state.branch.branchList);
 
@@ -20,6 +22,7 @@ const ExpenseFilter = ({
         size={"sm"}
         alignSelf={"center"}
         width={"12rem"}
+        value={selectedBranch}
         onChange={(e) => {
           setBranchFilter(e.target.value);
         }}
@@ -53,7 +56,7 @@ const ExpenseFilter = ({
           setEndDateFilter(e.target.value);
         }}
       />
-      <button>clear</button>
+      <button onClick={reset}>clear</button>
     </FilterCard>
   );
 };
