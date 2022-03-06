@@ -6,11 +6,13 @@ import CurrentExpenseCategories from "../components/expense/CurrentExpenseCatego
 import ExpenseSummary from "../components/expense/TotalExpenseForThisMonth";
 import ExpenseFilter from "../components/expense/ExpenseFilter";
 import PreviousExpenses from "../components/expense/PreviousExpenses";
+import ExpenseChart from "../components/expense/ExpenseChart";
+
 import { useDispatch } from "react-redux";
 import { getBranches } from "./../store/branch-actions";
 import {
   getExpenseCategories,
-  getExpenses,
+  getExpenseDetails,
   getExpenseSummary,
 } from "../store/expense-actions";
 
@@ -23,7 +25,7 @@ const ExpensePage = () => {
   useEffect(() => {
     dispatch(getBranches());
     dispatch(getExpenseCategories());
-    dispatch(getExpenses());
+    dispatch(getExpenseDetails(branchFilter, startDateFilter, endDateFilter));
     dispatch(getExpenseSummary(branchFilter, startDateFilter, endDateFilter));
   }, [branchFilter, startDateFilter, endDateFilter, dispatch]);
 
@@ -42,6 +44,7 @@ const ExpensePage = () => {
       </div>
       <div className=" w-1/4 flex flex-col space-y-3">
         <ExpenseSummary />
+        <ExpenseChart />
       </div>
       <div className=" w-2/4 flex flex-col space-y-5">
         <ExpenseFilter

@@ -107,7 +107,7 @@ export const sendNewExpenseData = (newExpense, toast) => {
           duration: 3000,
           isClosable: true,
         });
-        dispatch(getExpenses());
+        dispatch(getExpenseDetails());
         dispatch(getExpenseSummary("", "", ""));
       })
       .catch((err) => {
@@ -124,26 +124,27 @@ export const sendNewExpenseData = (newExpense, toast) => {
   };
 };
 
-export const getExpenses = () => {
-  return (dispatch) => {
-    axios
-      .get(`${process.env.REACT_APP_BASE_URL}/expense`)
-      .then((res) => {
-        dispatch(expenseActions.loadPreviousExpenses(res.data));
-      })
-      .catch((err) => {
-        if (err.response) {
-          //   toast.error("Not Authenticated !");
-          //   localStorage.removeItem("ownerToken");
-          //   dispatch(authSliceAction.setIsAuthFalse());
-          console.log(err);
-        } else {
-          //   toast.error("Server Disconnected!");
-          console.log(err);
-        }
-      });
-  };
-};
+// get all expenses
+// export const getExpenses = () => {
+//   return (dispatch) => {
+//     axios
+//       .get(`${process.env.REACT_APP_BASE_URL}/expense`)
+//       .then((res) => {
+//         dispatch(expenseActions.loadPreviousExpenses(res.data));
+//       })
+//       .catch((err) => {
+//         if (err.response) {
+//           //   toast.error("Not Authenticated !");
+//           //   localStorage.removeItem("ownerToken");
+//           //   dispatch(authSliceAction.setIsAuthFalse());
+//           console.log(err);
+//         } else {
+//           //   toast.error("Server Disconnected!");
+//           console.log(err);
+//         }
+//       });
+//   };
+// };
 
 export const getExpenseSummary = (
   branchFilter,
@@ -166,6 +167,41 @@ export const getExpenseSummary = (
       .then((res) => {
         console.log("Request of Summary sent!");
         dispatch(expenseActions.loadExpenseSummary(res.data));
+      })
+      .catch((err) => {
+        if (err.response) {
+          //   toast.error("Not Authenticated !");
+          //   localStorage.removeItem("ownerToken");
+          //   dispatch(authSliceAction.setIsAuthFalse());
+          console.log(err);
+        } else {
+          //   toast.error("Server Disconnected!");
+          console.log(err);
+        }
+      });
+  };
+};
+
+export const getExpenseDetails = (
+  branchFilter,
+  startDateFilter,
+  endDateFilter
+) => {
+  return (dispatch) => {
+    axios
+      .get(
+        //summary?branch=b&startdate=date1&enddate=date2
+        `${process.env.REACT_APP_BASE_URL}/expense/details`,
+        {
+          params: {
+            branch: branchFilter,
+            startdate: startDateFilter,
+            enddate: endDateFilter,
+          },
+        }
+      )
+      .then((res) => {
+        dispatch(expenseActions.loadPreviousExpenses(res.data));
       })
       .catch((err) => {
         if (err.response) {
