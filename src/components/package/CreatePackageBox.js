@@ -6,6 +6,7 @@ import { Input } from "@chakra-ui/react";
 import { Select } from "@chakra-ui/react";
 import ListItemDBtn from "../custom_ui/ListItemDBtn";
 import crossIcon from "./../../assets/cross_icon.svg";
+import PrimaryButton from "../custom_ui/PrimaryButton";
 
 const CreatePackageBox = ({
   packageName,
@@ -95,11 +96,11 @@ const CreatePackageBox = ({
           ))}
         </Select>
         <p className=" text-sm text-gray-400">Selected Services - </p>
-        <div className=" flex flex-col space-y-3 h-44 border border-gray-400 rounded-md p-3 overflow-auto mb-5">
+        <div className=" flex flex-col space-y-3 h-40 border border-gray-400 rounded-md p-3 overflow-auto mb-3">
           {selectedServices.map((service) => (
             <ListItemDBtn
               content={service.name}
-              content2={service.cost}
+              content2={service.cost + " Rs."}
               imageSrc={crossIcon}
               showBtn={true}
               buttonImgClass={"h-3"}
@@ -187,6 +188,7 @@ const CreatePackageBox = ({
             </div>
           </li>
         </div>
+        <PrimaryButton content={"Create"} />
       </div>
     </Card>
   );

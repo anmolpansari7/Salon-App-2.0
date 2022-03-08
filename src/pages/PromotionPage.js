@@ -5,6 +5,7 @@ import Card from "./../components/container/Card";
 import PromotionCustomerTable from "../components/promotions/PromotionCustomerTable";
 import CreatePromocode from "./../components/promotions/CreatePromocode";
 import PreviousPromoCodes from "../components/promotions/PreviousPromoCodes";
+import SendPromoCode from "../components/promotions/SendPromoCode";
 
 const PromotionPage = () => {
   const data = useMemo(
@@ -123,6 +124,10 @@ const PromotionPage = () => {
           <CustomerFilters />
         </div>
         <div className=" flex h-[36rem] space-x-3">
+          <div className="flex-1 flex flex-col">
+            <CreatePromocode />
+            <SendPromoCode />
+          </div>
           <Card className="w-[35rem] h-full overflow-auto">
             <PromotionCustomerTable
               columns={columns}
@@ -130,7 +135,6 @@ const PromotionPage = () => {
               className=" w-full"
             />
           </Card>
-          <CreatePromocode />
         </div>
       </div>
       <PreviousPromoCodes />

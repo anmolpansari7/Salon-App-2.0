@@ -1,7 +1,6 @@
 import React from "react";
 import Card from "./../container/Card";
 import { Input } from "@chakra-ui/react";
-import { Textarea } from "@chakra-ui/react";
 import RadioButton from "../custom_ui/RadioButton";
 import PrimaryButton from "../custom_ui/PrimaryButton";
 
@@ -56,11 +55,7 @@ const CreatePromocode = () => {
           textAlign={"right"}
         />
       </div>
-      <h1 className=" text-base border-b border-dashed border-black mt-5">
-        Message Preview
-      </h1>
-      <Textarea height={"10rem"} maxHeight={"12rem"} />
-      <PrimaryButton content={"send"} />
+      <PrimaryButton content={"Create"} />
     </Card>
   );
 };
