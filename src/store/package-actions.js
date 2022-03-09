@@ -8,15 +8,16 @@ import { packageActions } from "./package-slice";
 export const sendNewPackageData = (newPackage, toast) => {
   return (dispatch) => {
     // const ownerToken = localStorage.getItem("ownerToken");
+    console.log(newPackage);
 
     axios
       .post(
-        `${process.env.REACT_APP_BASE_URL}/package/add`,
+        `${process.env.REACT_APP_BASE_URL}/package/create`,
         {
           gender: newPackage.gender,
           name: newPackage.name,
-          services: newPackage.service,
-          total: newPackage.total,
+          services: newPackage.services,
+          totalAmount: newPackage.totalAmount,
           packageAmount: newPackage.packageAmount,
           maxUsage: newPackage.maxUsage,
           validFrom: newPackage.validFrom,
@@ -27,7 +28,7 @@ export const sendNewPackageData = (newPackage, toast) => {
       .then((res) => {
         toast({
           title: "New Package Created.",
-          description: "New Package has been sent to all selected Customers",
+          description: "Now you can send this package to any customer.",
           status: "success",
           duration: 3000,
           isClosable: true,

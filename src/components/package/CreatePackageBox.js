@@ -1,31 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import Card from "./../container/Card";
 import RadioButton from "./../custom_ui/RadioButton";
-import { Input } from "@chakra-ui/react";
-import { Select } from "@chakra-ui/react";
+import {
+  Input,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  Select,
+  useToast,
+} from "@chakra-ui/react";
 import ListItemDBtn from "../custom_ui/ListItemDBtn";
 import crossIcon from "./../../assets/cross_icon.svg";
 import PrimaryButton from "../custom_ui/PrimaryButton";
+import { sendNewPackageData } from "../../store/package-actions";
+import { useDispatch } from "react-redux";
 
-const CreatePackageBox = ({
-  packageName,
-  setPackageName,
-  setPackageFor,
-  selectedServices,
-  setSelectedServices,
-  totalAmount,
-  setTotalAmount,
-  packageAmount,
-  setPackageAmount,
-  maxUsage,
-  setMaxUsage,
-  validFrom,
-  setValidFrom,
-  validUpto,
-  setValidUpto,
-}) => {
+const CreatePackageBox = () => {
   const services = useSelector((state) => state.serviceList.services);
+  const dispatch = useDispatch();
+  const toast = useToast();
+
+  const [packageName, setPackageName] = useState("");
+  const [packageFor, setPackageFor] = useState("");
+  const [selectedServices, setSelectedServices] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [packageAmount, setPackageAmount] = useState(0);
+  const [maxUsage, setMaxUsage] = useState(0);
+  const [validFrom, setValidFrom] = useState("");
+  const [validTill, setValidTill] = useState("");
+
+  const onCreatePackage = () => {
+    const selectedServiceIds = selectedServices.map((service) => service._id);
+
+    const newPackage = {
+      gender: packageFor,
+      name: packageName,
+      services: selectedServiceIds,
+      totalAmount: totalAmount,
+      packageAmount: packageAmount,
+      maxUsage: maxUsage,
+      validFrom: validFrom,
+      validTill: validTill,
+    };
+
+    setMaxUsage(0);
+    setPackageFor("");
+    setPackageName("");
+    setSelectedServices([]);
+    setValidFrom("");
+    setValidTill("");
+    setTotalAmount(0);
+    setPackageAmount(0);
+    dispatch(sendNewPackageData(newPackage, toast));
+  };
 
   const onItemSelection = (e) => {
     let currItemId = e.target.value;
@@ -56,6 +84,7 @@ const CreatePackageBox = ({
         <div className=" flex w-full justify-between">
           <p className=" text-sm">Package for</p>
           <RadioButton
+            name={"gender"}
             for="pack-for"
             id="create-pack-male"
             val="M"
@@ -65,6 +94,7 @@ const CreatePackageBox = ({
             }}
           />
           <RadioButton
+            name={"gender"}
             for="pack-for"
             id="create-pack-female"
             val="F"
@@ -77,6 +107,7 @@ const CreatePackageBox = ({
         {/* provide value */}
         <Input
           placeholder="Enter Package Name"
+          type={"text"}
           size="sm"
           value={packageName}
           onChange={(e) => {
@@ -99,6 +130,7 @@ const CreatePackageBox = ({
         <div className=" flex flex-col space-y-3 h-40 border border-gray-400 rounded-md p-3 overflow-auto mb-3">
           {selectedServices.map((service) => (
             <ListItemDBtn
+              key={service._id}
               content={service.name}
               content2={service.cost + " Rs."}
               imageSrc={crossIcon}
@@ -123,17 +155,21 @@ const CreatePackageBox = ({
           <li className="flex justify-between border-b border-dashed border-black ">
             <div className=" flex justify-between flex-1">
               <p className=" font-medium flex-1 self-end">Package Amount</p>
-              <Input
+              {/* // Change to Input Number from chakra UI */}
+              <NumberInput
+                clampValueOnBlur={false}
                 size="sm"
-                type={"number"}
-                width="32"
-                placeholder="Amount"
+                width={"5rem"}
+                marginRight={"1rem"}
                 textAlign={"right"}
                 value={packageAmount}
-                onChange={(e) => {
-                  setPackageAmount(e.target.value);
+                onChange={(val) => {
+                  setPackageAmount(val);
                 }}
-              />
+              >
+                <NumberInputField size="sm" />
+                <NumberInputStepper size="sm"></NumberInputStepper>
+              </NumberInput>
               <p className=" self-end text-base font-medium"> Rs.</p>
             </div>
           </li>
@@ -142,7 +178,7 @@ const CreatePackageBox = ({
               <p className=" font-medium flex-1 self-end">
                 Max Number of Usage{" "}
               </p>
-              <Input
+              {/* <Input
                 size="sm"
                 type={"number"}
                 width="32"
@@ -152,7 +188,20 @@ const CreatePackageBox = ({
                 onChange={(e) => {
                   setMaxUsage(e.target.value);
                 }}
-              />
+              /> */}
+              <NumberInput
+                clampValueOnBlur={false}
+                size="sm"
+                width={"5rem"}
+                textAlign={"right"}
+                value={maxUsage}
+                onChange={(val) => {
+                  setMaxUsage(val);
+                }}
+              >
+                <NumberInputField size="sm" />
+                <NumberInputStepper size="sm"></NumberInputStepper>
+              </NumberInput>
             </div>
           </li>
           <li className="flex justify-between border-b border-dashed border-black ">
@@ -162,7 +211,6 @@ const CreatePackageBox = ({
                 size="sm"
                 type={"date"}
                 width="40"
-                placeholder="How many ?"
                 textAlign={"right"}
                 value={validFrom}
                 onChange={(e) => {
@@ -178,17 +226,16 @@ const CreatePackageBox = ({
                 size="sm"
                 type={"date"}
                 width="40"
-                placeholder="How many ?"
                 textAlign={"right"}
-                value={validUpto}
+                value={validTill}
                 onChange={(e) => {
-                  setValidUpto(e.target.value);
+                  setValidTill(e.target.value);
                 }}
               />
             </div>
           </li>
         </div>
-        <PrimaryButton content={"Create"} />
+        <PrimaryButton content={"Create"} onClick={onCreatePackage} />
       </div>
     </Card>
   );
