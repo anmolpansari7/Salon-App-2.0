@@ -1,20 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "../container/Card";
 import CardHeading from "../custom_ui/CardHeading";
 import { Input, Select } from "@chakra-ui/react";
 import PrimaryButton from "./../custom_ui/PrimaryButton";
 import { Tag, TagLabel, TagCloseButton } from "@chakra-ui/react";
 import useSearchSuggestions from "./UseSearchSuggestions";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CustomerSuggestions from "./CustomerSuggestions";
+import { getAllActivePackages } from "../../store/package-actions";
 
 const PackMessagePreviewBox = ({
   selectedCustomer,
   setSelectedCustomer,
   onSendPackage,
 }) => {
+  const dispatch = useDispatch();
   const [query, setQuery] = useState("");
   const suggestedCustomers = useSelector((state) => state.packages.suggestions);
+  const allActivePackages = useSelector(
+    (state) => state.packages.allActivePackages
+  );
 
   // const toast = useToast();
   useSearchSuggestions(query);
@@ -31,12 +36,20 @@ const PackMessagePreviewBox = ({
     setSelectedCustomer(list);
   };
 
+  useEffect(() => {
+    dispatch(getAllActivePackages());
+  }, []);
+
   return (
     <Card className=" w-3/12 flex flex-col">
       <div>
         <CardHeading className=" mb-4">Send Package</CardHeading>
         <Select placeholder="Select Package" size="sm">
-          <option value={"123"}>123</option>
+          {allActivePackages.map((pack) => (
+            <option key={pack._id} value={pack._id}>
+              {pack.name}
+            </option>
+          ))}
         </Select>
       </div>
       <div className="flex-1 flex flex-col justify-between">

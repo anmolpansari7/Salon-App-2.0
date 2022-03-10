@@ -15,8 +15,9 @@ import crossIcon from "./../../assets/cross_icon.svg";
 import PrimaryButton from "../custom_ui/PrimaryButton";
 import { sendNewPackageData } from "../../store/package-actions";
 import { useDispatch } from "react-redux";
+import { packageIsValid } from "../../utils/package.utils";
 
-const CreatePackageBox = () => {
+const CreatePackageBox = ({ clearFilter }) => {
   const services = useSelector((state) => state.serviceList.services);
   const dispatch = useDispatch();
   const toast = useToast();
@@ -44,6 +45,8 @@ const CreatePackageBox = () => {
       validTill: validTill,
     };
 
+    if (!packageIsValid(newPackage, toast)) return;
+
     setMaxUsage(0);
     setPackageFor("");
     setPackageName("");
@@ -52,6 +55,7 @@ const CreatePackageBox = () => {
     setValidTill("");
     setTotalAmount(0);
     setPackageAmount(0);
+    clearFilter();
     dispatch(sendNewPackageData(newPackage, toast));
   };
 
@@ -178,17 +182,6 @@ const CreatePackageBox = () => {
               <p className=" font-medium flex-1 self-end">
                 Max Number of Usage{" "}
               </p>
-              {/* <Input
-                size="sm"
-                type={"number"}
-                width="32"
-                placeholder="How many ?"
-                textAlign={"right"}
-                value={maxUsage}
-                onChange={(e) => {
-                  setMaxUsage(e.target.value);
-                }}
-              /> */}
               <NumberInput
                 clampValueOnBlur={false}
                 size="sm"

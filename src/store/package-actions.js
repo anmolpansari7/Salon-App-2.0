@@ -33,6 +33,8 @@ export const sendNewPackageData = (newPackage, toast) => {
           duration: 3000,
           isClosable: true,
         });
+        dispatch(getPreviousPackageData());
+        dispatch(getAllActivePackages());
         console.log("Package Added !");
       })
       .catch((err) => {
@@ -49,12 +51,43 @@ export const sendNewPackageData = (newPackage, toast) => {
   };
 };
 
-export const getPreviousPackageData = () => {
+export const getPreviousPackageData = (
+  statusFilter,
+  startDateFilter,
+  endDateFilter
+) => {
   return (dispatch) => {
     axios
-      .get(`${process.env.REACT_APP_BASE_URL}/package`)
+      .get(`${process.env.REACT_APP_BASE_URL}/package`, {
+        params: {
+          status: statusFilter,
+          startDate: startDateFilter,
+          endDate: endDateFilter,
+        },
+      })
       .then((res) => {
         dispatch(packageActions.loadPreviousPackages(res.data));
+      })
+      .catch((err) => {
+        if (err.response) {
+          //   toast.error("Not Authenticated !");
+          //   localStorage.removeItem("ownerToken");
+          //   dispatch(authSliceAction.setIsAuthFalse());
+          console.log(err);
+        } else {
+          //   toast.error("Server Disconnected!");
+          console.log(err);
+        }
+      });
+  };
+};
+
+export const getAllActivePackages = () => {
+  return (dispatch) => {
+    axios
+      .get(`${process.env.REACT_APP_BASE_URL}/package/active-package-list`)
+      .then((res) => {
+        dispatch(packageActions.loadAllActivePackages(res.data));
       })
       .catch((err) => {
         if (err.response) {

@@ -1,91 +1,46 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Input } from "@chakra-ui/react";
 import Card from "../container/Card";
 import RadioButton from "../custom_ui/RadioButton";
 import PreviousPackageTable from "./PreviousPackageTable";
 import infoIcon from "./../../assets/info_icon.svg";
+import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import { getPreviousPackageData } from "../../store/package-actions";
 
-const PreviousPackagesBox = () => {
-  const data = useMemo(
-    () => [
-      {
-        col1: "Package-1",
-        col2: "1500 Rs.",
-        col3: 10,
-        col4: "06-02-2022",
-        col5: "06-02-2022",
-        col6: (
-          <img
-            src={infoIcon}
-            alt="info"
-            className=" cursor-pointer"
-            title="Arunesh Chopra, Girish Reddy"
-          />
-        ),
-      },
-      {
-        col1: "KGF-King",
-        col2: "2000 Rs.",
-        col3: 7,
-        col4: "06-02-2022",
-        col5: "06-02-2022",
-        col6: (
-          <img
-            src={infoIcon}
-            alt="info"
-            className=" cursor-pointer"
-            title="Arunesh Chopra, Girish Reddy"
-          />
-        ),
-      },
-      {
-        col1: "Big Boss",
-        col2: "2500 Rs.",
-        col3: 5,
-        col4: "06-02-2022",
-        col5: "06-02-2022",
-        col6: (
-          <img
-            src={infoIcon}
-            alt="info"
-            className=" cursor-pointer"
-            title="Arunesh Chopra, Girish Reddy"
-          />
-        ),
-      },
-      {
-        col1: "Dhamaka",
-        col2: "1350 Rs.",
-        col3: 15,
-        col4: "06-02-2022",
-        col5: "06-02-2022",
-        col6: (
-          <img
-            src={infoIcon}
-            alt="info"
-            className=" cursor-pointer"
-            title="Arunesh Chopra, Girish Reddy"
-          />
-        ),
-      },
-      {
-        col1: "Apple Mango",
-        col2: "1240 Rs.",
-        col3: 20,
-        col4: "06-02-2022",
-        col5: "06-02-2022",
-        col6: (
-          <img
-            src={infoIcon}
-            alt="info"
-            className=" cursor-pointer"
-            title="Arunesh Chopra, Girish Reddy"
-          />
-        ),
-      },
-    ],
-    []
+const PreviousPackagesBox = ({
+  statusFilter,
+  startDateFilter,
+  endDateFilter,
+  setStatusFilter,
+  setStartDateFilter,
+  setEndDateFilter,
+}) => {
+  const dispatch = useDispatch();
+
+  const previousPackages = useSelector(
+    (state) => state.packages.previousPackages
   );
+
+  const data = previousPackages.map((pack) => {
+    let services = " ";
+
+    return {
+      col1: `${pack.name}`,
+      col2: `${pack.packageAmount} Rs.`,
+      col3: `${""}`,
+      col4: `${moment(pack.validFrom).format("ll")}`,
+      col5: `${moment(pack.validTill).format("ll")}`,
+      col6: (
+        <img
+          src={infoIcon}
+          alt="info"
+          className=" cursor-pointer"
+          title={services}
+        />
+      ),
+    };
+  });
 
   const columns = useMemo(
     () => [
@@ -102,7 +57,7 @@ const PreviousPackagesBox = () => {
         accessor: "col3",
       },
       {
-        Header: "Created At",
+        Header: "Valid From",
         accessor: "col4",
       },
       {
@@ -117,6 +72,12 @@ const PreviousPackagesBox = () => {
     []
   );
 
+  useEffect(() => {
+    dispatch(
+      getPreviousPackageData(statusFilter, startDateFilter, endDateFilter)
+    );
+  }, [dispatch, statusFilter, startDateFilter, endDateFilter]);
+
   return (
     <Card className="w-6/12">
       <h1 className=" text-lg border-b border-dashed border-black mb-5">
@@ -124,20 +85,42 @@ const PreviousPackagesBox = () => {
       </h1>
       <div className="flex justify-between">
         <Input type="text" width={"10rem"} size={"sm"} placeholder={"search"} />
-        <Input type="date" width={"9.5rem"} size={"sm"} />
+        <Input
+          type="date"
+          width={"9.5rem"}
+          size={"sm"}
+          value={startDateFilter}
+          onChange={(e) => {
+            setStartDateFilter(e.target.value);
+          }}
+        />
         <span className=" self-center text-sm">btw</span>
-        <Input type="date" width={"9.5rem"} size={"sm"} />
+        <Input
+          type="date"
+          width={"9.5rem"}
+          size={"sm"}
+          value={endDateFilter}
+          onChange={(e) => {
+            setEndDateFilter(e.target.value);
+          }}
+        />
         <RadioButton
           name="pack-status"
           id="active-packs"
           val="active"
           label="Active"
+          onChange={(e) => {
+            setStatusFilter(e.target.value);
+          }}
         />
         <RadioButton
           name="pack-status"
           id="expired-packs"
           val="expired"
           label="Expired"
+          onChange={(e) => {
+            setStatusFilter(e.target.value);
+          }}
         />
       </div>
       <div className=" h-[32rem] overflow-auto">

@@ -5,6 +5,7 @@ const packageSlice = createSlice({
   initialState: {
     previousPackages: [],
     suggestions: [],
+    allActivePackages: [],
   },
   reducers: {
     addSuggestions(state, action) {
@@ -17,6 +18,10 @@ const packageSlice = createSlice({
     loadPreviousPackages(state, action) {
       const prevPackages = action.payload;
       state.previousPackages = prevPackages;
+    },
+    loadAllActivePackages(state, action) {
+      const activePackages = action.payload;
+      state.allActivePackages = activePackages;
     },
   },
 });
