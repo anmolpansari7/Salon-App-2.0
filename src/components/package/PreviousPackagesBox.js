@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Input } from "@chakra-ui/react";
 import Card from "../container/Card";
 import RadioButton from "../custom_ui/RadioButton";
@@ -22,13 +22,18 @@ const PreviousPackagesBox = ({
     (state) => state.packages.previousPackages
   );
 
+  const [name, setName] = useState("");
+
   const data = previousPackages.map((pack) => {
-    let services = " ";
+    let services = "";
+    pack.services.forEach((service) => {
+      services += service + ", ";
+    });
 
     return {
       col1: `${pack.name}`,
       col2: `${pack.packageAmount} Rs.`,
-      col3: `${""}`,
+      col3: `${pack.customers.length}`,
       col4: `${moment(pack.validFrom).format("ll")}`,
       col5: `${moment(pack.validTill).format("ll")}`,
       col6: (
@@ -72,11 +77,12 @@ const PreviousPackagesBox = ({
     []
   );
 
+  // UseSearchPackage(query);
   useEffect(() => {
     dispatch(
-      getPreviousPackageData(statusFilter, startDateFilter, endDateFilter)
+      getPreviousPackageData(statusFilter, startDateFilter, endDateFilter, name)
     );
-  }, [dispatch, statusFilter, startDateFilter, endDateFilter]);
+  }, [dispatch, statusFilter, startDateFilter, endDateFilter, name]);
 
   return (
     <Card className="w-6/12">
@@ -84,7 +90,18 @@ const PreviousPackagesBox = ({
         Previous Packages
       </h1>
       <div className="flex justify-between">
-        <Input type="text" width={"10rem"} size={"sm"} placeholder={"search"} />
+        <Input
+          type="text"
+          width={"10rem"}
+          size={"sm"}
+          placeholder={"search"}
+          onChange={(e) => {
+            setName(e.target.value);
+            setStatusFilter("");
+            setEndDateFilter("");
+            setStartDateFilter("");
+          }}
+        />
         <Input
           type="date"
           width={"9.5rem"}

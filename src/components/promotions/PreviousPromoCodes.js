@@ -1,107 +1,27 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import Card from "../container/Card";
 import RadioButton from "../custom_ui/RadioButton";
 import { Input } from "@chakra-ui/react";
 import PreviousPromoTable from "./PreviousPromoTable";
-import infoIcon from "./../../assets/info_icon.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { getPreviousPromocodes } from "../../store/promocode-actions";
+import moment from "moment";
 
 const PreviousPromoCodes = () => {
-  const data = useMemo(
-    () => [
-      {
-        col1: "BVJKDL",
-        col2: "active",
-        col3: "03-03-2022",
-        col4: (
-          <img
-            src={infoIcon}
-            alt="info"
-            className=" cursor-pointer"
-            title="Arunesh Chopra, Girish Reddy"
-          />
-        ),
-      },
-      {
-        col1: "BVJKDL",
-        col2: "active",
-        col3: "03-03-2022",
-        col4: (
-          <img
-            src={infoIcon}
-            alt="info"
-            className=" cursor-pointer"
-            title="Arunesh Chopra, Girish Reddy"
-          />
-        ),
-      },
-      {
-        col1: "BVJKDL",
-        col2: "active",
-        col3: "03-03-2022",
-        col4: (
-          <img
-            src={infoIcon}
-            alt="info"
-            className=" cursor-pointer"
-            title="Arunesh Chopra, Girish Reddy"
-          />
-        ),
-      },
-      {
-        col1: "BVJKDL",
-        col2: "active",
-        col3: "03-03-2022",
-        col4: (
-          <img
-            src={infoIcon}
-            alt="info"
-            className=" cursor-pointer"
-            title="Arunesh Chopra, Girish Reddy"
-          />
-        ),
-      },
-      {
-        col1: "BVJKDL",
-        col2: "active",
-        col3: "03-03-2022",
-        col4: (
-          <img
-            src={infoIcon}
-            alt="info"
-            className=" cursor-pointer"
-            title="Arunesh Chopra, Girish Reddy"
-          />
-        ),
-      },
-      {
-        col1: "BVJKDL",
-        col2: "active",
-        col3: "03-03-2022",
-        col4: (
-          <img
-            src={infoIcon}
-            alt="info"
-            className=" cursor-pointer"
-            title="Arunesh Chopra, Girish Reddy"
-          />
-        ),
-      },
-      {
-        col1: "BVJKDL",
-        col2: "active",
-        col3: "03-03-2022",
-        col4: (
-          <img
-            src={infoIcon}
-            alt="info"
-            className=" cursor-pointer"
-            title="Arunesh Chopra, Girish Reddy"
-          />
-        ),
-      },
-    ],
-    []
+  const dispatch = useDispatch();
+
+  const previousPromoCodes = useSelector(
+    (state) => state.promocodes.previousPromoCodes
   );
+
+  const data = previousPromoCodes.map((promo) => {
+    return {
+      col1: `${promo.promoCode}`,
+      col2: `${promo.status}`,
+      col3: `${moment(promo.validFrom).format("ll")}`,
+      col4: `${moment(promo.validTill).format("ll")}`,
+    };
+  });
 
   const columns = useMemo(
     () => [
@@ -114,16 +34,21 @@ const PreviousPromoCodes = () => {
         accessor: "col2",
       },
       {
-        Header: "Valid till",
+        Header: "Valid From",
         accessor: "col3",
       },
       {
-        Header: "",
+        Header: "Valid Till",
         accessor: "col4",
       },
     ],
     []
   );
+
+  useEffect(() => {
+    dispatch(getPreviousPromocodes("", "", ""));
+  }, [dispatch]);
+
   return (
     <Card className="w-full flex-col space-y-4">
       <h1 className=" text-base border-b border-dashed border-black mb-2">

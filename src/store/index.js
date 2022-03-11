@@ -2,9 +2,10 @@ import { configureStore } from "@reduxjs/toolkit";
 import servicesSlice from "./services-slice";
 import currentCustomerSlice from "./current-customer-slice";
 import customerListSlice from "./customer-slice";
-import packageSlice from "./package-slice";
 import expense from "./expense-slice";
 import branch from "./branch-slice";
+import packageSlice from "./package-slice";
+import promoCodeSlice from "./promocode-slice";
 
 // import dealListSlice from "./deal-list-slice";
 // import pointsCalculatorSlice from "./points-calculator-slice";
@@ -17,9 +18,10 @@ const store = configureStore({
     serviceList: servicesSlice.reducer,
     currentCustomer: currentCustomerSlice.reducer,
     customers: customerListSlice.reducer,
-    packages: packageSlice.reducer,
     expense: expense.reducer,
     branch: branch.reducer,
+    packages: packageSlice.reducer,
+    promocodes: promoCodeSlice.reducer,
     // priceList: priceListSlice.reducer,
     // dealList: dealListSlice.reducer,
     // pointsCalculator: pointsCalculatorSlice.reducer,

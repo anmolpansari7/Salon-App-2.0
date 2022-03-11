@@ -1,41 +1,26 @@
 import axios from "axios";
-import { packageActions } from "./package-slice";
-// import { authSliceAction } from "./auth-slice";
-// import { customerListActions } from "./customers-slice";
-// import { currentCustomerActions } from "./current-customer-slice";
-// require("dotenv").config();
+import { promoCodeActions } from "./promocode-slice";
 
-export const sendNewPackageData = (newPackage, toast) => {
+export const sendNewPromoCodeData = (newPromoCode, toast) => {
   return (dispatch) => {
-    // const ownerToken = localStorage.getItem("ownerToken");
-    // console.log(newPackage);
-
     axios
-      .post(
-        `${process.env.REACT_APP_BASE_URL}/package/create`,
-        {
-          gender: newPackage.gender,
-          name: newPackage.name,
-          services: newPackage.services,
-          totalAmount: newPackage.totalAmount,
-          packageAmount: newPackage.packageAmount,
-          maxUsage: newPackage.maxUsage,
-          validFrom: newPackage.validFrom,
-          validTill: newPackage.validTill,
-        }
-        // { headers: { Authorization: `Bearer ${ownerToken}` } }
-      )
+      .post(`${process.env.REACT_APP_BASE_URL}/promocode/create`, {
+        promoCode: newPromoCode.promoCode,
+        validFrom: newPromoCode.validFrom,
+        validTill: newPromoCode.validTill,
+        discountType: newPromoCode.discountType,
+        discountValue: newPromoCode.discountValue,
+      })
       .then((res) => {
         toast({
-          title: "New Package Created.",
-          description: "Now you can send this package to any customer.",
+          title: "New PromoCode Created.",
+          description: "Now you can send this promo code to any customer.",
           status: "success",
           duration: 3000,
           isClosable: true,
         });
-        dispatch(getPreviousPackageData());
-        dispatch(getAllActivePackages());
-        // console.log("Package Added !");
+        dispatch(getPreviousPromocodes("", "", ""));
+        dispatch(getAllActivePromocodes());
       })
       .catch((err) => {
         if (err.response) {
@@ -51,24 +36,22 @@ export const sendNewPackageData = (newPackage, toast) => {
   };
 };
 
-export const getPreviousPackageData = (
+export const getPreviousPromocodes = ({
   statusFilter,
   startDateFilter,
   endDateFilter,
-  name
-) => {
+}) => {
   return (dispatch) => {
     axios
-      .get(`${process.env.REACT_APP_BASE_URL}/package`, {
+      .get(`${process.env.REACT_APP_BASE_URL}/promocode`, {
         params: {
           status: statusFilter,
           startDate: startDateFilter,
           endDate: endDateFilter,
-          name: name,
         },
       })
       .then((res) => {
-        dispatch(packageActions.loadPreviousPackages(res.data));
+        dispatch(promoCodeActions.loadPreviousPromoCodes(res.data));
       })
       .catch((err) => {
         if (err.response) {
@@ -84,12 +67,12 @@ export const getPreviousPackageData = (
   };
 };
 
-export const getAllActivePackages = () => {
+export const getAllActivePromocodes = () => {
   return (dispatch) => {
     axios
-      .get(`${process.env.REACT_APP_BASE_URL}/package/active-package-list`)
+      .get(`${process.env.REACT_APP_BASE_URL}/promocode/active-promocode-list`)
       .then((res) => {
-        dispatch(packageActions.loadAllActivePackages(res.data));
+        dispatch(promoCodeActions.loadAllActivePromoCodes(res.data));
       })
       .catch((err) => {
         if (err.response) {
