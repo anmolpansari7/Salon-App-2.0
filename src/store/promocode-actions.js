@@ -36,11 +36,11 @@ export const sendNewPromoCodeData = (newPromoCode, toast) => {
   };
 };
 
-export const getPreviousPromocodes = ({
+export const getPreviousPromocodes = (
   statusFilter,
   startDateFilter,
-  endDateFilter,
-}) => {
+  endDateFilter
+) => {
   return (dispatch) => {
     axios
       .get(`${process.env.REACT_APP_BASE_URL}/promocode`, {
@@ -73,6 +73,31 @@ export const getAllActivePromocodes = () => {
       .get(`${process.env.REACT_APP_BASE_URL}/promocode/active-promocode-list`)
       .then((res) => {
         dispatch(promoCodeActions.loadAllActivePromoCodes(res.data));
+      })
+      .catch((err) => {
+        if (err.response) {
+          //   toast.error("Not Authenticated !");
+          //   localStorage.removeItem("ownerToken");
+          //   dispatch(authSliceAction.setIsAuthFalse());
+          console.log(err);
+        } else {
+          //   toast.error("Server Disconnected!");
+          console.log(err);
+        }
+      });
+  };
+};
+
+export const updateStatus = (id, status) => {
+  return (dispatch) => {
+    axios
+      .patch(`${process.env.REACT_APP_BASE_URL}/promocode/${id}`, {
+        status: status,
+      })
+      .then((res) => {
+        // dispatch(promoCodeActions.loadAllActivePromoCodes(res.data));
+        console.log(res.data);
+        dispatch(getPreviousPromocodes("", "", ""));
       })
       .catch((err) => {
         if (err.response) {
