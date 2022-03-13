@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import PageContainers from "./../components/container/PageContainer";
 import CustomerFilters from "../components/customers/CustomerFilters";
 import Card from "./../components/container/Card";
@@ -6,90 +6,42 @@ import PromotionCustomerTable from "../components/promotions/PromotionCustomerTa
 import CreatePromocode from "./../components/promotions/CreatePromocode";
 import PreviousPromoCodes from "../components/promotions/PreviousPromoCodes";
 import SendPromoCode from "../components/promotions/SendPromoCode";
+import { useSelector, useDispatch } from "react-redux";
+import { getCustomers } from "../store/customer-actions";
+import moment from "moment";
+
+function getAge(dateString) {
+  var today = new Date();
+  var birthDate = new Date(dateString);
+  var age = today.getFullYear() - birthDate.getFullYear();
+  var m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+}
 
 const PromotionPage = () => {
-  const data = useMemo(
-    () => [
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "250 Rs.",
-        col5: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "250 Rs.",
-        col5: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "250 Rs.",
-        col5: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "250 Rs.",
-        col5: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "250 Rs.",
-        col5: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "250 Rs.",
-        col5: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "250 Rs.",
-        col5: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "250 Rs.",
-        col5: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "250 Rs.",
-        col5: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "250 Rs.",
-        col5: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "250 Rs.",
-        col5: "19-02-2022",
-      },
-    ],
-    []
-  );
+  const dispatch = useDispatch();
+
+  const customers = useSelector((state) => state.customers.customerList);
+  const [typeFilter, setTypeFilter] = useState("");
+  const [startDateFilter, setStartDateFilter] = useState("");
+  const [endDateFilter, setEndDateFilter] = useState("");
+  const [nameFilter, setNameFilter] = useState("");
+
+  console.log(customers);
+
+  const data = customers.map((customer) => {
+    const age = getAge(customer.dob);
+    return {
+      col1: `${customer.name}`,
+      col2: `${customer.gender}`,
+      col3: `${age}`,
+      col4: `${customer.dues}`,
+      col5: `${moment(customer.updatedAt).format("ll")}`,
+    };
+  });
 
   const columns = useMemo(
     () => [
@@ -110,18 +62,34 @@ const PromotionPage = () => {
         accessor: "col4",
       },
       {
-        Header: "Last Promo",
+        Header: "Last Visit",
         accessor: "col5",
       },
     ],
     []
   );
 
+  useEffect(() => {
+    dispatch(
+      getCustomers(typeFilter, startDateFilter, endDateFilter, nameFilter)
+    );
+    console.log(customers);
+  }, [dispatch, typeFilter, startDateFilter, endDateFilter, nameFilter]);
+
   return (
     <PageContainers>
       <div className=" flex flex-col">
         <div>
-          <CustomerFilters />
+          <CustomerFilters
+            typeFilter={typeFilter}
+            nameFilter={nameFilter}
+            startDateFilter={startDateFilter}
+            endDateFilter={endDateFilter}
+            setTypeFilter={setTypeFilter}
+            setNameFilter={setNameFilter}
+            setStartDateFilter={setStartDateFilter}
+            setEndDateFilter={setEndDateFilter}
+          />
         </div>
         <div className=" flex h-[36rem] space-x-3">
           <div className="flex-1 flex flex-col">

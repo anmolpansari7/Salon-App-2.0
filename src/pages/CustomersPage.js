@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import CustomersTable from "./../components/customers/CustomersTable";
 import Card from "../components/container/Card";
 import CustomerFilters from "../components/customers/CustomerFilters";
@@ -6,24 +6,18 @@ import BirthdayList from "../components/customers/BirthdayList";
 import SummaryBox from "../components/container/SummaryBox";
 import PageContainer from "../components/container/PageContainer";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getCustomers,
-  countFemaleCustomers,
-  countMaleCustomers,
-  getTodaysBirthday,
-} from "../store/customer-actions";
+import { getCustomers, getTodaysBirthday } from "../store/customer-actions";
 import moment from "moment";
 
 const CustomersPage = () => {
   const dispatch = useDispatch();
   const customers = useSelector((state) => state.customers.customerList);
-  const totalFemaleCustomers = useSelector(
-    (state) => state.customers.totalFemaleCustomers
-  );
-  const totalMaleCustomers = useSelector(
-    (state) => state.customers.totalMaleCustomers
-  );
   const todaysBirthday = useSelector((state) => state.customers.todaysBirthday);
+
+  const [typeFilter, setTypeFilter] = useState("");
+  const [startDateFilter, setStartDateFilter] = useState("");
+  const [endDateFilter, setEndDateFilter] = useState("");
+  const [nameFilter, setNameFilter] = useState("");
 
   function getAge(dateString) {
     var today = new Date();
@@ -35,6 +29,16 @@ const CustomersPage = () => {
     }
     return age;
   }
+
+  let tmc = 0;
+  let tfc = 0;
+  customers.forEach((customer) => {
+    if (customer.gender === "M") {
+      tmc++;
+    } else {
+      tfc++;
+    }
+  });
 
   const data = useMemo(() =>
     customers.map((customer) => {
@@ -93,32 +97,38 @@ const CustomersPage = () => {
   const summary = [
     {
       content: "Female Customers :",
-      content2: `${totalFemaleCustomers}`,
+      content2: `${tfc}`,
     },
     {
       content: "Male Customers :",
-      content2: `${totalMaleCustomers}`,
+      content2: `${tmc}`,
     },
     {
       content: "Total Customers",
-      content2: `${totalFemaleCustomers + totalMaleCustomers}`,
+      content2: `${tfc + tmc}`,
     },
   ];
 
   useEffect(() => {
-    dispatch(getCustomers());
-    dispatch(countFemaleCustomers());
-    dispatch(countMaleCustomers());
+    dispatch(
+      getCustomers(typeFilter, startDateFilter, endDateFilter, nameFilter)
+    );
     dispatch(getTodaysBirthday());
-    console.log(totalFemaleCustomers);
-    console.log(totalMaleCustomers);
-    console.log(todaysBirthday);
-  }, [dispatch]);
+  }, [dispatch, typeFilter, nameFilter, startDateFilter, endDateFilter]);
 
   return (
     <PageContainer>
       <div className="h-full w-10/12">
-        <CustomerFilters />
+        <CustomerFilters
+          typeFilter={typeFilter}
+          nameFilter={nameFilter}
+          startDateFilter={startDateFilter}
+          endDateFilter={endDateFilter}
+          setTypeFilter={setTypeFilter}
+          setNameFilter={setNameFilter}
+          setStartDateFilter={setStartDateFilter}
+          setEndDateFilter={setEndDateFilter}
+        />
         <Card className=" h-[36rem] overflow-auto">
           <CustomersTable className="w-full" data={data} columns={columns} />
         </Card>

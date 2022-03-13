@@ -5,11 +5,24 @@ import { customerListActions } from "./customer-slice";
 // import { currentCustomerActions } from "./current-customer-slice";
 // require("dotenv").config();
 
-export const getCustomers = () => {
+export const getCustomers = (
+  typeFilter,
+  startDateFilter,
+  endDateFilter,
+  nameFilter
+) => {
   return (dispatch) => {
     axios
       .get(
-        `${process.env.REACT_APP_BASE_URL}/customer`
+        `${process.env.REACT_APP_BASE_URL}/customer`,
+        {
+          params: {
+            type: typeFilter,
+            startDate: startDateFilter,
+            endDate: endDateFilter,
+            name: nameFilter,
+          },
+        }
         // { headers: { Authorization: `Bearer ${ownerToken}` } }
       )
       .then((res) => {
