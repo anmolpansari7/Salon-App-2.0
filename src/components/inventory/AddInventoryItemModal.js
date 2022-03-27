@@ -14,17 +14,13 @@ const AddInventoryItemModal = ({ onHideModal }) => {
 
   const [forGender, setForGender] = useState("");
   const [itemName, setItemName] = useState("");
-  const [cost, setCost] = useState(0);
-  const [quantity, setQuantity] = useState(0);
+  const [cost, setCost] = useState("");
 
   const onItemAdd = () => {
     const newInventoryItem = {
       gender: forGender,
       name: itemName,
       cost: cost,
-      quantity: quantity,
-      lastSoldOn: "",
-      lastAddedOn: new Date(),
     };
     dispatch(sendNewInventoryItemData(newInventoryItem, toast));
     onHideModal();
@@ -86,24 +82,10 @@ const AddInventoryItemModal = ({ onHideModal }) => {
             size={"sm"}
             width={"18rem"}
             textAlign={"right"}
-            placeholder={"Amount inn Rupees"}
+            placeholder={"Amount in Rupees"}
             value={cost}
             onChange={(e) => {
               setCost(e.target.value);
-            }}
-            required
-          />
-        </div>
-        <div className="flex justify-between">
-          <span className=" self-end">Quantity -</span>
-          <Input
-            type={"number"}
-            size={"sm"}
-            width={"18rem"}
-            textAlign={"right"}
-            placeholder={"how many ?"}
-            onChange={(e) => {
-              setQuantity(e.target.value);
             }}
             required
           />

@@ -38,7 +38,7 @@ const PromotionPage = () => {
       col1: `${customer.name}`,
       col2: `${customer.gender}`,
       col3: `${age}`,
-      col4: `${customer.dues}`,
+      col4: `${customer.dues} Rs.`,
       col5: `${moment(customer.updatedAt).format("ll")}`,
     };
   });
@@ -73,7 +73,6 @@ const PromotionPage = () => {
     dispatch(
       getCustomers(typeFilter, startDateFilter, endDateFilter, nameFilter)
     );
-    console.log(customers);
   }, [dispatch, typeFilter, startDateFilter, endDateFilter, nameFilter]);
 
   return (

@@ -1,104 +1,46 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Card from "../components/container/Card";
 import PageContainer from "../components/container/PageContainer";
 import CustomerFilters from "../components/customers/CustomerFilters";
 import MessageCustomerTable from "../components/message/MessageCustomerTable";
 import MessagePreview from "../components/message/MessagePreview";
 import PreviousMessages from "../components/message/PreviousMessages";
+import { useSelector, useDispatch } from "react-redux";
+import moment from "moment";
+import { getCustomers } from "../store/customer-actions";
+
+function getAge(dateString) {
+  var today = new Date();
+  var birthDate = new Date(dateString);
+  var age = today.getFullYear() - birthDate.getFullYear();
+  var m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+}
 
 const MessagePage = () => {
-  const data = useMemo(
-    () => [
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "200 Rs.",
-        col5: "150 Pts.",
-        col6: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "200 Rs.",
-        col5: "150 Pts.",
-        col6: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "200 Rs.",
-        col5: "150 Pts.",
-        col6: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "200 Rs.",
-        col5: "150 Pts.",
-        col6: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "200 Rs.",
-        col5: "150 Pts.",
-        col6: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "200 Rs.",
-        col5: "150 Pts.",
-        col6: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "200 Rs.",
-        col5: "150 Pts.",
-        col6: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "200 Rs.",
-        col5: "150 Pts.",
-        col6: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "200 Rs.",
-        col5: "150 Pts.",
-        col6: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "200 Rs.",
-        col5: "150 Pts.",
-        col6: "19-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "M",
-        col3: 12,
-        col4: "200 Rs.",
-        col5: "150 Pts.",
-        col6: "19-02-2022",
-      },
-    ],
-    []
+  const dispatch = useDispatch();
+  const customers = useSelector((state) => state.customers.customerList);
+
+  const [typeFilter, setTypeFilter] = useState("");
+  const [startDateFilter, setStartDateFilter] = useState("");
+  const [endDateFilter, setEndDateFilter] = useState("");
+  const [nameFilter, setNameFilter] = useState("");
+
+  const data = useMemo(() =>
+    customers.map((customer) => {
+      const age = getAge(customer.dob);
+      return {
+        col1: `${customer.name}`,
+        col2: `${customer.gender}`,
+        col3: `${age}`,
+        col4: `${customer.dues} Rs.`,
+        col5: `${customer.points} Pts.`,
+        col6: `${moment(customer.updatedAt).format("ll")}`,
+      };
+    })
   );
 
   const columns = useMemo(
@@ -124,18 +66,33 @@ const MessagePage = () => {
         accessor: "col5",
       },
       {
-        Header: "Last Contacted",
+        Header: "Last Visited",
         accessor: "col6",
       },
     ],
     []
   );
 
+  useEffect(() => {
+    dispatch(
+      getCustomers(typeFilter, startDateFilter, endDateFilter, nameFilter)
+    );
+  }, [dispatch, typeFilter, startDateFilter, endDateFilter, nameFilter]);
+
   return (
     <PageContainer>
       <div className="flex flex-col">
         <div>
-          <CustomerFilters />
+          <CustomerFilters
+            typeFilter={typeFilter}
+            nameFilter={nameFilter}
+            startDateFilter={startDateFilter}
+            endDateFilter={endDateFilter}
+            setTypeFilter={setTypeFilter}
+            setNameFilter={setNameFilter}
+            setStartDateFilter={setStartDateFilter}
+            setEndDateFilter={setEndDateFilter}
+          />
         </div>
         <div className=" flex h-[36rem] space-x-3">
           <Card className="h-full w-[38rem] overflow-auto">

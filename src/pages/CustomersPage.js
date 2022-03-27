@@ -49,7 +49,7 @@ const CustomersPage = () => {
         col3: `${age}`,
         col4: `+91 ${customer.contact}`,
         col5: `${customer.dues} Rs.`,
-        col6: `${customer.points}`,
+        col6: `${customer.points} Pts.`,
         col7: `${customer.address}`,
         col8: `${moment(customer.updatedAt).format("ll")}`,
       };
