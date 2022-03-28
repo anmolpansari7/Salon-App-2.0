@@ -42,6 +42,7 @@ export const sendNewInventoryItemData = (newInventoryItem, toast) => {
           duration: 3000,
           isClosable: true,
         });
+        dispatch(getInventoryItems());
         console.log("Item Added !");
       })
       .catch((err) => {
@@ -58,8 +59,78 @@ export const sendNewInventoryItemData = (newInventoryItem, toast) => {
   };
 };
 
+export const updateInventoryItem = (id, gender, name, cost, toast) => {
+  return (dispatch) => {
+    axios
+      .patch(
+        `${process.env.REACT_APP_BASE_URL}/inventory/update/${id}`,
+        {
+          gender,
+          name,
+          cost,
+        }
+        // { headers: { Authorization: `Bearer ${ownerToken}` } }
+      )
+      .then(() => {
+        toast({
+          title: "Item Updated !",
+          description: "Item Details have been updated successfully.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        dispatch(getInventoryItems());
+        console.log("Item Updated !");
+      })
+      .catch((err) => {
+        if (err.response) {
+          //   toast.error("Not Authenticated !");
+          //   localStorage.removeItem("ownerToken");
+          //   dispatch(authSliceAction.setIsAuthFalse());
+          console.log(err);
+        } else {
+          //   toast.error("Server Disconnected!");
+          console.log(err);
+        }
+      });
+  };
+};
+
+export const deleteInventoryItem = (itemId, toast) => {
+  return (dispatch) => {
+    axios
+      .patch(
+        `${process.env.REACT_APP_BASE_URL}/inventory/delete/${itemId}`,
+        {
+          status: "deleted",
+        }
+        // { headers: { Authorization: `Bearer ${ownerToken}` } }
+      )
+      .then(() => {
+        toast({
+          title: "Item Deleted",
+          description: "Item Has been deleted Successfully",
+          status: "success",
+          isClosable: true,
+        });
+        dispatch(getInventoryItems());
+      })
+      .catch((err) => {
+        if (err.response) {
+          //   toast.error("Not Authenticated !");
+          //   localStorage.removeItem("ownerToken");
+          //   dispatch(authSliceAction.setIsAuthFalse());
+          console.log(err);
+        } else {
+          //   toast.error("Server Disconnected!");
+          console.log(err);
+        }
+      });
+  };
+};
+
 export const addItemToBranch = (itemId, branchId, quantity, toast) => {
-  return () => {
+  return (dispatch) => {
     axios
       .patch(
         `${process.env.REACT_APP_BASE_URL}/inventory/distributions`,
@@ -78,6 +149,7 @@ export const addItemToBranch = (itemId, branchId, quantity, toast) => {
           duration: 3000,
           isClosable: true,
         });
+        dispatch(getInventoryItems());
         console.log("Item Added !");
       })
       .catch((err) => {

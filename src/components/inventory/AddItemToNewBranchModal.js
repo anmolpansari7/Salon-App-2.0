@@ -1,7 +1,6 @@
 import { Input, Select, useToast } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getBranches } from "../../store/branch-actions";
 import CardHeading from "../custom_ui/CardHeading";
 import PrimaryButton from "../custom_ui/PrimaryButton";
 import Modal from "../custom_ui/Modal";
@@ -23,6 +22,7 @@ const AddItemToNewBranchModal = ({
     dispatch(
       addItemToBranch(selectedItemId, selectedBranchId, quantity, toast)
     );
+    onHideModal();
   };
 
   return (

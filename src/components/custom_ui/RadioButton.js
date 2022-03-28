@@ -1,6 +1,6 @@
 import React from "react";
 
-const RadioButton = ({ name, id, val, label, onChange }) => {
+const RadioButton = ({ name, id, val, label, onChange, checked }) => {
   return (
     <div className="cursor-pointer group w-fit">
       <input
@@ -12,6 +12,7 @@ const RadioButton = ({ name, id, val, label, onChange }) => {
         onChange={(e) => {
           onChange(e);
         }}
+        checked={checked}
         required
       />
       <label htmlFor={id} className="ml-2 group-hover:cursor-pointer text-sm">
