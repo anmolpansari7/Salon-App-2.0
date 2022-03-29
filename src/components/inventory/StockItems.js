@@ -48,7 +48,7 @@ const StockItems = () => {
 
   console.log(inventoryItems);
   return (
-    <Card className="w-7/12">
+    <Card className="w-7/12 max-h-[42rem] overflow-auto">
       <CardHeading className=" text-lg">Items in Stock -</CardHeading>
       {/* <StockTable className={" w-full"} data={data} columns={columns} /> */}
       <Accordion allowToggle>

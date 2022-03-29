@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import NavBar from "./components/navbar/NavBar";
+import { useDispatch } from "react-redux";
 
 import AuthPage from "./pages/AuthPage";
 import PricePage from "./pages/PricePage";
@@ -16,11 +17,16 @@ import AddCustomerModal from "./components/customers/AddCustomerModal";
 import ChangePasswordModal from "./components/owner_and_branch/ChangePasswordModal";
 import BranchEditModal from "./components/owner_and_branch/BranchEditModal";
 import CurrentCustomerPage from "./pages/CurrentCustomerPage";
+import PointsCalculatorModal from "./components/pointscalculator/PointsCalculatorModal";
+import { getPointsCalculatorData } from "./store/points-calculator-actions";
 
 function App() {
+  const dispatch = useDispatch();
   const [showAddCustomerModal, setShowAddCustomerModal] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [showBranchEditModal, setShowBranchEditModal] = useState(false);
+  const [showPointsCalculatorModal, setShowPointsCalculatorModal] =
+    useState(false);
 
   const onShowAddCustomerModal = () => {
     setShowAddCustomerModal(true);
@@ -34,11 +40,20 @@ function App() {
     setShowBranchEditModal(true);
   };
 
+  const onShowPointCalculatorModal = () => {
+    setShowPointsCalculatorModal(true);
+  };
+
   const onHideModal = () => {
     setShowAddCustomerModal(false);
     setShowBranchEditModal(false);
     setShowChangePasswordModal(false);
+    setShowPointsCalculatorModal(false);
   };
+
+  useEffect(() => {
+    dispatch(getPointsCalculatorData());
+  }, []);
 
   return (
     <div className="w-full h-screen bg-app-bg flex flex-col">
@@ -46,6 +61,7 @@ function App() {
         onShowAddCustomerModal={onShowAddCustomerModal}
         onShowChangePasswordModal={onShowChangePasswordModal}
         onShowBranchEditModal={onShowBranchEditModal}
+        onShowPointCalculatorModal={onShowPointCalculatorModal}
       />
       <Routes>
         <Route path="/" element={<AuthPage />} />
@@ -66,6 +82,9 @@ function App() {
         <ChangePasswordModal onHideModal={onHideModal} />
       )}
       {showBranchEditModal && <BranchEditModal onHideModal={onHideModal} />}
+      {showPointsCalculatorModal && (
+        <PointsCalculatorModal onHideModal={onHideModal} />
+      )}
     </div>
   );
 }

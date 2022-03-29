@@ -7,6 +7,7 @@ import branch from "./branch-slice";
 import packageSlice from "./package-slice";
 import promoCodeSlice from "./promocode-slice";
 import inventoryItemSlice from "./inventory-item-slice";
+import pointsCalculatorSlice from "./points-calculator-slice";
 
 // import dealListSlice from "./deal-list-slice";
 // import pointsCalculatorSlice from "./points-calculator-slice";
@@ -24,6 +25,8 @@ const store = configureStore({
     packages: packageSlice.reducer,
     promocodes: promoCodeSlice.reducer,
     inventory: inventoryItemSlice.reducer,
+    pointsCalculator: pointsCalculatorSlice.reducer,
+
     // priceList: priceListSlice.reducer,
     // dealList: dealListSlice.reducer,
     // pointsCalculator: pointsCalculatorSlice.reducer,

@@ -1,5 +1,4 @@
 import React from "react";
-import { ReactComponent as EditBtn } from "../../assets/pencilImg.svg";
 import {
   AccordionItem,
   AccordionButton,
@@ -7,6 +6,14 @@ import {
   AccordionIcon,
   Box,
   Button,
+} from "@chakra-ui/react";
+
+import {
+  Tag,
+  TagLabel,
+  TagLeftIcon,
+  TagRightIcon,
+  TagCloseButton,
 } from "@chakra-ui/react";
 
 const InventoryAccordionItem = ({
@@ -30,7 +37,10 @@ const InventoryAccordionItem = ({
             justifyContent={"space-between"}
           >
             <p>{item.name}</p>
-            <p>{item.cost} Rs.</p>
+            <div className=" flex space-x-5">
+              <p>{item.cost} Rs.</p>
+              <Tag>{item.gender}</Tag>
+            </div>
           </Box>
           <AccordionIcon />
         </AccordionButton>
@@ -44,13 +54,6 @@ const InventoryAccordionItem = ({
                   <p className="self-end">{branch.branch}</p>
                   <div className="flex">
                     <p className="self-end">Quantity : {branch.quantity}</p>
-                    <Button
-                      colorScheme="black"
-                      size={"sm"}
-                      fontWeight={"normal"}
-                    >
-                      <EditBtn />
-                    </Button>
                   </div>
                 </div>
               );

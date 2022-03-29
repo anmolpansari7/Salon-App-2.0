@@ -13,6 +13,7 @@ const NavBar = ({
   onShowAddCustomerModal,
   onShowChangePasswordModal,
   onShowBranchEditModal,
+  onShowPointCalculatorModal,
 }) => {
   return (
     <div className=" h-16 min-h-[4rem] bg-nav-bar-bg flex px-10 font-tabs text-sm justify-between">
@@ -57,7 +58,10 @@ const NavBar = ({
           <MenuItem onClick={onShowChangePasswordModal}>
             Change Password
           </MenuItem>
-          <MenuItem onClick={onShowBranchEditModal}>Branch Edit</MenuItem>
+          <MenuItem onClick={onShowBranchEditModal}>Branch Management</MenuItem>
+          <MenuItem onClick={onShowPointCalculatorModal}>
+            Points System
+          </MenuItem>
         </MenuList>
       </Menu>
       <NavButton
