@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Input } from "@chakra-ui/react";
 import Card from "../container/Card";
-import RadioButton from "../custom_ui/RadioButton";
 import PreviousPackageTable from "./PreviousPackageTable";
 import infoIcon from "./../../assets/info_icon.svg";
 import moment from "moment";
@@ -9,10 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPreviousPackageData } from "../../store/package-actions";
 
 const PreviousPackagesBox = ({
-  statusFilter,
   startDateFilter,
   endDateFilter,
-  setStatusFilter,
   setStartDateFilter,
   setEndDateFilter,
 }) => {
@@ -34,8 +31,8 @@ const PreviousPackagesBox = ({
       col1: `${pack.name}`,
       col2: `${pack.packageAmount} Rs.`,
       col3: `${pack.customers.length}`,
-      col4: `${moment(pack.validFrom).format("ll")}`,
-      col5: `${moment(pack.validTill).format("ll")}`,
+      col4: `${moment(pack.createdAt).format("ll")}`,
+      col5: `${pack.validFor}`,
       col6: (
         <img
           src={infoIcon}
@@ -62,11 +59,11 @@ const PreviousPackagesBox = ({
         accessor: "col3",
       },
       {
-        Header: "Valid From",
+        Header: "Created At",
         accessor: "col4",
       },
       {
-        Header: "Valid Till",
+        Header: "Valid For",
         accessor: "col5",
       },
       {
@@ -77,12 +74,15 @@ const PreviousPackagesBox = ({
     []
   );
 
+  const clearFilters = () => {
+    setStartDateFilter("");
+    setEndDateFilter("");
+  };
+
   // UseSearchPackage(query);
   useEffect(() => {
-    dispatch(
-      getPreviousPackageData(statusFilter, startDateFilter, endDateFilter, name)
-    );
-  }, [dispatch, statusFilter, startDateFilter, endDateFilter, name]);
+    dispatch(getPreviousPackageData(startDateFilter, endDateFilter, name));
+  }, [dispatch, startDateFilter, endDateFilter, name]);
 
   return (
     <Card className="w-6/12">
@@ -97,11 +97,10 @@ const PreviousPackagesBox = ({
           placeholder={"search"}
           onChange={(e) => {
             setName(e.target.value);
-            setStatusFilter("");
-            setEndDateFilter("");
-            setStartDateFilter("");
+            clearFilters();
           }}
         />
+        <span className=" self-center text-sm">created between</span>
         <Input
           type="date"
           width={"9.5rem"}
@@ -111,7 +110,7 @@ const PreviousPackagesBox = ({
             setStartDateFilter(e.target.value);
           }}
         />
-        <span className=" self-center text-sm">btw</span>
+        <span className=" self-center text-sm"> - </span>
         <Input
           type="date"
           width={"9.5rem"}
@@ -121,24 +120,7 @@ const PreviousPackagesBox = ({
             setEndDateFilter(e.target.value);
           }}
         />
-        <RadioButton
-          name="pack-status"
-          id="active-packs"
-          val="active"
-          label="Active"
-          onChange={(e) => {
-            setStatusFilter(e.target.value);
-          }}
-        />
-        <RadioButton
-          name="pack-status"
-          id="expired-packs"
-          val="expired"
-          label="Expired"
-          onChange={(e) => {
-            setStatusFilter(e.target.value);
-          }}
-        />
+        <button onClick={clearFilters}>clear</button>
       </div>
       <div className=" h-[32rem] overflow-auto">
         <PreviousPackageTable

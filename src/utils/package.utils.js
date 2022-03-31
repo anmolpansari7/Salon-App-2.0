@@ -54,21 +54,10 @@ export const packageIsValid = (newPackage, toast) => {
     return false;
   }
 
-  if (newPackage.validFrom === "") {
+  if (newPackage.validFor === "") {
     toast({
       title: "Missing Information",
-      description: "Please valid from date.",
-      status: "error",
-      duration: 3000,
-      isClosable: true,
-    });
-    return false;
-  }
-
-  if (newPackage.validUpto === "") {
-    toast({
-      title: "Missing Information",
-      description: "Please enter valid upto date.",
+      description: "Please select package duration.",
       status: "error",
       duration: 3000,
       isClosable: true,

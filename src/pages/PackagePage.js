@@ -12,14 +12,10 @@ const PackagePage = () => {
   const [message, setMessage] = useState("");
   const [selectedCustomer, setSelectedCustomer] = useState([]);
 
-  const [statusFilter, setStatusFilter] = useState("");
   const [startDateFilter, setStartDateFilter] = useState("");
   const [endDateFilter, setEndDateFilter] = useState("");
 
-  const selectedCustomerIds = selectedCustomer.map((customer) => customer._id);
-
   const clearFilter = () => {
-    setStatusFilter("");
     setStartDateFilter("");
     setEndDateFilter("");
   };
@@ -36,13 +32,10 @@ const PackagePage = () => {
         setMessage={setMessage}
         selectedCustomer={selectedCustomer}
         setSelectedCustomer={setSelectedCustomer}
-        onSendPackage={() => {}}
       />
       <PreviousPackagesBox
-        statusFilter={statusFilter}
         startDateFilter={startDateFilter}
         endDateFilter={endDateFilter}
-        setStatusFilter={setStatusFilter}
         setStartDateFilter={setStartDateFilter}
         setEndDateFilter={setEndDateFilter}
       />

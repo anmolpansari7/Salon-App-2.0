@@ -28,8 +28,7 @@ const CreatePackageBox = ({ clearFilter }) => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [packageAmount, setPackageAmount] = useState(0);
   const [maxUsage, setMaxUsage] = useState(0);
-  const [validFrom, setValidFrom] = useState("");
-  const [validTill, setValidTill] = useState("");
+  const [validFor, setValidFor] = useState("");
 
   const onCreatePackage = () => {
     const selectedServiceIds = selectedServices.map((service) => service._id);
@@ -41,8 +40,7 @@ const CreatePackageBox = ({ clearFilter }) => {
       totalAmount: totalAmount,
       packageAmount: packageAmount,
       maxUsage: maxUsage,
-      validFrom: validFrom,
-      validTill: validTill,
+      validFor: validFor,
     };
 
     if (!packageIsValid(newPackage, toast)) return;
@@ -51,8 +49,7 @@ const CreatePackageBox = ({ clearFilter }) => {
     setPackageFor("");
     setPackageName("");
     setSelectedServices([]);
-    setValidFrom("");
-    setValidTill("");
+    setValidFor("");
     setTotalAmount(0);
     setPackageAmount(0);
     clearFilter();
@@ -199,32 +196,23 @@ const CreatePackageBox = ({ clearFilter }) => {
           </li>
           <li className="flex justify-between border-b border-dashed border-black ">
             <div className=" flex justify-between flex-1">
-              <p className=" font-medium flex-1 self-end">Valid From</p>
-              <Input
+              <p className=" font-medium flex-1 self-end">Valid For</p>
+              <Select
+                placeholder="Select Duration"
                 size="sm"
-                type={"date"}
-                width="40"
-                textAlign={"right"}
-                value={validFrom}
                 onChange={(e) => {
-                  setValidFrom(e.target.value);
+                  setValidFor(e.target.value);
                 }}
-              />
-            </div>
-          </li>
-          <li className="flex justify-between border-b border-dashed border-black ">
-            <div className=" flex justify-between flex-1">
-              <p className=" font-medium flex-1 self-end">Valid Upto </p>
-              <Input
-                size="sm"
-                type={"date"}
-                width="40"
-                textAlign={"right"}
-                value={validTill}
-                onChange={(e) => {
-                  setValidTill(e.target.value);
-                }}
-              />
+                width={"10rem"}
+              >
+                <option value={"5Y"}>{"5 Year"}</option>
+                <option value={"3Y"}>{"3 Year"}</option>
+                <option value={"2Y"}>{"2 Year"}</option>
+                <option value={"1Y"}>{"1 Year"}</option>
+                <option value={"9M"}>{"9 Month"}</option>
+                <option value={"6M"}>{"6 Month"}</option>
+                <option value={"3M"}>{"3 Month"}</option>
+              </Select>
             </div>
           </li>
         </div>

@@ -20,8 +20,7 @@ export const sendNewPackageData = (newPackage, toast) => {
           totalAmount: newPackage.totalAmount,
           packageAmount: newPackage.packageAmount,
           maxUsage: newPackage.maxUsage,
-          validFrom: newPackage.validFrom,
-          validTill: newPackage.validTill,
+          validFor: newPackage.validFor,
         }
         // { headers: { Authorization: `Bearer ${ownerToken}` } }
       )
@@ -52,7 +51,6 @@ export const sendNewPackageData = (newPackage, toast) => {
 };
 
 export const getPreviousPackageData = (
-  statusFilter,
   startDateFilter,
   endDateFilter,
   name
@@ -61,7 +59,6 @@ export const getPreviousPackageData = (
     axios
       .get(`${process.env.REACT_APP_BASE_URL}/package`, {
         params: {
-          status: statusFilter,
           startDate: startDateFilter,
           endDate: endDateFilter,
           name: name,
@@ -90,6 +87,80 @@ export const getAllActivePackages = () => {
       .get(`${process.env.REACT_APP_BASE_URL}/package/active-package-list`)
       .then((res) => {
         dispatch(packageActions.loadAllActivePackages(res.data));
+      })
+      .catch((err) => {
+        if (err.response) {
+          //   toast.error("Not Authenticated !");
+          //   localStorage.removeItem("ownerToken");
+          //   dispatch(authSliceAction.setIsAuthFalse());
+          console.log(err);
+        } else {
+          //   toast.error("Server Disconnected!");
+          console.log(err);
+        }
+      });
+  };
+};
+
+const getValidity = (validFor) => {
+  let days = 0;
+  switch (validFor) {
+    case "3M":
+      days = 90;
+      break;
+    case "6M":
+      days = 180;
+      break;
+    case "9M":
+      days = 270;
+      break;
+    case "1Y":
+      days = 365;
+      break;
+    case "2Y":
+      days = 730;
+      break;
+    case "3Y":
+      days = 1095;
+      break;
+    case "5Y":
+      days = 1825;
+      break;
+    default:
+      days = 0;
+  }
+
+  let newDate = new Date();
+  newDate.setDate(newDate.getDate() + days);
+  return newDate;
+};
+
+export const assignPackage = (customers, pack, toast) => {
+  const customerIds = customers.map((customer) => customer._id);
+  const packageId = pack._id;
+  const maxUsage = pack.maxUsage;
+  console.log(pack.validFor);
+  let validTill = getValidity(pack.validFor);
+
+  console.log(validTill);
+
+  return (dispatch) => {
+    axios
+      .patch(`${process.env.REACT_APP_BASE_URL}/package/assign-package`, {
+        customerIds,
+        packageId,
+        maxUsage,
+        validTill,
+      })
+      .then((res) => {
+        console.log("Package Assigned ! ");
+        toast({
+          title: "Package Assigned !",
+          description: "Package has been assigned to the selected customers.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
       })
       .catch((err) => {
         if (err.response) {
