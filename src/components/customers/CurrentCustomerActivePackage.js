@@ -25,15 +25,7 @@ const CurrentCustomerActivePackage = () => {
       <CardHeading className=" font-medium text-base flex-1">
         Active Packages
       </CardHeading>
-      {/* <div className=" flex flex-col space-y-3 mt-5">
-        <ListItemDBtn
-          content={"Pack Name"}
-          content2={"Great Khali"}
-          showBtn={false}
-          className=" text-sm"
-        />
-      </div>
-      <div className=" border border-gray-400 rounded-md h-24 mt-3 px-2 py-1">
+      {/* <div className=" border border-gray-400 rounded-md h-24 mt-3 px-2 py-1">
         <span className=" text-gray-400 text-sm">Display Items</span>
       </div> */}
       <Accordion allowMultiple>
@@ -79,6 +71,7 @@ const CurrentCustomerActivePackage = () => {
                 </AccordionItem>
               );
             }
+            return [];
           })}
       </Accordion>
     </Card>

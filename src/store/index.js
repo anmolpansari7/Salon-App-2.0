@@ -8,6 +8,7 @@ import packageSlice from "./package-slice";
 import promoCodeSlice from "./promocode-slice";
 import inventoryItemSlice from "./inventory-item-slice";
 import pointsCalculatorSlice from "./points-calculator-slice";
+import staffSlice from "./staff-slice";
 
 // import dealListSlice from "./deal-list-slice";
 // import pointsCalculatorSlice from "./points-calculator-slice";
@@ -26,6 +27,7 @@ const store = configureStore({
     promocodes: promoCodeSlice.reducer,
     inventory: inventoryItemSlice.reducer,
     pointsCalculator: pointsCalculatorSlice.reducer,
+    staff: staffSlice.reducer,
 
     // priceList: priceListSlice.reducer,
     // dealList: dealListSlice.reducer,
