@@ -16,6 +16,7 @@ import PrimaryButton from "../custom_ui/PrimaryButton";
 import { sendNewPackageData } from "../../store/package-actions";
 import { useDispatch } from "react-redux";
 import { packageIsValid } from "../../utils/package.utils";
+import { v4 as uuidv4 } from "uuid";
 
 const CreatePackageBox = ({ clearFilter }) => {
   const services = useSelector((state) => state.serviceList.services);
@@ -61,7 +62,7 @@ const CreatePackageBox = ({ clearFilter }) => {
     let selectedItem = services.find((service) => service._id === currItemId);
     selectedItem = {
       ...selectedItem,
-      idx: selectedServices.length + Math.floor(Math.random() * 100),
+      idx: uuidv4(),
     };
     setSelectedServices([...selectedServices, selectedItem]);
     selectedItem.cost === NaN

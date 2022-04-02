@@ -6,7 +6,6 @@ export const getPointsCalculatorData = () => {
     axios
       .get(`${process.env.REACT_APP_BASE_URL}/points-calculator`)
       .then((res) => {
-        console.log(res.data.forRupee);
         dispatch(pointCalculatorActions.loadForRupee(res.data.forRupee));
         dispatch(pointCalculatorActions.loadGivenPoints(res.data.givenPoints));
         dispatch(pointCalculatorActions.loadForPoints(res.data.forPoints));

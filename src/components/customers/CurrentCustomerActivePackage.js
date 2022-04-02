@@ -18,8 +18,6 @@ const CurrentCustomerActivePackage = () => {
     (state) => state.currentCustomer.currentCustomer
   );
 
-  console.log(currCustomer);
-
   return (
     <Card className="flex-1">
       <CardHeading className=" font-medium text-base flex-1">

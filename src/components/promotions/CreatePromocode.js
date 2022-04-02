@@ -18,13 +18,17 @@ const CreatePromocode = () => {
   const [discountValue, setDiscountValue] = useState("");
 
   const onCreatePromoCode = () => {
+    let discount = discountValue;
+    if (discountType === "percentage") {
+      discount = discountPercentageValue;
+    }
+
     const newPromoCode = {
       promoCode: promoCode,
       validFrom: validFrom,
       validTill: validTill,
       discountType: discountType,
-      discountValue: discountValue,
-      discountPercentageValue: discountPercentageValue,
+      discountValue: discount,
     };
 
     dispatch(sendNewPromoCodeData(newPromoCode, toast));
@@ -85,8 +89,12 @@ const CreatePromocode = () => {
         <RadioButton
           id="promo-discount-percentage"
           name="promo-discount-type"
-          val="discount"
+          val="percentage"
           label={"Discount in Percentage"}
+          onChange={(e) => {
+            setDiscountType(e.target.value);
+          }}
+          checked={discountType === "percentage"}
         />
         <Input
           type="text"
@@ -109,6 +117,7 @@ const CreatePromocode = () => {
           onChange={(e) => {
             setDiscountType(e.target.value);
           }}
+          checked={discountType === "rupee"}
         />
         <Input
           type="text"

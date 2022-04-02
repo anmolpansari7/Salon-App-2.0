@@ -8,6 +8,7 @@ import CurrentCustomerOrders from "../components/customers/CurrentCustomerOrders
 import { getCurrentCustomerData } from "../store/current-customer-actions";
 import FloatingButton from "./../components/custom_ui/FloatingButton";
 import BillingModal from "../components/bill/BillingModal";
+import { getStaffList } from "../store/staff-actions";
 
 const CurrentCustomerPage = () => {
   const { id } = useParams();
@@ -25,7 +26,6 @@ const CurrentCustomerPage = () => {
 
   useEffect(() => {
     dispatch(getCurrentCustomerData(id));
-
     return () => {};
   }, [dispatch, id]);
 

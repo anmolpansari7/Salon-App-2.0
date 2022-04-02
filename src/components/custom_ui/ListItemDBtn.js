@@ -25,6 +25,7 @@ const ListItemDBtn = ({
           onClick={() => {
             onItemDelete(id);
           }}
+          type="button"
         >
           <img
             className={buttonImgClass + " self-center ml-5"}

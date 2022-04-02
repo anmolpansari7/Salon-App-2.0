@@ -1,20 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import FilterCard from "../container/FilterCard";
 import { Select } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { getStaffList } from "../../store/staff-actions";
 
 const CurrentCustomerOrderFilter = () => {
+  const dispatch = useDispatch();
+
+  const staff = useSelector((state) => state.staff.staff);
+
+  useEffect(() => {
+    dispatch(getStaffList("", "", "", ""));
+  }, []);
+
   return (
     <FilterCard className="flex justify-between text-sm">
       <Select
-        placeholder="Select option"
+        placeholder="Filter by Staff"
         fontSize={"0.875rem"}
         size={"sm"}
         alignSelf={"center"}
       >
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-        <option value="option3">Option 3</option>
+        {staff.map((member) => (
+          <option key={member._id} value={member._id}>
+            {member.name}
+          </option>
+        ))}
       </Select>
 
       <div className=" self-center flex w-10/12 justify-between">

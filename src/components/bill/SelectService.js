@@ -1,36 +1,70 @@
-import React from "react";
+import React, { useState } from "react";
 import { Select } from "@chakra-ui/react";
 import ListItemDBtn from "../custom_ui/ListItemDBtn";
 import crossIcon from "./../../assets/cross_icon.svg";
+import { v4 as uuidv4 } from "uuid";
 
-const SelectService = () => {
+const SelectService = ({
+  listItems,
+  placeholder,
+  ACTIONS,
+  dispatch,
+  selectedItems,
+  setSelectedItems,
+}) => {
+  const onItemSelection = (e) => {
+    const selectedItemId = e.target.value;
+    let selectedItem = listItems.find((item) => item._id === selectedItemId);
+    selectedItem = {
+      ...selectedItem,
+      idx: uuidv4(),
+    };
+    setSelectedItems([...selectedItems, selectedItem]);
+    dispatch({
+      type: ACTIONS.ITEM_ADDED,
+      payload: { amount: selectedItem.cost },
+    });
+  };
+
+  const onItemDelete = (idx) => {
+    let currItem = selectedItems.find((item) => item.idx === idx);
+    let currList = selectedItems.filter((item) => item.idx !== idx);
+    setSelectedItems(currList);
+
+    dispatch({
+      type: ACTIONS.ITEM_REMOVED,
+      payload: { amount: currItem.cost },
+    });
+  };
+
   return (
     <div>
       <Select
-        placeholder="Select option"
+        placeholder={placeholder}
         fontSize={"0.875rem"}
         size={"sm"}
         alignSelf={"center"}
+        onChange={onItemSelection}
       >
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-        <option value="option3">Option 3</option>
+        {listItems.map((item) => (
+          <option key={item._id} value={item._id}>
+            {item.name}
+          </option>
+        ))}
       </Select>
       <div className=" h-52 max-h-52  overflow-auto flex flex-col space-y-2 mt-3">
-        <ListItemDBtn
-          content={"Haircut + Beard"}
-          content2={""}
-          showBtn={true}
-          imageSrc={crossIcon}
-          className={"text-sm"}
-        />
-        <ListItemDBtn
-          content={"Haircut + Beard"}
-          content2={""}
-          showBtn={true}
-          imageSrc={crossIcon}
-          className={"text-sm"}
-        />
+        {selectedItems.map((item) => (
+          <ListItemDBtn
+            key={item.idx}
+            id={item.idx}
+            content={item.name}
+            content2={""}
+            showBtn={true}
+            imageSrc={crossIcon}
+            className={"text-sm"}
+            onItemDelete={onItemDelete}
+          />
+        ))}
       </div>
     </div>
   );
