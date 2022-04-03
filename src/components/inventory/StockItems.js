@@ -17,6 +17,7 @@ import ConfirmDeleteModal from "./ConfirmDeleteModal";
 const StockItems = () => {
   const dispatch = useDispatch();
   const inventoryItems = useSelector((state) => state.inventory.inventoryItems);
+  console.log(inventoryItems);
 
   const [showAddItemToBranchModal, setShowAddItemToBranchModal] =
     useState(false);

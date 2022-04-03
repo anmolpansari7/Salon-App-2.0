@@ -5,6 +5,7 @@ import { Input, Select, useToast } from "@chakra-ui/react";
 import PrimaryButton from "./../custom_ui/PrimaryButton";
 import { useDispatch, useSelector } from "react-redux";
 import { sendNewExpenseData } from "../../store/expense-actions";
+import { validateExpense } from "../../utils/expense.utils";
 
 const AddExpenseBox = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,11 @@ const AddExpenseBox = () => {
       amount: amount,
       remark: remark,
     };
+
+    if (!validateExpense(newExpense, toast)) {
+      return;
+    }
+
     dispatch(sendNewExpenseData(newExpense, toast));
     setAmount("");
     setRemark("");
@@ -77,6 +83,7 @@ const AddExpenseBox = () => {
             size="sm"
             width={"6rem"}
             value={amount}
+            min={0}
             onChange={(e) => setAmount(e.target.value)}
           />
         </div>

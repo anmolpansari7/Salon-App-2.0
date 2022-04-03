@@ -5,6 +5,7 @@ import RadioButton from "../custom_ui/RadioButton";
 import PrimaryButton from "../custom_ui/PrimaryButton";
 import { useDispatch } from "react-redux";
 import { sendNewPromoCodeData } from "../../store/promocode-actions";
+import { validatePromoCode } from "../../utils/promocode.utils";
 
 const CreatePromocode = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,10 @@ const CreatePromocode = () => {
       discountType: discountType,
       discountValue: discount,
     };
+
+    if (!validatePromoCode(newPromoCode, toast)) {
+      return;
+    }
 
     dispatch(sendNewPromoCodeData(newPromoCode, toast));
 
@@ -99,12 +104,18 @@ const CreatePromocode = () => {
         <Input
           type="text"
           width={"10rem"}
+          className={"out-of-range:border-red-500"}
           placeholder="%"
           size="sm"
           textAlign={"right"}
           value={discountPercentageValue}
           onChange={(e) => {
             setDiscountPercentageValue(e.target.value);
+          }}
+          min={0}
+          max={100}
+          onInvalid={() => {
+            console.log("invalid Input");
           }}
         />
       </div>
@@ -120,7 +131,7 @@ const CreatePromocode = () => {
           checked={discountType === "rupee"}
         />
         <Input
-          type="text"
+          type="number"
           width={"10rem"}
           placeholder="Rs."
           size="sm"
@@ -129,6 +140,8 @@ const CreatePromocode = () => {
           onChange={(e) => {
             setDiscountValue(e.target.value);
           }}
+          min={0}
+          keepWithinRange={true}
         />
       </div>
       <PrimaryButton content={"Create"} onClick={onCreatePromoCode} />

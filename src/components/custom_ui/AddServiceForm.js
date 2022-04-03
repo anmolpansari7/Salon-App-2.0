@@ -2,14 +2,21 @@ import React, { useState } from "react";
 import PencilImg from "./../../assets/pencilImg.svg";
 import { sendServiceData } from "../../store/services-actions";
 import { useDispatch } from "react-redux";
+import { useToast } from "@chakra-ui/react";
+import { validateService } from "../../utils/price-page-utils";
 
 const AddServiceForm = ({ category, gender }) => {
+  const toast = useToast();
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [cost, setCost] = useState(0);
 
   const onAddService = (e) => {
     e.preventDefault();
+
+    if (!validateService(name, cost, toast)) {
+      return;
+    }
 
     dispatch(sendServiceData(gender, category, name, cost));
     console.log(gender, category, name, cost);

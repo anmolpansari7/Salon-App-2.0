@@ -36,10 +36,6 @@ const PreviousPromoCodes = () => {
     const vf = new Date(promo.validFrom);
     const currDate = new Date();
 
-    // console.log("vt :", vt);
-    // console.log("vf :", vf);
-    // console.log("currDate: ", currDate);
-
     if (promo.status === "disabled") {
       status = "disabled";
     } else if (!promo.status && vf > currDate) {
@@ -127,6 +123,7 @@ const PreviousPromoCodes = () => {
           onChange={(e) => {
             setStatusFilter(e.target.value);
           }}
+          checked={statusFilter === "active"}
         />
 
         <RadioButton
@@ -137,6 +134,7 @@ const PreviousPromoCodes = () => {
           onChange={(e) => {
             setStatusFilter(e.target.value);
           }}
+          checked={statusFilter === "disabled"}
         />
         <RadioButton
           name="promocode-status"
@@ -146,6 +144,7 @@ const PreviousPromoCodes = () => {
           onChange={(e) => {
             setStatusFilter(e.target.value);
           }}
+          checked={statusFilter === "upcoming"}
         />
 
         <RadioButton
@@ -156,6 +155,7 @@ const PreviousPromoCodes = () => {
           onChange={(e) => {
             setStatusFilter(e.target.value);
           }}
+          checked={statusFilter === "expired"}
         />
         <button
           className=" border border-black px-3 rounded-md"

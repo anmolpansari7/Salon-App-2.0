@@ -42,7 +42,7 @@ const ExpensePage = () => {
         <AddExpenseCategory />
         <CurrentExpenseCategories />
       </div>
-      <div className=" w-1/4 flex flex-col space-y-3">
+      <div className=" w-1/4 maxh-h-[36rem] flex flex-col space-y-3">
         <ExpenseSummary />
         <ExpenseChart />
       </div>

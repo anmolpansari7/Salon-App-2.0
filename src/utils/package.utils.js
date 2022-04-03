@@ -23,7 +23,7 @@ export const packageIsValid = (newPackage, toast) => {
 
   if (newPackage.services.length === 0) {
     toast({
-      title: "Missing Information",
+      title: "No service selected!",
       description: "You have not selected any service for this package.",
       status: "error",
       duration: 3000,
@@ -34,8 +34,8 @@ export const packageIsValid = (newPackage, toast) => {
 
   if (newPackage.packageAmount <= 0) {
     toast({
-      title: "Missing Information",
-      description: "Please Enter a valid Amount.",
+      title: "Invalid Package Amount!",
+      description: "Please Enter a valid amount for package.",
       status: "error",
       duration: 3000,
       isClosable: true,
@@ -45,8 +45,8 @@ export const packageIsValid = (newPackage, toast) => {
 
   if (newPackage.maxUsage <= 0) {
     toast({
-      title: "Missing Information",
-      description: "Please enter a valid Amount.",
+      title: "Invalid MaxUsage",
+      description: "Please enter max usage for package.",
       status: "error",
       duration: 3000,
       isClosable: true,

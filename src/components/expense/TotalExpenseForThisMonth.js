@@ -18,7 +18,7 @@ const ExpenseSummary = () => {
   }, [summaries]);
 
   return (
-    <Card className="h-1/2 flex flex-col justify-between">
+    <Card className=" h-1/2 overflow-auto flex flex-col justify-between">
       <CardHeading className=" text-lg">Expense Summary</CardHeading>
       <div className=" flex flex-col flex-1 space-y-2 max-h-[12rem] overflow-auto">
         {summaries.map((summary) => (

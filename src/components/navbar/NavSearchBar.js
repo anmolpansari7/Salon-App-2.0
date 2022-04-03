@@ -31,7 +31,7 @@ const NavSearchBar = () => {
         />
         <img src={searchIcon} className="h-4 self-center" alt="Search Icon" />
       </div>
-      <div className="absolute top-14 left-10 w-56 max-h-60 overflow-auto">
+      <div className="absolute top-14 left-10 w-56 max-h-60 overflow-auto z-50">
         {suggestions.map((customer) => (
           <CustomeLink
             key={customer._id}

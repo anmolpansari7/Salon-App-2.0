@@ -7,6 +7,7 @@ import {
   updatePointsCalculatorData,
   sendPointsCalculatorData,
 } from "../../store/points-calculator-actions";
+import { validatePointsCalculator } from "../../utils/pointsCalculator.utils";
 
 const PointsCalculatorModal = ({ onHideModal }) => {
   const dispatch = useDispatch();
@@ -23,6 +24,17 @@ const PointsCalculatorModal = ({ onHideModal }) => {
   const [givenDiscount, setGivenDiscount] = useState(gD);
 
   const onChangePointsCalculator = () => {
+    const calc = {
+      forRupee,
+      givenPoints,
+      forPoints,
+      givenDiscount,
+      toast,
+    };
+    if (!validatePointsCalculator(calc, toast)) {
+      return;
+    }
+
     dispatch(
       updatePointsCalculatorData(
         forRupee,
@@ -42,6 +54,7 @@ const PointsCalculatorModal = ({ onHideModal }) => {
       </h3>
       <div className="flex justify-between mb-5 border-b border-black border-dashed pb-2">
         <Input
+          type={"number"}
           variant="filled"
           width={"4rem"}
           size={"sm"}
@@ -52,6 +65,7 @@ const PointsCalculatorModal = ({ onHideModal }) => {
         />
         <p className=" self-end">Rs. will give customer</p>
         <Input
+          type={"number"}
           variant="filled"
           width={"4rem"}
           size={"sm"}
@@ -64,6 +78,7 @@ const PointsCalculatorModal = ({ onHideModal }) => {
       </div>
       <div className="flex justify-between mb-5 border-b border-black border-dashed pb-2 space-x-4">
         <Input
+          type="number"
           variant="filled"
           width={"4rem"}
           size={"sm"}
@@ -74,6 +89,7 @@ const PointsCalculatorModal = ({ onHideModal }) => {
         />
         <p className=" self-end">Pts. will give disount of</p>
         <Input
+          type="number"
           variant="filled"
           width={"4rem"}
           size={"sm"}

@@ -32,6 +32,7 @@ const CustomerFilters = ({
             onChange={(e) => {
               setTypeFilter(e.target.value);
             }}
+            checked={typeFilter === "visited"}
           />
           <RadioButton
             name="filter1"
@@ -41,6 +42,7 @@ const CustomerFilters = ({
             onChange={(e) => {
               setTypeFilter(e.target.value);
             }}
+            checked={typeFilter === "non-visited"}
           />
         </div>
         <div className=" self-center flex w-8/12 justify-between">

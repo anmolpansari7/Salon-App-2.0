@@ -49,8 +49,8 @@ const ExpenseChart = () => {
   }));
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <PieChart width={500} height={500}>
+    <ResponsiveContainer width="100%" height="50%">
+      <PieChart width={200} height={200}>
         <Pie
           data={data}
           cx="50%"
