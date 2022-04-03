@@ -9,6 +9,9 @@ module.exports = {
       body: ["Roboto", "sans-serif"],
     },
     extend: {
+      backgroundImage: {
+        "auth-bg": "url('/src/assets/auth-bg.jpg')",
+      },
       colors: {
         "nav-bar-bg": "#F2F2F2",
         "app-bg": "#ECECEC",

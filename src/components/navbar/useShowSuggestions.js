@@ -3,8 +3,6 @@ import { useDispatch } from "react-redux";
 import { customerListActions } from "../../store/customer-slice";
 import axios from "axios";
 
-// require("dotenv").config();
-
 const useShowSuggestions = (query) => {
   const dispatch = useDispatch();
 

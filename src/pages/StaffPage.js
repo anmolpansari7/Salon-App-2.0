@@ -12,6 +12,7 @@ import moment from "moment";
 const StaffPage = () => {
   const dispatch = useDispatch();
   const staff = useSelector((state) => state.staff.staff);
+  const isAuthOwner = useSelector((state) => state.authentication.isAuthOwner);
 
   const [genderFilter, setGenderFilter] = useState("");
   const [nameFilter, setNameFilter] = useState("");
@@ -145,11 +146,13 @@ const StaffPage = () => {
       <div className="ml-3 w-[15rem] flex flex-col max-h-[40.5rem] justify-between ">
         <SummaryBox heading={"Summary"} data={summary} className={" pb-10"} />
       </div>
-      <FloatingButton
-        content={"Add Staff"}
-        className={""}
-        onClick={onShowAddStaffModal}
-      />
+      {isAuthOwner && (
+        <FloatingButton
+          content={"Add Staff"}
+          className={""}
+          onClick={onShowAddStaffModal}
+        />
+      )}
       {showAddStaffModal && <AddStaffModal onHideModal={onHideStaffModal} />}
     </div>
   );

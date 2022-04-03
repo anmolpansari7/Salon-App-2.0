@@ -5,19 +5,20 @@ import UsePointsInput from "./UsePointsInput";
 import { useSelector } from "react-redux";
 
 const TotalingDetails = ({
-  state,
-  ACTIONS,
-  dispatch,
   selectedServices,
   selectedInventoryItems,
+  cartValue,
+  promo,
+  setPromo,
+  discountFromPromoCode,
+  setDiscountFromPromoCode,
+  discountFromPoints,
+  setDiscountFromPoints,
 }) => {
   const staff = useSelector((state) => state.staff.staff);
   const activePromos = useSelector(
     (state) => state.promocodes.allActivePromoCodes
   );
-
-  const [promo, setPromo] = useState("");
-  const [isValid, setIsValid] = useState(false);
 
   const onPromoValChange = (e) => {
     const currPromo = e.target.value;
@@ -40,37 +41,30 @@ const TotalingDetails = ({
 
     if (validPromo && validPromo.discountType === "rupee") {
       discountAmount = validPromo.discountValue;
+      setDiscountFromPromoCode(discountAmount);
     } else if (validPromo && validPromo.discountType === "percentage") {
       discountAmount = Math.floor((50 / 100) * totalAmount);
-    }
-
-    if (validPromo) {
-      setIsValid(true);
-      dispatch({
-        type: ACTIONS.VALID_PROMOCODE,
-        payload: {
-          totalAmount: totalAmount,
-          discountFromPromoCode: discountAmount,
-        },
-      });
+      setDiscountFromPromoCode(discountAmount);
     } else {
-      setIsValid(false);
-      dispatch({
-        type: ACTIONS.INVALID_PROMOCODE,
-        payload: { totalAmount: totalAmount },
-      });
+      setDiscountFromPromoCode(0);
     }
   };
 
   return (
     <div className=" flex flex-col space-y-2">
+      <ListItemDBtn
+        content={"Cart Value"}
+        content2={cartValue + " Rs."}
+        showBtn={false}
+        className={" font-medium pt-2"}
+      />
       <div className=" flex justify-between border-b border-dashed border-black">
         <p className=" self-end mr-3">Promo Code</p>
-        <p className=" self-end"> - {state.discountFromPromoCode} Rs.</p>
+        <p className=" self-end"> - {discountFromPromoCode} Rs.</p>
         <Input
           type="text"
           size="sm"
-          width={"10rem"}
+          width={"8rem"}
           textAlign="right"
           border={"gray"}
           placeholder={"PROMO CODE"}
@@ -79,15 +73,14 @@ const TotalingDetails = ({
         />
       </div>
       <UsePointsInput
-        state={state}
-        ACTIONS={ACTIONS}
-        dispatch={dispatch}
-        selectedServices={selectedServices}
-        selectedInventoryItems={selectedInventoryItems}
+        discountFromPoints={discountFromPoints}
+        setDiscountFromPoints={setDiscountFromPoints}
       />
       <ListItemDBtn
-        content={"Total Amount"}
-        content2={state.totalAmount + " Rs."}
+        content={"Amount to be Paid"}
+        content2={
+          cartValue - discountFromPromoCode - discountFromPoints + " Rs."
+        }
         showBtn={false}
         className={" font-medium pt-2"}
       />

@@ -7,10 +7,11 @@ import { v4 as uuidv4 } from "uuid";
 const SelectService = ({
   listItems,
   placeholder,
-  ACTIONS,
-  dispatch,
   selectedItems,
   setSelectedItems,
+  setCartValue,
+  setPromo,
+  setDiscountFromPromoCode,
 }) => {
   const onItemSelection = (e) => {
     const selectedItemId = e.target.value;
@@ -20,21 +21,18 @@ const SelectService = ({
       idx: uuidv4(),
     };
     setSelectedItems([...selectedItems, selectedItem]);
-    dispatch({
-      type: ACTIONS.ITEM_ADDED,
-      payload: { amount: selectedItem.cost },
-    });
+    setCartValue((state) => state + selectedItem.cost);
+    setPromo("");
+    setDiscountFromPromoCode("");
   };
 
   const onItemDelete = (idx) => {
     let currItem = selectedItems.find((item) => item.idx === idx);
     let currList = selectedItems.filter((item) => item.idx !== idx);
     setSelectedItems(currList);
-
-    dispatch({
-      type: ACTIONS.ITEM_REMOVED,
-      payload: { amount: currItem.cost },
-    });
+    setCartValue((state) => state - currItem.cost);
+    setPromo("");
+    setDiscountFromPromoCode("");
   };
 
   return (

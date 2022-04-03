@@ -9,12 +9,9 @@ import promoCodeSlice from "./promocode-slice";
 import inventoryItemSlice from "./inventory-item-slice";
 import pointsCalculatorSlice from "./points-calculator-slice";
 import staffSlice from "./staff-slice";
+import authSlice from "./auth-slice";
 
-// import dealListSlice from "./deal-list-slice";
-// import pointsCalculatorSlice from "./points-calculator-slice";
-// import priceListSlice from "./price-list-slice";
 // import reportSlice from "./report-slice";
-// import authSlice from "./auth-slice";
 
 const store = configureStore({
   reducer: {
@@ -28,12 +25,9 @@ const store = configureStore({
     inventory: inventoryItemSlice.reducer,
     pointsCalculator: pointsCalculatorSlice.reducer,
     staff: staffSlice.reducer,
+    authentication: authSlice.reducer,
 
-    // priceList: priceListSlice.reducer,
-    // dealList: dealListSlice.reducer,
-    // pointsCalculator: pointsCalculatorSlice.reducer,
     // report: reportSlice.reducer,
-    // authentication: authSlice.reducer,
   },
 });
 

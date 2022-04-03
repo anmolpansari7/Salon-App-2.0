@@ -116,7 +116,7 @@ const PackMessagePreviewBox = ({ selectedCustomer, setSelectedCustomer }) => {
         </div>
         <PrimaryButton
           type={"button"}
-          content={"Send"}
+          content={"Assign"}
           onClick={onSendPackage}
         />
       </div>

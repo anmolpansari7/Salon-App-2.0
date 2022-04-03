@@ -15,6 +15,7 @@ import {
   TagRightIcon,
   TagCloseButton,
 } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 
 const InventoryAccordionItem = ({
   item,
@@ -26,6 +27,8 @@ const InventoryAccordionItem = ({
   setShowUpdateItemModal,
   setShowConfirmDeleteItemModal,
 }) => {
+  const isAuthOwner = useSelector((state) => state.authentication.isAuthOwner);
+
   return (
     <AccordionItem>
       <h2>
@@ -46,7 +49,7 @@ const InventoryAccordionItem = ({
         </AccordionButton>
       </h2>
       <AccordionPanel pb={4}>
-        <form action="" className="mb-3">
+        <div className="flex flex-col space-y-3 first:mt-2">
           {item.distributions.map((branch) => {
             if (branch.quantity !== undefined) {
               return (
@@ -59,56 +62,58 @@ const InventoryAccordionItem = ({
               );
             }
           })}
-        </form>
-        <div className="flex space-x-3">
-          <Button
-            colorScheme="black"
-            variant={"outline"}
-            color={"black"}
-            size={"xs"}
-            alignSelf="right"
-            fontWeight={"normal"}
-            onClick={() => {
-              setShowAddItemToBranchModal(true);
-              setSelectedItemId(item._id);
-              setSelectedItemName(item.name);
-            }}
-          >
-            add or remove
-          </Button>
-          <Button
-            colorScheme="black"
-            variant={"outline"}
-            color={"black"}
-            size={"xs"}
-            alignSelf="right"
-            fontWeight={"normal"}
-            onClick={() => {
-              setSelectedItemId(item._id);
-              setSelectedItemGender(item.gender);
-              setSelectedItemCost(item.cost);
-              setSelectedItemName(item.name);
-              setShowUpdateItemModal(true);
-            }}
-          >
-            Edit Item
-          </Button>
-          <Button
-            colorScheme="black"
-            variant={"outline"}
-            color={"black"}
-            size={"xs"}
-            alignSelf="right"
-            fontWeight={"normal"}
-            onClick={() => {
-              setSelectedItemId(item._id);
-              setSelectedItemName(item.name);
-              setShowConfirmDeleteItemModal(true);
-            }}
-          >
-            Delete Item
-          </Button>
         </div>
+        {isAuthOwner && (
+          <div className="flex space-x-3 mt-3">
+            <Button
+              colorScheme="black"
+              variant={"outline"}
+              color={"black"}
+              size={"xs"}
+              alignSelf="right"
+              fontWeight={"normal"}
+              onClick={() => {
+                setShowAddItemToBranchModal(true);
+                setSelectedItemId(item._id);
+                setSelectedItemName(item.name);
+              }}
+            >
+              add or remove
+            </Button>
+            <Button
+              colorScheme="black"
+              variant={"outline"}
+              color={"black"}
+              size={"xs"}
+              alignSelf="right"
+              fontWeight={"normal"}
+              onClick={() => {
+                setSelectedItemId(item._id);
+                setSelectedItemGender(item.gender);
+                setSelectedItemCost(item.cost);
+                setSelectedItemName(item.name);
+                setShowUpdateItemModal(true);
+              }}
+            >
+              Edit Item
+            </Button>
+            <Button
+              colorScheme="black"
+              variant={"outline"}
+              color={"black"}
+              size={"xs"}
+              alignSelf="right"
+              fontWeight={"normal"}
+              onClick={() => {
+                setSelectedItemId(item._id);
+                setSelectedItemName(item.name);
+                setShowConfirmDeleteItemModal(true);
+              }}
+            >
+              Delete Item
+            </Button>
+          </div>
+        )}
       </AccordionPanel>
     </AccordionItem>
   );

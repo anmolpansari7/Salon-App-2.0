@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import NavBar from "./components/navbar/NavBar";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import AuthPage from "./pages/AuthPage";
 import PricePage from "./pages/PricePage";
@@ -18,10 +18,17 @@ import ChangePasswordModal from "./components/owner_and_branch/ChangePasswordMod
 import BranchEditModal from "./components/owner_and_branch/BranchEditModal";
 import CurrentCustomerPage from "./pages/CurrentCustomerPage";
 import PointsCalculatorModal from "./components/pointscalculator/PointsCalculatorModal";
+import ProtectedRoute from "./components/navbar/ProtectedRoute";
+
 import { getPointsCalculatorData } from "./store/points-calculator-actions";
 
 function App() {
   const dispatch = useDispatch();
+  const isAuthBranch = useSelector(
+    (state) => state.authentication.isAuthBranch
+  );
+  const isAuthOwner = useSelector((state) => state.authentication.isAuthOwner);
+
   const [showAddCustomerModal, setShowAddCustomerModal] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [showBranchEditModal, setShowBranchEditModal] = useState(false);
@@ -53,30 +60,101 @@ function App() {
 
   useEffect(() => {
     dispatch(getPointsCalculatorData());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="w-full h-screen bg-app-bg flex flex-col">
-      <NavBar
-        onShowAddCustomerModal={onShowAddCustomerModal}
-        onShowChangePasswordModal={onShowChangePasswordModal}
-        onShowBranchEditModal={onShowBranchEditModal}
-        onShowPointCalculatorModal={onShowPointCalculatorModal}
-      />
+      {(isAuthBranch || isAuthOwner) && (
+        <NavBar
+          onShowAddCustomerModal={onShowAddCustomerModal}
+          onShowChangePasswordModal={onShowChangePasswordModal}
+          onShowBranchEditModal={onShowBranchEditModal}
+          onShowPointCalculatorModal={onShowPointCalculatorModal}
+        />
+      )}
       <Routes>
         <Route path="/" element={<AuthPage />} />
-        <Route path="price" element={<PricePage />} />
-        <Route path="customers" element={<CustomersPage />} />
-        <Route path="report" element={<ReportPage />} />
-        <Route path="staff" element={<StaffPage />} />
-        <Route path="package" element={<PackagePage />} />
-        <Route path="promotion" element={<PromotionPage />} />
-        <Route path="inventory" element={<InventoryPage />} />
-        <Route path="message" element={<MessagePage />} />
-        <Route path="expense" element={<ExpensePage />} />
-        <Route path="customer/:id" element={<CurrentCustomerPage />} />
+        <Route
+          path="price"
+          element={
+            <ProtectedRoute>
+              <PricePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="customers"
+          element={
+            <ProtectedRoute>
+              <CustomersPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="report"
+          element={
+            <ProtectedRoute>
+              <ReportPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="staff"
+          element={
+            <ProtectedRoute>
+              <StaffPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="package"
+          element={
+            <ProtectedRoute>
+              <PackagePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="promotion"
+          element={
+            <ProtectedRoute>
+              <PromotionPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="inventory"
+          element={
+            <ProtectedRoute>
+              <InventoryPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="message"
+          element={
+            <ProtectedRoute>
+              <MessagePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="expense"
+          element={
+            <ProtectedRoute>
+              <ExpensePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="customer/:id"
+          element={
+            <ProtectedRoute>
+              <CurrentCustomerPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
-      {/* <main className="px-10 flex-1 bg-blue-300"></main> */}
       {showAddCustomerModal && <AddCustomerModal onHideModal={onHideModal} />}
       {showChangePasswordModal && (
         <ChangePasswordModal onHideModal={onHideModal} />

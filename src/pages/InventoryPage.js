@@ -4,8 +4,11 @@ import StockItems from "../components/inventory/StockItems";
 import PreviouslySoldItems from "../components/inventory/PreviouslySoldItems";
 import FloatingButton from "./../components/custom_ui/FloatingButton";
 import AddInventoryItemModal from "../components/inventory/AddInventoryItemModal";
+import { useSelector } from "react-redux";
 
 const InventoryPage = () => {
+  const isAuthOwner = useSelector((state) => state.authentication.isAuthOwner);
+
   const [showAddInventoryItemModal, setShowAddInventoryItemModal] =
     useState(false);
   const onShowAddInventoryItemModal = () => {
@@ -19,11 +22,13 @@ const InventoryPage = () => {
     <PageContainer>
       <StockItems />
       <PreviouslySoldItems />
-      <FloatingButton
-        content={"New Item"}
-        className={" right-12 "}
-        onClick={onShowAddInventoryItemModal}
-      />
+      {isAuthOwner && (
+        <FloatingButton
+          content={"New Item"}
+          className={" right-12 "}
+          onClick={onShowAddInventoryItemModal}
+        />
+      )}
       {showAddInventoryItemModal && (
         <AddInventoryItemModal onHideModal={onHideInventoryItemModal} />
       )}
