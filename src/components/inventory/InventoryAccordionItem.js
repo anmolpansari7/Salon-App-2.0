@@ -8,13 +8,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-import {
-  Tag,
-  TagLabel,
-  TagLeftIcon,
-  TagRightIcon,
-  TagCloseButton,
-} from "@chakra-ui/react";
+import { Tag } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 
 const InventoryAccordionItem = ({
@@ -51,9 +45,15 @@ const InventoryAccordionItem = ({
       <AccordionPanel pb={4}>
         <div className="flex flex-col space-y-3 first:mt-2">
           {item.distributions.map((branch) => {
-            if (branch.quantity !== undefined) {
+            if (
+              branch.quantity !== undefined &&
+              branch.branchStatus === "active"
+            ) {
               return (
-                <div className=" flex justify-between border-b border-gray-500">
+                <div
+                  key={branch.name}
+                  className=" flex justify-between border-b border-gray-500"
+                >
                   <p className="self-end">{branch.branch}</p>
                   <div className="flex">
                     <p className="self-end">Quantity : {branch.quantity}</p>
@@ -66,6 +66,7 @@ const InventoryAccordionItem = ({
         {isAuthOwner && (
           <div className="flex space-x-3 mt-3">
             <Button
+              key={"B1"}
               colorScheme="black"
               variant={"outline"}
               color={"black"}
@@ -81,6 +82,7 @@ const InventoryAccordionItem = ({
               add or remove
             </Button>
             <Button
+              key={"B2"}
               colorScheme="black"
               variant={"outline"}
               color={"black"}
@@ -98,6 +100,7 @@ const InventoryAccordionItem = ({
               Edit Item
             </Button>
             <Button
+              key={"B3"}
               colorScheme="black"
               variant={"outline"}
               color={"black"}

@@ -54,14 +54,36 @@ export const sendNewBranchData = (newBranch, onHideModal, toast) => {
   };
 };
 
-export const deleteBranch = (id) => {
+export const deleteBranch = (id, branches, toast) => {
+  let branch = branches.find((branch) => branch._id === id);
+  let branchId = prompt(
+    `Please enter "${id}" in the field to delete ${branch.name} Branch Permanently.`,
+    ""
+  );
+  if (branchId !== id) {
+    toast({
+      title: "Field mismatched!",
+      description: "Delete Request Denied !",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+    return;
+  }
+
   return (dispatch) => {
     axios
       .patch(`${process.env.REACT_APP_BASE_URL}/branch/delete/${id}`, {
         status: "deleted",
       })
       .then((res) => {
-        console.log(res.data);
+        toast({
+          title: "Branch Deleted!",
+          description: "Request for branch deletion finished successfully.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
         dispatch(getBranches());
       })
       .catch((err) => {

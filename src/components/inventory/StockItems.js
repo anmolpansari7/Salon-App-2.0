@@ -57,6 +57,7 @@ const StockItems = () => {
           (item) =>
             item.status === "active" && (
               <InventoryAccordionItem
+                key={item._id}
                 item={item}
                 setSelectedItemId={setSelectedItemId}
                 setSelectedItemName={setSelectedItemName}

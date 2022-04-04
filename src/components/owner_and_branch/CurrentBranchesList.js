@@ -3,9 +3,11 @@ import ListItemDBtn from "./../custom_ui/ListItemDBtn";
 import deleteBtn from "./../../assets/delete_btn.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteBranch, getBranches } from "../../store/branch-actions";
+import { useToast } from "@chakra-ui/react";
 
 const CurrentBranchesList = () => {
   const dispatch = useDispatch();
+  const toast = useToast();
   const branches = useSelector((state) => state.branch.branchList);
 
   useEffect(() => {
@@ -23,7 +25,7 @@ const CurrentBranchesList = () => {
               showBtn={true}
               buttonImgClass={"h-4"}
               onItemDelete={() => {
-                dispatch(deleteBranch(branch._id));
+                dispatch(deleteBranch(branch._id, branches, toast));
               }}
             />
           )

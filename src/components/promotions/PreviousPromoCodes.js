@@ -89,7 +89,7 @@ const PreviousPromoCodes = () => {
         accessor: "col3",
       },
       {
-        Header: "Valid Till",
+        Header: "Valid Before",
         accessor: "col4",
       },
     ],
