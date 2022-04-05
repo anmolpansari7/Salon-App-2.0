@@ -2,7 +2,6 @@ import React, { useState, useReducer, useEffect } from "react";
 import Modal from "../custom_ui/Modal";
 import CardHeading from "../custom_ui/CardHeading";
 import SelectService from "./SelectService";
-import ActivePackDetails from "./ActivePackDetails";
 import TotalingDetails from "./TotalingDetails";
 import PrimaryButton from "../custom_ui/PrimaryButton";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,11 +39,11 @@ const BillingModal = ({ onHideBillingModal }) => {
 
   return (
     <Modal onHideModal={onHideBillingModal}>
+      <CardHeading className=" font-medium text-lg text-center">
+        Billing Section
+      </CardHeading>
       <form className=" flex space-x-5">
-        <div className=" h-[36rem] w-[18rem] flex flex-col justify-between">
-          <CardHeading className=" font-medium text-lg">
-            Billing Section
-          </CardHeading>
+        <div className=" h-[26rem] w-[18rem] flex flex-col justify-between">
           <SelectService
             listItems={services}
             placeholder={"Select Services"}
@@ -64,8 +63,7 @@ const BillingModal = ({ onHideBillingModal }) => {
             setDiscountFromPromoCode={setDiscountFromPromoCode}
           />
         </div>
-        <div className=" h-[36rem] w-[20rem] flex flex-col space-y-5">
-          <ActivePackDetails />
+        <div className="h-[26rem] w-[20rem] flex flex-col justify-between">
           <TotalingDetails
             selectedServices={selectedServices}
             selectedInventoryItems={selectedInventoryItems}
@@ -77,7 +75,11 @@ const BillingModal = ({ onHideBillingModal }) => {
             discountFromPoints={discountFromPoints}
             setDiscountFromPoints={setDiscountFromPoints}
           />
-          <PrimaryButton type="button" content={"Proceed"} />
+          <PrimaryButton
+            type="button"
+            content={"Proceed"}
+            className={" mt-7"}
+          />
         </div>
       </form>
     </Modal>

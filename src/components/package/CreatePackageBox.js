@@ -68,6 +68,7 @@ const CreatePackageBox = ({ clearFilter }) => {
     selectedItem.cost === NaN
       ? setTotalAmount(totalAmount)
       : setTotalAmount((state) => state + selectedItem.cost);
+    e.target.value = "";
   };
 
   const onItemDelete = (idx) => {

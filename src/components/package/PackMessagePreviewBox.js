@@ -11,6 +11,14 @@ import {
   assignPackage,
   getAllActivePackages,
 } from "../../store/package-actions";
+import PackageBilling from "./PackageBilling";
+
+const initialSelectedPackage = {
+  maxUsage: 0,
+  packageAmount: 0,
+  totalAmount: 0,
+  validFor: "",
+};
 
 const PackMessagePreviewBox = ({ selectedCustomer, setSelectedCustomer }) => {
   const toast = useToast();
@@ -18,6 +26,9 @@ const PackMessagePreviewBox = ({ selectedCustomer, setSelectedCustomer }) => {
 
   const [query, setQuery] = useState("");
   const [selectedPackageId, setSelectedPackageId] = useState("");
+  const [selectedPackage, setSelectedPackage] = useState(
+    initialSelectedPackage
+  );
   const suggestedCustomers = useSelector((state) => state.packages.suggestions);
   const allActivePackages = useSelector(
     (state) => state.packages.allActivePackages
@@ -46,6 +57,19 @@ const PackMessagePreviewBox = ({ selectedCustomer, setSelectedCustomer }) => {
     setSelectedPackageId("");
   };
 
+  const onPackageSelection = (e) => {
+    const currPackId = e.target.value;
+    const selectedPack = allActivePackages.find(
+      (pack) => pack._id === currPackId
+    );
+    if (selectedPack === undefined) {
+      setSelectedPackage(initialSelectedPackage);
+    } else {
+      setSelectedPackage(selectedPack);
+    }
+    setSelectedPackageId(currPackId);
+  };
+
   useEffect(() => {
     dispatch(getAllActivePackages());
   }, []);
@@ -53,13 +77,11 @@ const PackMessagePreviewBox = ({ selectedCustomer, setSelectedCustomer }) => {
   return (
     <Card className=" w-3/12 flex flex-col">
       <div>
-        <CardHeading className=" mb-4">Send Package</CardHeading>
+        <CardHeading className=" mb-4">Assign Package</CardHeading>
         <Select
           placeholder="Select Package"
           size="sm"
-          onChange={(e) => {
-            setSelectedPackageId(e.target.value);
-          }}
+          onChange={onPackageSelection}
         >
           {allActivePackages.map((pack) => (
             <option key={pack._id} value={pack._id}>
@@ -90,8 +112,8 @@ const PackMessagePreviewBox = ({ selectedCustomer, setSelectedCustomer }) => {
             onCustomerSelect={onCustomerSelect}
           />
         </div>
-        <p className=" mt-3 text-sm text-gray-400">Selected Customers - </p>
-        <div className=" flex-wrap  border border-gray-400 rounded-md p-3 overflow-auto first:mt-0 flex-1">
+        <p className=" mt-3 text-sm text-gray-400">Selected Customer - </p>
+        <div className=" flex-wrap  border border-gray-400 rounded-md p-3 overflow-auto first:mt-0 h-20">
           {selectedCustomer.map((customer) => (
             <Tag
               size={"sm"}
@@ -114,6 +136,7 @@ const PackMessagePreviewBox = ({ selectedCustomer, setSelectedCustomer }) => {
             </Tag>
           ))}
         </div>
+        <PackageBilling selectedPackage={selectedPackage} />
         <PrimaryButton
           type={"button"}
           content={"Assign"}

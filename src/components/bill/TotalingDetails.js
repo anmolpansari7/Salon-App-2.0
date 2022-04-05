@@ -51,7 +51,7 @@ const TotalingDetails = ({
   };
 
   return (
-    <div className=" flex flex-col space-y-2">
+    <div className=" flex flex-col justify-between flex-1">
       <ListItemDBtn
         content={"Cart Value"}
         content2={cartValue + " Rs."}

@@ -15,6 +15,7 @@ const SelectService = ({
 }) => {
   const onItemSelection = (e) => {
     const selectedItemId = e.target.value;
+    if (selectedItemId === "") return;
     let selectedItem = listItems.find((item) => item._id === selectedItemId);
     selectedItem = {
       ...selectedItem,
@@ -24,6 +25,7 @@ const SelectService = ({
     setCartValue((state) => state + selectedItem.cost);
     setPromo("");
     setDiscountFromPromoCode("");
+    e.target.value = "";
   };
 
   const onItemDelete = (idx) => {
@@ -50,19 +52,25 @@ const SelectService = ({
           </option>
         ))}
       </Select>
-      <div className=" h-52 max-h-52  overflow-auto flex flex-col space-y-2 mt-3">
-        {selectedItems.map((item) => (
-          <ListItemDBtn
-            key={item.idx}
-            id={item.idx}
-            content={item.name}
-            content2={""}
-            showBtn={true}
-            imageSrc={crossIcon}
-            className={"text-sm"}
-            onItemDelete={onItemDelete}
-          />
-        ))}
+      <div className=" h-40 overflow-auto flex flex-col space-y-2 mt-3 bg-slate-200 rounded-md p-5">
+        {selectedItems.length === 0 ? (
+          <p className=" text-center text-sm m-auto text-gray-400">
+            No Item Selected.
+          </p>
+        ) : (
+          selectedItems.map((item) => (
+            <ListItemDBtn
+              key={item.idx}
+              id={item.idx}
+              content={item.name}
+              content2={""}
+              showBtn={true}
+              imageSrc={crossIcon}
+              className={"text-sm"}
+              onItemDelete={onItemDelete}
+            />
+          ))
+        )}
       </div>
     </div>
   );

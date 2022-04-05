@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "../container/Card";
 import CardHeading from "./../custom_ui/CardHeading";
 import ListItemDBtn from "../custom_ui/ListItemDBtn";
@@ -11,21 +11,32 @@ import {
   AccordionPanel,
   AccordionIcon,
   Box,
+  Button,
 } from "@chakra-ui/react";
+import UsePackageModal from "../bill/UsePackageModal";
 
 const CurrentCustomerActivePackage = () => {
   const currCustomer = useSelector(
     (state) => state.currentCustomer.currentCustomer
   );
 
+  const [showUsePackModal, setShowUsePackModal] = useState(false);
+  const [selectedPack, setSelectedPack] = useState({});
+
+  const onShowUsePackModal = (pack) => {
+    setShowUsePackModal(true);
+    setSelectedPack(pack);
+  };
+
+  const onHideUsePackModal = () => {
+    setShowUsePackModal(false);
+  };
+
   return (
     <Card className="flex-1">
       <CardHeading className=" font-medium text-base flex-1">
         Active Packages
       </CardHeading>
-      {/* <div className=" border border-gray-400 rounded-md h-24 mt-3 px-2 py-1">
-        <span className=" text-gray-400 text-sm">Display Items</span>
-      </div> */}
       <Accordion allowMultiple>
         {currCustomer.package !== undefined &&
           currCustomer.package.map((pack) => {
@@ -65,6 +76,16 @@ const CurrentCustomerActivePackage = () => {
                       showBtn={false}
                       className=" text-sm"
                     />
+                    <Button
+                      size={"sm"}
+                      fontWeight={"normal"}
+                      onClick={() => {
+                        onShowUsePackModal(pack);
+                      }}
+                    >
+                      {" "}
+                      Use Pack
+                    </Button>
                   </AccordionPanel>
                 </AccordionItem>
               );
@@ -72,6 +93,12 @@ const CurrentCustomerActivePackage = () => {
             return [];
           })}
       </Accordion>
+      {showUsePackModal && (
+        <UsePackageModal
+          onHideModal={onHideUsePackModal}
+          selectedPack={selectedPack}
+        />
+      )}
     </Card>
   );
 };
