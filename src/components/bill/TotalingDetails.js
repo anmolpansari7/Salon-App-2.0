@@ -14,6 +14,16 @@ const TotalingDetails = ({
   setDiscountFromPromoCode,
   discountFromPoints,
   setDiscountFromPoints,
+  pointsUsed,
+  setPointsUsed,
+  paidAmount,
+  setPaidAmount,
+  paymentMode,
+  setPaymentMode,
+  serviceGivenBy,
+  setServiceGivenBy,
+  remark,
+  setRemark,
 }) => {
   const staff = useSelector((state) => state.staff.staff);
   const activePromos = useSelector(
@@ -75,6 +85,8 @@ const TotalingDetails = ({
       <UsePointsInput
         discountFromPoints={discountFromPoints}
         setDiscountFromPoints={setDiscountFromPoints}
+        pointsUsed={pointsUsed}
+        setPointsUsed={setPointsUsed}
       />
       <ListItemDBtn
         content={"Amount to be Paid"}
@@ -93,6 +105,10 @@ const TotalingDetails = ({
           textAlign="right"
           border={"gray"}
           placeholder={"Paid Amount"}
+          value={paidAmount}
+          onChange={(e) => {
+            setPaidAmount(e.target.value);
+          }}
         />
       </div>
       <div className=" flex justify-between border-b border-dashed border-black">
@@ -103,6 +119,10 @@ const TotalingDetails = ({
           size={"sm"}
           alignSelf={"center"}
           width="11rem"
+          value={paymentMode}
+          onChange={(e) => {
+            setPaymentMode(e.target.value);
+          }}
         >
           <option value="cash">Cash</option>
           <option value="upi">UPI</option>
@@ -118,6 +138,10 @@ const TotalingDetails = ({
           textAlign="right"
           border={"gray"}
           placeholder={"Add remark"}
+          value={remark}
+          onChange={(e) => {
+            setRemark(e.target.value);
+          }}
         />
       </div>
       <div className=" flex justify-between border-b border-dashed border-black">
@@ -128,6 +152,10 @@ const TotalingDetails = ({
           size={"sm"}
           alignSelf={"center"}
           width="11rem"
+          value={serviceGivenBy}
+          onChange={(e) => {
+            setServiceGivenBy(e.target.value);
+          }}
         >
           {staff.map((member) => (
             <option key={member._id} value={member._id}>

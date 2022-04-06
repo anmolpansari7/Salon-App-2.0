@@ -42,7 +42,7 @@ const CurrentCustomerActivePackage = () => {
           currCustomer.package.map((pack) => {
             if (pack.packageName !== undefined) {
               return (
-                <AccordionItem size={"sm"}>
+                <AccordionItem size={"sm"} key={pack.packageName}>
                   <h2>
                     <AccordionButton>
                       <Box flex="1" textAlign="left">

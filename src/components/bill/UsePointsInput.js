@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { Checkbox, Input } from "@chakra-ui/react";
+import { Input } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 
-const UsePointsInput = ({ discountFromPoints, setDiscountFromPoints }) => {
+const UsePointsInput = ({
+  discountFromPoints,
+  setDiscountFromPoints,
+  pointsUsed,
+  setPointsUsed,
+}) => {
   const forPoints = useSelector((state) => state.pointsCalculator.forPoints);
   const givenDiscount = useSelector(
     (state) => state.pointsCalculator.givenDiscount
   );
-
-  const [pointsUsed, setPointsUsed] = useState(0);
 
   const onPointsValueChange = (e) => {
     let currPointsValue = e.target.value;
