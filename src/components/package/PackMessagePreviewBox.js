@@ -2,15 +2,11 @@ import React, { useEffect, useState } from "react";
 import Card from "../container/Card";
 import CardHeading from "../custom_ui/CardHeading";
 import { Input, Select, useToast } from "@chakra-ui/react";
-import PrimaryButton from "./../custom_ui/PrimaryButton";
 import { Tag, TagLabel, TagCloseButton } from "@chakra-ui/react";
 import useSearchSuggestions from "./UseSearchSuggestions";
 import { useDispatch, useSelector } from "react-redux";
 import CustomerSuggestions from "./CustomerSuggestions";
-import {
-  assignPackage,
-  getAllActivePackages,
-} from "../../store/package-actions";
+import { getAllActivePackages } from "../../store/package-actions";
 import PackageBilling from "./PackageBilling";
 
 const initialSelectedPackage = {
@@ -21,7 +17,6 @@ const initialSelectedPackage = {
 };
 
 const PackMessagePreviewBox = ({ selectedCustomer, setSelectedCustomer }) => {
-  const toast = useToast();
   const dispatch = useDispatch();
 
   const [query, setQuery] = useState("");
@@ -37,7 +32,8 @@ const PackMessagePreviewBox = ({ selectedCustomer, setSelectedCustomer }) => {
   useSearchSuggestions(query);
 
   const onCustomerSelect = (customer) => {
-    setSelectedCustomer([...selectedCustomer, customer]);
+    // for Single Customer
+    setSelectedCustomer([customer]);
     setQuery("");
   };
 
@@ -46,15 +42,6 @@ const PackMessagePreviewBox = ({ selectedCustomer, setSelectedCustomer }) => {
       (customer) => customer._id !== customerId
     );
     setSelectedCustomer(list);
-  };
-
-  const onSendPackage = () => {
-    const selectedPackage = allActivePackages.filter(
-      (pack) => pack._id === selectedPackageId
-    );
-    dispatch(assignPackage(selectedCustomer, selectedPackage[0], toast));
-    setSelectedCustomer([]);
-    setSelectedPackageId("");
   };
 
   const onPackageSelection = (e) => {
@@ -82,6 +69,7 @@ const PackMessagePreviewBox = ({ selectedCustomer, setSelectedCustomer }) => {
           placeholder="Select Package"
           size="sm"
           onChange={onPackageSelection}
+          value={selectedPackageId}
         >
           {allActivePackages.map((pack) => (
             <option key={pack._id} value={pack._id}>
@@ -116,6 +104,7 @@ const PackMessagePreviewBox = ({ selectedCustomer, setSelectedCustomer }) => {
         <div className=" flex-wrap  border border-gray-400 rounded-md p-3 overflow-auto first:mt-0 h-20">
           {selectedCustomer.map((customer) => (
             <Tag
+              kye={customer._id}
               size={"sm"}
               borderRadius="full"
               variant="outline"
@@ -136,11 +125,13 @@ const PackMessagePreviewBox = ({ selectedCustomer, setSelectedCustomer }) => {
             </Tag>
           ))}
         </div>
-        <PackageBilling selectedPackage={selectedPackage} />
-        <PrimaryButton
-          type={"button"}
-          content={"Assign"}
-          onClick={onSendPackage}
+        <PackageBilling
+          initialSelectedPackage={initialSelectedPackage}
+          selectedPackage={selectedPackage}
+          setSelectedPackage={setSelectedPackage}
+          selectedCustomer={selectedCustomer}
+          setSelectedCustomer={setSelectedCustomer}
+          setSelectedPackageId={setSelectedPackageId}
         />
       </div>
     </Card>
