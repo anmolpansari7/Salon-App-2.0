@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import UsePackageModal from "../bill/UsePackageModal";
 
-const CurrentCustomerActivePackage = () => {
+const CurrentCustomerActivePackage = ({ customerId }) => {
   const currCustomer = useSelector(
     (state) => state.currentCustomer.currentCustomer
   );
@@ -97,6 +97,7 @@ const CurrentCustomerActivePackage = () => {
         <UsePackageModal
           onHideModal={onHideUsePackModal}
           selectedPack={selectedPack}
+          customerId={customerId}
         />
       )}
     </Card>

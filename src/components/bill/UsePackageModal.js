@@ -1,15 +1,48 @@
 import { Input, Select } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import CardHeading from "../custom_ui/CardHeading";
 import ListItemDBtn from "../custom_ui/ListItemDBtn";
 import Modal from "../custom_ui/Modal";
 import PrimaryButton from "../custom_ui/PrimaryButton";
-import { Tag } from "@chakra-ui/react";
+import { Tag, useToast } from "@chakra-ui/react";
+import { validatePackageUsageOrder } from "../../utils/package.utils";
 
-const UsePackageModal = ({ onHideModal, selectedPack }) => {
+const UsePackageModal = ({ onHideModal, selectedPack, customerId }) => {
+  const toast = useToast();
+
   const staff = useSelector((state) => state.staff.staff);
   console.log(selectedPack);
+
+  const [remark, setRemark] = useState("");
+  const [servedBy, setServedBy] = useState("");
+
+  const onUsePackage = () => {
+    const newOrder = {
+      type: "package-usage",
+      customerId: customerId,
+      serviceIds: [],
+      inventoryItemIds: [],
+      totalAmount: 0,
+      paidAmount: 0,
+      paymentMode: "pre-paid",
+      remark: remark,
+      pointsUsed: 0,
+      pointsEarned: 0,
+      discountGiven: 0,
+      promoCode: "",
+      packageId: selectedPack.packageId,
+      servedBy: servedBy,
+    };
+
+    if (!validatePackageUsageOrder(newOrder, toast)) {
+      return;
+    }
+
+    console.log(newOrder);
+    console.log(selectedPack);
+  };
+
   return (
     <Modal onHideModal={onHideModal}>
       <CardHeading className=" font-medium text-lg">
@@ -43,6 +76,10 @@ const UsePackageModal = ({ onHideModal, selectedPack }) => {
             textAlign="right"
             border={"gray"}
             placeholder={"Add remark"}
+            value={remark}
+            onChange={(e) => {
+              setRemark(e.target.value);
+            }}
           />
         </div>
         <div className=" flex justify-between border-b border-dashed border-black">
@@ -53,6 +90,10 @@ const UsePackageModal = ({ onHideModal, selectedPack }) => {
             size={"sm"}
             alignSelf={"center"}
             width="11rem"
+            value={servedBy}
+            onChange={(e) => {
+              setServedBy(e.target.value);
+            }}
           >
             {staff.map((member) => (
               <option key={member._id} value={member._id}>
@@ -65,7 +106,7 @@ const UsePackageModal = ({ onHideModal, selectedPack }) => {
       <PrimaryButton
         type={"button"}
         content={"Use Pack"}
-        onClick={onHideModal}
+        onClick={onUsePackage}
       />
     </Modal>
   );

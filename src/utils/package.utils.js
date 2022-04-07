@@ -67,3 +67,99 @@ export const packageIsValid = (newPackage, toast) => {
 
   return true;
 };
+
+export const validatePackageAssignOrder = (newOrder, toast) => {
+  if (newOrder.customerId === "") {
+    toast({
+      title: "Missing Information",
+      description: "Please select package duration.",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+    return false;
+  }
+
+  if (newOrder.paidAmount < 0) {
+    toast({
+      title: "Negative value Paid!",
+      description: "Paid Amound Field can not be negative.",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+    return false;
+  }
+
+  if (newOrder.paymentMode === "") {
+    toast({
+      title: "Payment mode not selected!",
+      description: "Select a payment mode to proceed with current order.",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+    return false;
+  }
+
+  if (newOrder.packageId === "") {
+    toast({
+      title: "Staff not selected!",
+      description: "Select a package to proceed with current order.",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+    return false;
+  }
+
+  if (newOrder.servedBy === "") {
+    toast({
+      title: "Package not selected!",
+      description: "Select a staff who is placing order.",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+    return false;
+  }
+
+  return true;
+};
+
+export const validatePackageUsageOrder = (newOrder, toast) => {
+  if (newOrder.customerId === "") {
+    toast({
+      title: "Missing Information",
+      description: "Please select package duration.",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+    return false;
+  }
+
+  if (newOrder.packageId === "") {
+    toast({
+      title: "Staff not selected!",
+      description: "Select a package to proceed with current order.",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+    return false;
+  }
+
+  if (newOrder.servedBy === "") {
+    toast({
+      title: "Package not selected!",
+      description: "Select a staff who is placing order.",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+    return false;
+  }
+
+  return true;
+};

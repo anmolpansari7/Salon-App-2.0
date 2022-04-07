@@ -4,6 +4,7 @@ import { getStaffList } from "../../store/staff-actions";
 import { Input, Select, useToast } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import PrimaryButton from "../custom_ui/PrimaryButton";
+import { validatePackageAssignOrder } from "../../utils/package.utils";
 
 const PackageBilling = ({
   initialSelectedPackage,
@@ -52,8 +53,13 @@ const PackageBilling = ({
       pointsEarned: pointsEarned,
       discountGiven: 0,
       promoCode: "",
+      packageId: selectedPackage._id,
       servedBy: servedBy,
     };
+
+    if (!validatePackageAssignOrder(newOrder, toast)) {
+      return;
+    }
 
     console.log(newOrder);
 

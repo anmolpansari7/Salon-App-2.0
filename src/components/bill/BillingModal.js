@@ -11,6 +11,7 @@ import { getPointsCalculatorData } from "../../store/points-calculator-actions";
 import { getAllActivePromocodes } from "../../store/promocode-actions";
 import { validateNewOrder } from "../../utils/billing.utils";
 import { useToast } from "@chakra-ui/react";
+import { sendNewOrderData } from "../../store/order-actions";
 
 const BillingModal = ({ onHideBillingModal, customerId }) => {
   const toast = useToast();
@@ -61,12 +62,16 @@ const BillingModal = ({ onHideBillingModal, customerId }) => {
       pointsEarned: pointsEarned,
       discountGiven: discountFromPoints + discountFromPromoCode,
       promoCode: promo,
+      packageId: "",
       servedBy: serviceGivenBy,
     };
 
-    validateNewOrder(newOrder, toast);
+    if (!validateNewOrder(newOrder, toast)) {
+      return;
+    }
 
-    console.log(newOrder);
+    // dis(sendNewOrderData(newOrder, toast));
+    onHideBillingModal();
   };
 
   useEffect(() => {

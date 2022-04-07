@@ -31,7 +31,7 @@ const CurrentCustomerPage = () => {
     <PageContainer>
       <div className="flex flex-col w-1/5 space-y-3">
         <CurrentCustomerInfo />
-        <CurrentCustomerActivePackage />
+        <CurrentCustomerActivePackage customerId={id} />
       </div>
       <CurrentCustomerOrders />
       <FloatingButton
