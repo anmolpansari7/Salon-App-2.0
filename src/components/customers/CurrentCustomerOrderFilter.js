@@ -5,10 +5,23 @@ import { Input } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { getStaffList } from "../../store/staff-actions";
 
-const CurrentCustomerOrderFilter = () => {
+const CurrentCustomerOrderFilter = ({
+  staffFilter,
+  setStaffFilter,
+  startDateFilter,
+  setStartDateFilter,
+  endDateFilter,
+  setEndDateFilter,
+}) => {
   const dispatch = useDispatch();
 
   const staff = useSelector((state) => state.staff.staff);
+
+  const clearFilters = () => {
+    setStaffFilter("");
+    setStartDateFilter("");
+    setEndDateFilter("");
+  };
 
   useEffect(() => {
     dispatch(getStaffList("", "", "", ""));
@@ -21,6 +34,10 @@ const CurrentCustomerOrderFilter = () => {
         fontSize={"0.875rem"}
         size={"sm"}
         alignSelf={"center"}
+        value={staffFilter}
+        onChange={(e) => {
+          setStaffFilter(e.target.value);
+        }}
       >
         {staff.map((member) => (
           <option key={member._id} value={member._id}>
@@ -38,6 +55,10 @@ const CurrentCustomerOrderFilter = () => {
           label="From:"
           size={"sm"}
           alignSelf={"center"}
+          value={startDateFilter}
+          onChange={(e) => {
+            setStartDateFilter(e.target.value);
+          }}
         />
         <span className=" self-center mx-4"> To </span>
         <Input
@@ -47,9 +68,16 @@ const CurrentCustomerOrderFilter = () => {
           label="To:"
           size={"sm"}
           alignSelf={"center"}
+          value={endDateFilter}
+          onChange={(e) => {
+            setEndDateFilter(e.target.value);
+          }}
         />
       </div>
-      <button className=" ml-8"> clear </button>
+      <button className=" ml-8" onClick={clearFilters}>
+        {" "}
+        clear{" "}
+      </button>
     </FilterCard>
   );
 };

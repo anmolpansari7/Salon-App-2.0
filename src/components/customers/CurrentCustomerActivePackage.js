@@ -33,6 +33,8 @@ const CurrentCustomerActivePackage = ({ customerId }) => {
     setShowUsePackModal(false);
   };
 
+  let today = new Date().toISOString();
+
   return (
     <Card className="flex-1">
       <CardHeading className=" font-medium text-base flex-1">
@@ -41,7 +43,11 @@ const CurrentCustomerActivePackage = ({ customerId }) => {
       <Accordion allowToggle>
         {currCustomer.package !== undefined &&
           currCustomer.package.map((pack) => {
-            if (pack.packageName !== undefined) {
+            if (
+              pack.packageName !== undefined &&
+              pack.UsageLeft > 0 &&
+              pack.validTill >= today
+            ) {
               return (
                 <AccordionItem size={"sm"} key={pack.packageName}>
                   <h2>

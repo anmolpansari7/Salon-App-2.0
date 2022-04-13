@@ -18,6 +18,9 @@ const CurrentCustomerPage = () => {
 
   const isAuthOwner = useSelector((state) => state.authentication.isAuthOwner);
   const [showBillingModal, setShowBillingModal] = useState(false);
+  const [staffFilter, setStaffFilter] = useState("");
+  const [startDateFilter, setStartDateFilter] = useState("");
+  const [endDateFilter, setEndDateFilter] = useState("");
 
   const onShowBillingModal = () => {
     setShowBillingModal(true);
@@ -29,8 +32,10 @@ const CurrentCustomerPage = () => {
 
   useEffect(() => {
     dispatch(getCurrentCustomerData(id));
-    dispatch(getCurrentCustomerOrders(id));
-  }, [dispatch, id]);
+    dispatch(
+      getCurrentCustomerOrders(id, staffFilter, startDateFilter, endDateFilter)
+    );
+  }, [dispatch, id, staffFilter, startDateFilter, endDateFilter]);
 
   return (
     <PageContainer>
@@ -38,7 +43,14 @@ const CurrentCustomerPage = () => {
         <CurrentCustomerInfo />
         <CurrentCustomerActivePackage customerId={id} />
       </div>
-      <CurrentCustomerOrders />
+      <CurrentCustomerOrders
+        staffFilter={staffFilter}
+        setStaffFilter={setStaffFilter}
+        startDateFilter={startDateFilter}
+        setStartDateFilter={setStartDateFilter}
+        endDateFilter={endDateFilter}
+        setEndDateFilter={setEndDateFilter}
+      />
       {isAuthOwner ? (
         <p
           className=" absolute bottom-6 right-10 text-center p-2 bg-slate-400 mt-3 text-white rounded-sm text-sm"

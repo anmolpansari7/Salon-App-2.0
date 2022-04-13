@@ -78,12 +78,24 @@ export const getCurrentCustomerData = (id) => {
   };
 };
 
-export const getCurrentCustomerOrders = (id) => {
+export const getCurrentCustomerOrders = (
+  id,
+  staffFilter,
+  startDateFilter,
+  endDateFilter
+) => {
   return (dispatch) => {
     const url = `${process.env.REACT_APP_BASE_URL}/customer/details/${id}/orders`;
     axios
       .get(
-        url
+        url,
+        {
+          params: {
+            staff: staffFilter,
+            startDate: startDateFilter,
+            endDate: endDateFilter,
+          },
+        }
         // { headers: { Authorization: `Bearer ${ownerToken}` } }
       )
       .then((res) => {
