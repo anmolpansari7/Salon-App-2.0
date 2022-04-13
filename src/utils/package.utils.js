@@ -141,7 +141,7 @@ export const validatePackageUsageOrder = (newOrder, toast) => {
 
   if (newOrder.packageId === "") {
     toast({
-      title: "Staff not selected!",
+      title: "Package not selected!",
       description: "Select a package to proceed with current order.",
       status: "error",
       duration: 3000,
@@ -152,7 +152,7 @@ export const validatePackageUsageOrder = (newOrder, toast) => {
 
   if (newOrder.servedBy === "") {
     toast({
-      title: "Package not selected!",
+      title: "Staff not selected!",
       description: "Select a staff who is placing order.",
       status: "error",
       duration: 3000,

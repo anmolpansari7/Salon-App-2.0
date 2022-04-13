@@ -12,11 +12,13 @@ import { getAllActivePromocodes } from "../../store/promocode-actions";
 import { validateNewOrder } from "../../utils/billing.utils";
 import { useToast } from "@chakra-ui/react";
 import { sendNewOrderData } from "../../store/order-actions";
+import { updateCurrentCustomerData } from "../../store/current-customer-actions";
 
 const BillingModal = ({ onHideBillingModal, customerId }) => {
   const toast = useToast();
   const dis = useDispatch();
 
+  const branchId = useSelector((state) => state.authentication.branchId);
   const services = useSelector((state) => state.serviceList.services);
   const forRupee = useSelector((state) => state.pointsCalculator.forRupee);
   const givenPoints = useSelector(
@@ -32,11 +34,13 @@ const BillingModal = ({ onHideBillingModal, customerId }) => {
   const [discountFromPoints, setDiscountFromPoints] = useState(0);
 
   const [promo, setPromo] = useState("");
-  const [pointsUsed, setPointsUsed] = useState("");
+  const [pointsUsed, setPointsUsed] = useState(0);
   const [paidAmount, setPaidAmount] = useState(0);
   const [paymentMode, setPaymentMode] = useState("");
   const [serviceGivenBy, setServiceGivenBy] = useState("");
   const [remark, setRemark] = useState("");
+
+  console.log(branchId);
 
   const onPlaceOrder = () => {
     const totalAmount = cartValue - discountFromPoints - discountFromPromoCode;
@@ -48,9 +52,9 @@ const BillingModal = ({ onHideBillingModal, customerId }) => {
     const selectedInventoryItemIds = selectedInventoryItems.map(
       (item) => item._id
     );
-
     const newOrder = {
       type: "order",
+      branchId: branchId,
       customerId: customerId,
       serviceIds: selectedServiceIds,
       inventoryItemIds: selectedInventoryItemIds,
@@ -70,7 +74,14 @@ const BillingModal = ({ onHideBillingModal, customerId }) => {
       return;
     }
 
-    // dis(sendNewOrderData(newOrder, toast));
+    dis(sendNewOrderData(newOrder, toast));
+    dis(
+      updateCurrentCustomerData(
+        newOrder.customerId,
+        newOrder.pointsEarned,
+        newOrder.totalAmount - newOrder.paidAmount
+      )
+    );
     onHideBillingModal();
   };
 

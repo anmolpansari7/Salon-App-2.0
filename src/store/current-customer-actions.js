@@ -78,21 +78,59 @@ export const getCurrentCustomerData = (id) => {
   };
 };
 
-// export const getTotalVisitedCustomers = () => {
-//   return (dispatch) => {
-//     axios
-//       .get(`${process.env.REACT_APP_BASE_URL}/customer`)
-//       .then((res) => {
-//         dispatch(customerListActions.setTotalVisitedCustomers(res.data));
-//       })
-//       .catch((err) => {
-//         if (err.response) {
-//           toast.error("Not Authenticated !");
-//           localStorage.removeItem("ownerToken");
-//           dispatch(authSliceAction.setIsAuthFalse());
-//         } else {
-//           toast.error("Server Disconnected!");
-//         }
-//       });
-//   };
-// };
+export const getCurrentCustomerOrders = (id) => {
+  return (dispatch) => {
+    const url = `${process.env.REACT_APP_BASE_URL}/customer/details/${id}/orders`;
+    axios
+      .get(
+        url
+        // { headers: { Authorization: `Bearer ${ownerToken}` } }
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch(currentCustomerActions.loadCurrCustomerOrders(res.data));
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          // toast.error("Not Authenticated ! for getting customer data");
+          // localStorage.removeItem("ownerToken");
+          // dispatch(authSliceAction.setIsAuthFalse());
+          console.log(err);
+        } else {
+          // toast.error("Server Disconnected!");
+          console.log(err);
+        }
+      });
+  };
+};
+
+export const updateCurrentCustomerData = (id, points, dues) => {
+  return (dispatch) => {
+    axios
+      .patch(
+        `${process.env.REACT_APP_BASE_URL}/customer/update-dues-points/${id}`,
+        {
+          points: points,
+          dues: dues,
+        }
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch(getCurrentCustomerData(id));
+        }
+        console.log("Points and Dues Updated !");
+      })
+      .catch((err) => {
+        if (err.response) {
+          // toast.error("Not Authenticated ! for getting customer data");
+          // localStorage.removeItem("ownerToken");
+          // dispatch(authSliceAction.setIsAuthFalse());
+          console.log(err);
+        } else {
+          // toast.error("Server Disconnected!");
+          console.log(err);
+        }
+      });
+  };
+};

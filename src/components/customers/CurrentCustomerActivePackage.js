@@ -16,6 +16,7 @@ import {
 import UsePackageModal from "../bill/UsePackageModal";
 
 const CurrentCustomerActivePackage = ({ customerId }) => {
+  const isAuthOwner = useSelector((state) => state.authentication.isAuthOwner);
   const currCustomer = useSelector(
     (state) => state.currentCustomer.currentCustomer
   );
@@ -37,7 +38,7 @@ const CurrentCustomerActivePackage = ({ customerId }) => {
       <CardHeading className=" font-medium text-base flex-1">
         Active Packages
       </CardHeading>
-      <Accordion allowMultiple>
+      <Accordion allowToggle>
         {currCustomer.package !== undefined &&
           currCustomer.package.map((pack) => {
             if (pack.packageName !== undefined) {
@@ -76,16 +77,22 @@ const CurrentCustomerActivePackage = ({ customerId }) => {
                       showBtn={false}
                       className=" text-sm"
                     />
-                    <Button
-                      size={"sm"}
-                      fontWeight={"normal"}
-                      onClick={() => {
-                        onShowUsePackModal(pack);
-                      }}
-                    >
-                      {" "}
-                      Use Pack
-                    </Button>
+                    {isAuthOwner ? (
+                      <p className="text-sm text-center p-1 bg-slate-400 mt-3 text-white rounded-sm">
+                        Login as branch to use.
+                      </p>
+                    ) : (
+                      <Button
+                        size={"sm"}
+                        fontWeight={"normal"}
+                        onClick={() => {
+                          onShowUsePackModal(pack);
+                        }}
+                      >
+                        {" "}
+                        Use Pack
+                      </Button>
+                    )}
                   </AccordionPanel>
                 </AccordionItem>
               );

@@ -1,90 +1,60 @@
 import React, { useMemo } from "react";
+import { useSelector } from "react-redux";
 import Card from "../container/Card";
 import CardHeading from "../custom_ui/CardHeading";
 import PreviousOrderTable from "./PreviousOrderTable";
+import moment from "moment";
+import { Tooltip } from "@chakra-ui/react";
+
+const DetailBox = ({ services }) => {
+  return (
+    <Tooltip label={services} fontSize="md">
+      <p className=" max-w-[6rem] truncate">{services}</p>
+    </Tooltip>
+  );
+};
 
 const PreviousVisits = () => {
+  const orders = useSelector(
+    (state) => state.currentCustomer.currentCustomerOrders
+  );
+
+  console.log(orders);
+
   const data = useMemo(
-    () => [
-      {
-        col1: "Regular Haircut",
-        col2: "350 Rs.",
-        col3: "200 Rs.",
-        col4: "150 Rs.",
-        col5: "20",
-        col6: "150 Rs.",
-        col7: "10",
-        col8: "Rupesh Sahu",
-        col9: "06-02-2022",
-      },
-      {
-        col1: "Regular Haircut",
-        col2: "350 Rs.",
-        col3: "200 Rs.",
-        col4: "150 Rs.",
-        col5: "20",
-        col6: "150 Rs.",
-        col7: "10",
-        col8: "Rupesh Sahu",
-        col9: "06-02-2022",
-      },
-      {
-        col1: "Regular Haircut",
-        col2: "350 Rs.",
-        col3: "200 Rs.",
-        col4: "150 Rs.",
-        col5: "20",
-        col6: "150 Rs.",
-        col7: "10",
-        col8: "Rupesh Sahu",
-        col9: "06-02-2022",
-      },
-      {
-        col1: "Regular Haircut",
-        col2: "350 Rs.",
-        col3: "200 Rs.",
-        col4: "150 Rs.",
-        col5: "20",
-        col6: "150 Rs.",
-        col7: "10",
-        col8: "Rupesh Sahu",
-        col9: "06-02-2022",
-      },
-      {
-        col1: "Regular Haircut",
-        col2: "350 Rs.",
-        col3: "200 Rs.",
-        col4: "150 Rs.",
-        col5: "20",
-        col6: "150 Rs.",
-        col7: "10",
-        col8: "Rupesh Sahu",
-        col9: "06-02-2022",
-      },
-      {
-        col1: "Regular Haircut",
-        col2: "350 Rs.",
-        col3: "200 Rs.",
-        col4: "150 Rs.",
-        col5: "20",
-        col6: "150 Rs.",
-        col7: "10",
-        col8: "Rupesh Sahu",
-        col9: "06-02-2022",
-      },
-      {
-        col1: "Regular Haircut",
-        col2: "350 Rs.",
-        col3: "200 Rs.",
-        col4: "150 Rs.",
-        col5: "20",
-        col6: "150 Rs.",
-        col7: "10",
-        col8: "Rupesh Sahu",
-        col9: "06-02-2022",
-      },
-    ],
-    []
+    () =>
+      orders.map((order) => {
+        let services = "";
+        if (order.type === "order") {
+          order.serviceName.forEach((service) => {
+            services += service;
+            services += ", ";
+          });
+
+          order.inventoryItemName.forEach((item) => {
+            services += item;
+            services += ", ";
+          });
+        } else if (order.type === "package-assign") {
+          services = `Package Assign - ${order.packageName}`;
+        } else if (order.type === "package-usage") {
+          services = `Package Usage - ${order.packageName}`;
+        }
+
+        return {
+          col1: <DetailBox services={services} />,
+          col2: `${order.totalAmount} Rs.`,
+          col3: `${order.paidAmount} Rs.`,
+          col4: `${order.totalAmount - order.paidAmount} Rs.`,
+          col5: `${order.pointsUsed} Pts.`,
+          col6: `${order.discountGiven} Rs.`,
+          col7: `${order.pointsEarned} Pts.`,
+          col8: `${order.promoCode === "" ? "---" : order.promoCode}`,
+          col9: `${order.servedBy}`,
+          col10: moment(order.createdAt).format("ll"),
+        };
+      }),
+    [orders]
   );
 
   const columns = useMemo(
@@ -118,12 +88,16 @@ const PreviousVisits = () => {
         accessor: "col7",
       },
       {
-        Header: "Served By",
+        Header: "Promo Used",
         accessor: "col8",
       },
       {
-        Header: "Date",
+        Header: "Served By",
         accessor: "col9",
+      },
+      {
+        Header: "Date",
+        accessor: "col10",
       },
     ],
     []

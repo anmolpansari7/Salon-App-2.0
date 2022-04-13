@@ -7,7 +7,8 @@ const authSlice = createSlice({
   name: "authentication",
   initialState: {
     isAuthOwner: false,
-    isAuthBranch: isBranchPresent,
+    isAuthBranch: false,
+    branchId: "",
   },
   reducers: {
     setIsAuthOwnerTrue(state) {
@@ -21,6 +22,9 @@ const authSlice = createSlice({
     },
     setIsAuthBranchFalse(state) {
       state.isAuthBranch = false;
+    },
+    setBranchId(state, action) {
+      state.branchId = action.payload;
     },
   },
 });

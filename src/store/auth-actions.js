@@ -27,6 +27,7 @@ export const authenticateRequest = (
           } else {
             localStorage.setItem("branchToken", res.data.token);
             dispatch(authSliceAction.setIsAuthBranchTrue());
+            dispatch(authSliceAction.setBranchId(selectedBranch));
             toast({
               title: "Welcome Staff Member!",
               status: "success",

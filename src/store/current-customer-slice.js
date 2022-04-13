@@ -23,10 +23,10 @@ const currentCustomerSlice = createSlice({
       const customer = action.payload;
       state.currentCustomer = customer;
     },
-    // loadCurrCustomerOrders(state, action) {
-    //   const orders = action.payload;
-    //   state.currentCustomerOrders = [...state.currentCustomerOrders, ...orders];
-    // },
+    loadCurrCustomerOrders(state, action) {
+      const orders = action.payload;
+      state.currentCustomerOrders = [...orders];
+    },
     // clearCurrCustomerOrders(state) {
     //   state.currentCustomerOrders = [];
     // },

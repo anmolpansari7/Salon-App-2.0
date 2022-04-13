@@ -1,6 +1,6 @@
 import React from "react";
 
-const PrimaryButton = ({ type, content, onClick, className }) => {
+const PrimaryButton = ({ type, content, onClick, className, disabled }) => {
   return (
     <button
       type={type}
@@ -11,6 +11,7 @@ const PrimaryButton = ({ type, content, onClick, className }) => {
       onClick={(e) => {
         onClick(e);
       }}
+      disabled={disabled}
     >
       {content}
     </button>

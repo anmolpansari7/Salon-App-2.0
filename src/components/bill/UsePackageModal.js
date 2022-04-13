@@ -1,16 +1,19 @@
 import { Input, Select } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import CardHeading from "../custom_ui/CardHeading";
 import ListItemDBtn from "../custom_ui/ListItemDBtn";
 import Modal from "../custom_ui/Modal";
 import PrimaryButton from "../custom_ui/PrimaryButton";
 import { Tag, useToast } from "@chakra-ui/react";
 import { validatePackageUsageOrder } from "../../utils/package.utils";
+import { sendNewOrderData } from "../../store/order-actions";
 
 const UsePackageModal = ({ onHideModal, selectedPack, customerId }) => {
   const toast = useToast();
+  const dispatch = useDispatch();
 
+  const branchId = useSelector((state) => state.authentication.branchId);
   const staff = useSelector((state) => state.staff.staff);
   console.log(selectedPack);
 
@@ -20,6 +23,7 @@ const UsePackageModal = ({ onHideModal, selectedPack, customerId }) => {
   const onUsePackage = () => {
     const newOrder = {
       type: "package-usage",
+      branchId: branchId,
       customerId: customerId,
       serviceIds: [],
       inventoryItemIds: [],
@@ -39,8 +43,10 @@ const UsePackageModal = ({ onHideModal, selectedPack, customerId }) => {
       return;
     }
 
+    dispatch(sendNewOrderData(newOrder, toast));
     console.log(newOrder);
     console.log(selectedPack);
+    onHideModal();
   };
 
   return (

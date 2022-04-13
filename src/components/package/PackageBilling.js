@@ -5,6 +5,9 @@ import { Input, Select, useToast } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import PrimaryButton from "../custom_ui/PrimaryButton";
 import { validatePackageAssignOrder } from "../../utils/package.utils";
+import { sendNewOrderData } from "../../store/order-actions";
+import { assignPackage } from "../../store/package-actions";
+import { updateCurrentCustomerData } from "../../store/current-customer-actions";
 
 const PackageBilling = ({
   initialSelectedPackage,
@@ -16,6 +19,9 @@ const PackageBilling = ({
 }) => {
   const dispatch = useDispatch();
   const toast = useToast();
+
+  const branchId = useSelector((state) => state.authentication.branchId);
+  const isAuthOwner = useSelector((state) => state.authentication.isAuthOwner);
   const staff = useSelector((state) => state.staff.staff);
 
   const [paidAmount, setPaidAmount] = useState(0);
@@ -42,6 +48,7 @@ const PackageBilling = ({
 
     const newOrder = {
       type: "package-assign",
+      branchId: branchId,
       customerId: selectedCustomer[0]._id,
       serviceIds: [],
       inventoryItemIds: [],
@@ -57,11 +64,19 @@ const PackageBilling = ({
       servedBy: servedBy,
     };
 
-    if (!validatePackageAssignOrder(newOrder, toast)) {
+    if (!validatePackageAssignOrder(newOrder, selectedPackage, toast)) {
       return;
     }
 
-    console.log(newOrder);
+    dispatch(sendNewOrderData(newOrder, toast));
+    dispatch(assignPackage(selectedCustomer[0]._id, selectedPackage, toast));
+    dispatch(
+      updateCurrentCustomerData(
+        newOrder.customerId,
+        newOrder.pointsEarned,
+        newOrder.totalAmount - newOrder.paidAmount
+      )
+    );
 
     setSelectedCustomer([]);
     setSelectedPackageId("");
@@ -158,11 +173,20 @@ const PackageBilling = ({
           ))}
         </Select>
       </div>
-      <PrimaryButton
-        type={"button"}
-        content={"Assign"}
-        onClick={onSendPackage}
-      />
+      {isAuthOwner ? (
+        <p
+          className=" text-center p-1 bg-slate-400 mt-3 text-white rounded-sm"
+          title="Please Login as a Branch to assign packages."
+        >
+          Package can be assigned by branch only.
+        </p>
+      ) : (
+        <PrimaryButton
+          type={"button"}
+          content={"Assign"}
+          onClick={onSendPackage}
+        />
+      )}
     </div>
   );
 };

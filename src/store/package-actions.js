@@ -135,19 +135,15 @@ const getValidity = (validFor) => {
   return newDate;
 };
 
-export const assignPackage = (customers, pack, toast) => {
-  const customerIds = customers.map((customer) => customer._id);
+export const assignPackage = (customerId, pack, toast) => {
   const packageId = pack._id;
   const maxUsage = pack.maxUsage;
-  console.log(pack.validFor);
   let validTill = getValidity(pack.validFor);
-
-  console.log(validTill);
 
   return (dispatch) => {
     axios
       .patch(`${process.env.REACT_APP_BASE_URL}/package/assign-package`, {
-        customerIds,
+        customerId,
         packageId,
         maxUsage,
         validTill,
