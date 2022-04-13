@@ -1,10 +1,23 @@
-import React, { useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Card from "../components/container/Card";
 import ReportFilters from "../components/report/ReportFilters";
 import ReportTable from "./../components/report/ReportTable";
 import SummaryBox from "./../components/container/SummaryBox";
+import { useDispatch, useSelector } from "react-redux";
+import { getBranches } from "./../store/branch-actions";
+import { getStaffList } from "./../store/staff-actions";
+import { getReport } from "../store/report-actions";
 
 const ReportPage = () => {
+  const dispatch = useDispatch();
+  const [branchFilter, setBranchFilter] = useState("");
+  const [staffFilter, setStaffFilter] = useState("");
+  const [startDateFilter, setStartDateFilter] = useState("");
+  const [endDateFilter, setEndDateFilter] = useState("");
+  const [nameFilter, setNameFilter] = useState("");
+
+  const report = useSelector((state) => state.report.report);
+
   const data = useMemo(
     () => [
       {
@@ -90,31 +103,31 @@ const ReportPage = () => {
         accessor: "col1", // accessor is the "key" in the data
       },
       {
-        Header: "Age",
+        Header: "Branch",
         accessor: "col2",
       },
       {
-        Header: "Contact Number",
+        Header: "Bill Amt.",
         accessor: "col3",
       },
       {
-        Header: "Bill Amt.",
+        Header: "Discount",
         accessor: "col4",
       },
       {
-        Header: "Paid Amt",
+        Header: "PromoCode",
         accessor: "col5",
       },
       {
-        Header: "Due",
+        Header: "Paid Amt.",
         accessor: "col6",
       },
       {
-        Header: "Pts Used",
+        Header: "Pts. Used",
         accessor: "col7",
       },
       {
-        Header: "Pts Earned",
+        Header: "Pts Given",
         accessor: "col8",
       },
       {
@@ -183,10 +196,42 @@ const ReportPage = () => {
     },
   ];
 
+  useEffect(() => {
+    dispatch(getStaffList("", "", "", ""));
+    dispatch(getBranches());
+    dispatch(
+      getReport(
+        branchFilter,
+        staffFilter,
+        startDateFilter,
+        endDateFilter,
+        nameFilter
+      )
+    );
+  }, [
+    dispatch,
+    branchFilter,
+    staffFilter,
+    startDateFilter,
+    endDateFilter,
+    nameFilter,
+  ]);
+
   return (
     <div className=" bg-app-bg flex-1 px-10 py-5 flex font-body">
       <div className="h-full w-10/12">
-        <ReportFilters />
+        <ReportFilters
+          branchFilter={branchFilter}
+          setBranchFilter={setBranchFilter}
+          staffFilter={staffFilter}
+          setStaffFilter={setStaffFilter}
+          startDateFilter={startDateFilter}
+          setStartDateFilter={setStartDateFilter}
+          endDateFilter={endDateFilter}
+          setEndDateFilter={setEndDateFilter}
+          nameFilter={nameFilter}
+          setNameFilter={setNameFilter}
+        />
         <Card className=" h-[36rem] overflow-auto">
           <ReportTable data={data} columns={columns} className={" w-full"} />
         </Card>

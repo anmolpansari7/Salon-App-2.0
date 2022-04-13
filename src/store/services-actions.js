@@ -1,7 +1,6 @@
 import axios from "axios";
 import { servicesAction } from "./services-slice";
 // import { authSliceAction } from "./auth-slice";
-// import { toast } from "react-toastify";
 
 // require("dotenv").config();
 

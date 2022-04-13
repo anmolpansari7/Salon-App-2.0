@@ -10,6 +10,7 @@ import inventoryItemSlice from "./inventory-item-slice";
 import pointsCalculatorSlice from "./points-calculator-slice";
 import staffSlice from "./staff-slice";
 import authSlice from "./auth-slice";
+import reportSlice from "./report-slice";
 
 // import reportSlice from "./report-slice";
 
@@ -26,8 +27,7 @@ const store = configureStore({
     pointsCalculator: pointsCalculatorSlice.reducer,
     staff: staffSlice.reducer,
     authentication: authSlice.reducer,
-
-    // report: reportSlice.reducer,
+    report: reportSlice.reducer,
   },
 });
 

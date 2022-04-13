@@ -25,7 +25,7 @@ const CurrentCustomerOrderFilter = ({
 
   useEffect(() => {
     dispatch(getStaffList("", "", "", ""));
-  }, []);
+  }, [dispatch]);
 
   return (
     <FilterCard className="flex justify-between text-sm">

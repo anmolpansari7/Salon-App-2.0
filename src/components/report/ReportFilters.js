@@ -2,22 +2,67 @@ import React from "react";
 import FilterCard from "../container/FilterCard";
 import { Select } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 
-const ReportFilters = () => {
+const ReportFilters = ({
+  branchFilter,
+  setBranchFilter,
+  staffFilter,
+  setStaffFilter,
+  startDateFilter,
+  setStartDateFilter,
+  endDateFilter,
+  setEndDateFilter,
+  nameFilter,
+  setNameFilter,
+}) => {
+  const staff = useSelector((state) => state.staff.staff);
+  const branches = useSelector((state) => state.branch.branchList);
+
+  const clearFilters = () => {
+    setBranchFilter("");
+    setStaffFilter("");
+    setStartDateFilter("");
+    setEndDateFilter("");
+    setNameFilter("");
+  };
+
   return (
     <div className="w-full flex mb-3 text-sm">
       <FilterCard className="flex justify-between w-9/12">
-        {/* <div className="self-center flex w-4/12 mr-2 justify-around">
-        </div> */}
         <Select
-          placeholder="Select option"
+          placeholder="Filter by Branch"
           fontSize={"0.875rem"}
           size={"sm"}
           alignSelf={"center"}
+          value={branchFilter}
+          onChange={(e) => {
+            setBranchFilter(e.target.value);
+          }}
         >
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
+          {branches.map((branch) => (
+            <option key={branch._id} value={branch._id}>
+              {branch.name}
+            </option>
+          ))}
+        </Select>
+
+        <Select
+          placeholder="Filter by Staff"
+          fontSize={"0.875rem"}
+          size={"sm"}
+          alignSelf={"center"}
+          marginLeft={"1rem"}
+          value={staffFilter}
+          onChange={(e) => {
+            setStaffFilter(e.target.value);
+          }}
+        >
+          {staff.map((member) => (
+            <option key={member._id} value={member._id}>
+              {member.name}
+            </option>
+          ))}
         </Select>
 
         <div className=" self-center flex w-8/12 justify-between">
@@ -29,6 +74,10 @@ const ReportFilters = () => {
             label="From:"
             size={"sm"}
             alignSelf={"center"}
+            value={startDateFilter}
+            onChange={(e) => {
+              setStartDateFilter(e.target.value);
+            }}
           />
           <span className=" self-center mx-1"> To </span>
           <Input
@@ -38,12 +87,32 @@ const ReportFilters = () => {
             label="To:"
             size={"sm"}
             alignSelf={"center"}
+            value={endDateFilter}
+            onChange={(e) => {
+              setEndDateFilter(e.target.value);
+            }}
           />
         </div>
-        <button className="ml-4"> clear </button>
+        <button className="ml-4" onClick={clearFilters}>
+          {" "}
+          clear{" "}
+        </button>
       </FilterCard>
       <FilterCard className="w-3/12 flex ml-3">
-        <Input type="text" placeholder="Search" size={"sm"} border={"none"} />
+        <Input
+          type="text"
+          placeholder="Search"
+          size={"sm"}
+          border={"none"}
+          value={nameFilter}
+          onChange={(e) => {
+            setBranchFilter("");
+            setStaffFilter("");
+            setStartDateFilter("");
+            setEndDateFilter("");
+            setNameFilter(e.target.value);
+          }}
+        />
       </FilterCard>
     </div>
   );
