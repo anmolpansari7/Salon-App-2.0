@@ -10,7 +10,7 @@ import { getInventoryItems } from "../../store/inventory-item-actions";
 import { getPointsCalculatorData } from "../../store/points-calculator-actions";
 import { getAllActivePromocodes } from "../../store/promocode-actions";
 import { validateNewOrder } from "../../utils/billing.utils";
-import { useToast } from "@chakra-ui/react";
+import { MenuItemOption, useToast } from "@chakra-ui/react";
 import { sendNewOrderData } from "../../store/order-actions";
 import { updateCurrentCustomerData } from "../../store/current-customer-actions";
 
@@ -25,6 +25,14 @@ const BillingModal = ({ onHideBillingModal, customerId }) => {
     (state) => state.pointsCalculator.givenPoints
   );
   const inventoryItems = useSelector((state) => state.inventory.inventoryItems);
+  let currentBranchInventoryItem = [];
+  inventoryItems.forEach((item) => {
+    item.distributions.forEach((distribution) => {
+      if (distribution.branchId === branchId) {
+        currentBranchInventoryItem.push(item);
+      }
+    });
+  });
 
   const [selectedServices, setSelectedServices] = useState([]);
   const [selectedInventoryItems, setSelectedInventoryItems] = useState([]);
@@ -109,7 +117,7 @@ const BillingModal = ({ onHideBillingModal, customerId }) => {
             setDiscountFromPromoCode={setDiscountFromPromoCode}
           />
           <SelectService
-            listItems={inventoryItems}
+            listItems={currentBranchInventoryItem}
             placeholder={"Select Inventory Items"}
             selectedItems={selectedInventoryItems}
             setSelectedItems={setSelectedInventoryItems}
