@@ -1,11 +1,19 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Input } from "@chakra-ui/react";
+import { Input, Tooltip } from "@chakra-ui/react";
 import Card from "../container/Card";
 import PreviousPackageTable from "./PreviousPackageTable";
 import infoIcon from "./../../assets/info_icon.svg";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { getPreviousPackageData } from "../../store/package-actions";
+
+const DetailBox = ({ services }) => {
+  return (
+    <Tooltip label={services} fontSize="md">
+      <img src={infoIcon} alt="info" className=" cursor-pointer" />
+    </Tooltip>
+  );
+};
 
 const PreviousPackagesBox = ({
   startDateFilter,
@@ -30,17 +38,10 @@ const PreviousPackagesBox = ({
     return {
       col1: `${pack.name}`,
       col2: `${pack.packageAmount} Rs.`,
-      col3: `${pack.customers.length}`,
+      col3: `${pack.maxUsage}`,
       col4: `${moment(pack.createdAt).format("ll")}`,
       col5: `${pack.validFor}`,
-      col6: (
-        <img
-          src={infoIcon}
-          alt="info"
-          className=" cursor-pointer"
-          title={services}
-        />
-      ),
+      col6: <DetailBox services={services} />,
     };
   });
 
@@ -55,7 +56,7 @@ const PreviousPackagesBox = ({
         accessor: "col2",
       },
       {
-        Header: "Customers",
+        Header: "Max-Usage",
         accessor: "col3",
       },
       {

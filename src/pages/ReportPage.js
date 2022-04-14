@@ -6,7 +6,12 @@ import SummaryBox from "./../components/container/SummaryBox";
 import { useDispatch, useSelector } from "react-redux";
 import { getBranches } from "./../store/branch-actions";
 import { getStaffList } from "./../store/staff-actions";
-import { getReport } from "../store/report-actions";
+import {
+  getReport,
+  getReportSummary,
+  getTodaysReportSummary,
+} from "../store/report-actions";
+import moment from "moment";
 
 const ReportPage = () => {
   const dispatch = useDispatch();
@@ -15,85 +20,30 @@ const ReportPage = () => {
   const [startDateFilter, setStartDateFilter] = useState("");
   const [endDateFilter, setEndDateFilter] = useState("");
   const [nameFilter, setNameFilter] = useState("");
-
   const report = useSelector((state) => state.report.report);
 
+  console.log(report);
+  const todaysReportSummary = useSelector(
+    (state) => state.report.todaysReportSummary
+  );
+
   const data = useMemo(
-    () => [
-      {
-        col1: "Animesh Chopra",
-        col2: "12 (M)",
-        col3: "+91 2365214578",
-        col4: "350 Rs.",
-        col5: "200 Rs.",
-        col6: "150 Rs.",
-        col7: "10",
-        col8: "10",
-        col9: "Shailendra Sahu",
-        col10: "06-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "12 (M)",
-        col3: "+91 2365214578",
-        col4: "350 Rs.",
-        col5: "200 Rs.",
-        col6: "150 Rs.",
-        col7: "10",
-        col8: "10",
-        col9: "Shailendra Sahu",
-        col10: "06-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "12 (M)",
-        col3: "+91 2365214578",
-        col4: "350 Rs.",
-        col5: "200 Rs.",
-        col6: "150 Rs.",
-        col7: "10",
-        col8: "10",
-        col9: "Shailendra Sahu",
-        col10: "06-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "12 (M)",
-        col3: "+91 2365214578",
-        col4: "350 Rs.",
-        col5: "200 Rs.",
-        col6: "150 Rs.",
-        col7: "10",
-        col8: "10",
-        col9: "Shailendra Sahu",
-        col10: "06-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "12 (M)",
-        col3: "+91 2365214578",
-        col4: "350 Rs.",
-        col5: "200 Rs.",
-        col6: "150 Rs.",
-        col7: "10",
-        col8: "10",
-        col9: "Shailendra Sahu",
-        col10: "06-02-2022",
-      },
-      {
-        col1: "Animesh Chopra",
-        col2: "12 (M)",
-        col3: "+91 2365214578",
-        col4: "350 Rs.",
-        col5: "200 Rs.",
-        col6: "150 Rs.",
-        col7: "10",
-        col8: "10",
-        col9: "Shailendra Sahu",
-        col10: "06-02-2022",
-      },
-    ],
-    []
+    () =>
+      report.map((order) => {
+        return {
+          col1: `${order.customerName}`,
+          col2: `${order.branchName}`,
+          col3: `${order.totalAmount} Rs.`,
+          col4: `${order.discountGiven} Rs.`,
+          col5: `${order.promoCode === "" ? "----" : order.promoCode}`,
+          col6: `${order.paidAmount} Rs.`,
+          col7: `${order.pointsUsed} Rs.`,
+          col8: `${order.pointsEarned} Rs.`,
+          col9: `${order.staffName}`,
+          col10: `${moment(order.createdAt).format("ll")}`,
+        };
+      }),
+    [report]
   );
 
   const columns = useMemo(
@@ -145,62 +95,44 @@ const ReportPage = () => {
   const todaysSummary = [
     {
       content: "Order Delivered -",
-      content2: "25",
+      content2: `${todaysReportSummary.totalCustomers}`,
     },
     {
       content: "Total Bill Amount -",
-      content2: "7000 Rs.",
+      content2: `${todaysReportSummary.totalAmount} Rs.`,
     },
     {
       content: "Amount Collected -",
-      content2: "6500 Rs.",
+      content2: `${todaysReportSummary.paidAmount} Rs.`,
     },
     {
       content: "Remaining Dues -",
-      content2: "1000 Rs.",
+      content2: `${
+        todaysReportSummary.totalAmount - todaysReportSummary.paidAmount
+      } Rs.`,
     },
     {
       content: "Points Used -",
-      content2: "80 Pts",
+      content2: `${todaysReportSummary.pointsUsed} Pts.`,
     },
     {
       content: "Points Given -",
-      content2: "120 Pts",
-    },
-  ];
-
-  const summary = [
-    {
-      content: "Order Delivered -",
-      content2: "25",
-    },
-    {
-      content: "Total Bill Amount -",
-      content2: "7000 Rs.",
-    },
-    {
-      content: "Amount Collected -",
-      content2: "6500 Rs.",
-    },
-    {
-      content: "Remaining Dues -",
-      content2: "1000 Rs.",
-    },
-    {
-      content: "Points Used -",
-      content2: "80 Pts",
-    },
-    {
-      content: "Points Given -",
-      content2: "120 Pts",
+      content2: `${todaysReportSummary.pointsEarned} Pts.`,
     },
   ];
 
   useEffect(() => {
-    dispatch(getStaffList("", "", "", ""));
-    dispatch(getBranches());
     dispatch(
       getReport(
+        branchFilter,
+        staffFilter,
+        startDateFilter,
+        endDateFilter,
+        nameFilter
+      )
+    );
+    dispatch(
+      getReportSummary(
         branchFilter,
         staffFilter,
         startDateFilter,
@@ -216,6 +148,12 @@ const ReportPage = () => {
     endDateFilter,
     nameFilter,
   ]);
+
+  useEffect(() => {
+    dispatch(getTodaysReportSummary());
+    dispatch(getStaffList("", "", "", ""));
+    dispatch(getBranches());
+  }, [dispatch]);
 
   return (
     <div className=" bg-app-bg flex-1 px-10 py-5 flex font-body">
@@ -242,7 +180,7 @@ const ReportPage = () => {
           data={todaysSummary}
           className={" flex-1"}
         />
-        <SummaryBox heading={"Summary"} data={summary} className={" flex-1"} />
+        <SummaryBox heading={"Summary"} className={" flex-1"} />
       </div>
     </div>
   );
