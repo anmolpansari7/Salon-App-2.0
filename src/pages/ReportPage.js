@@ -22,10 +22,10 @@ const ReportPage = () => {
   const [nameFilter, setNameFilter] = useState("");
   const report = useSelector((state) => state.report.report);
 
-  console.log(report);
   const todaysReportSummary = useSelector(
     (state) => state.report.todaysReportSummary
   );
+  const reportSummary = useSelector((state) => state.report.reportSummary);
 
   const data = useMemo(
     () =>
@@ -92,7 +92,7 @@ const ReportPage = () => {
     []
   );
 
-  const todaysSummary = [
+  const todaysData = [
     {
       content: "Order Delivered -",
       content2: `${todaysReportSummary.totalCustomers}`,
@@ -118,6 +118,33 @@ const ReportPage = () => {
     {
       content: "Points Given -",
       content2: `${todaysReportSummary.pointsEarned} Pts.`,
+    },
+  ];
+
+  const summaryData = [
+    {
+      content: "Order Delivered -",
+      content2: `${reportSummary.totalCustomers}`,
+    },
+    {
+      content: "Total Bill Amount -",
+      content2: `${reportSummary.totalAmount} Rs.`,
+    },
+    {
+      content: "Amount Collected -",
+      content2: `${reportSummary.paidAmount} Rs.`,
+    },
+    {
+      content: "Remaining Dues -",
+      content2: `${reportSummary.totalAmount - reportSummary.paidAmount} Rs.`,
+    },
+    {
+      content: "Points Used -",
+      content2: `${reportSummary.pointsUsed} Pts.`,
+    },
+    {
+      content: "Points Given -",
+      content2: `${reportSummary.pointsEarned} Pts.`,
     },
   ];
 
@@ -177,10 +204,14 @@ const ReportPage = () => {
       <div className="ml-3 w-[15rem] flex flex-col max-h-[40.5rem] justify-between ">
         <SummaryBox
           heading={"Today's Report"}
-          data={todaysSummary}
           className={" flex-1"}
+          data={todaysData}
         />
-        <SummaryBox heading={"Summary"} className={" flex-1"} />
+        <SummaryBox
+          heading={"Summary"}
+          className={" flex-1"}
+          data={summaryData}
+        />
       </div>
     </div>
   );

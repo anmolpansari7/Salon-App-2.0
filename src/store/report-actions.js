@@ -79,6 +79,7 @@ export const getTodaysReportSummary = () => {
       .get(`${process.env.REACT_APP_BASE_URL}/report/todays-report-summary`)
       .then((res) => {
         dispatch(reportActions.loadTodaysReportSummary(res.data));
+        console.log(res.data);
       })
       .catch((err) => {
         if (err.response) {
