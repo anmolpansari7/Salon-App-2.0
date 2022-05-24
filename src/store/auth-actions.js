@@ -26,6 +26,7 @@ export const authenticateRequest = (
             });
           } else {
             localStorage.setItem("branchToken", res.data.token);
+            localStorage.setItem("branchId", selectedBranch);
             dispatch(authSliceAction.setIsAuthBranchTrue());
             dispatch(authSliceAction.setBranchId(selectedBranch));
             toast({

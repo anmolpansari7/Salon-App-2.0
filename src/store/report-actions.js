@@ -94,3 +94,24 @@ export const getTodaysReportSummary = () => {
       });
   };
 };
+
+export const getCustomerReport = (name) => {
+  return (dispatch) => {
+    axios
+      .get(`${process.env.REACT_APP_BASE_URL}/report/${name}`)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        if (err.response) {
+          // toast.error("Not Authenticated ! for getting customer data");
+          // localStorage.removeItem("ownerToken");
+          // dispatch(authSliceAction.setIsAuthFalse());
+          console.log(err);
+        } else {
+          // toast.error("Server Disconnected!");
+          console.log(err);
+        }
+      });
+  };
+};

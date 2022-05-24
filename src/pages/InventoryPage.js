@@ -21,7 +21,6 @@ const InventoryPage = () => {
   return (
     <PageContainer>
       <StockItems />
-      <PreviouslySoldItems />
       {isAuthOwner && (
         <FloatingButton
           content={"New Item"}

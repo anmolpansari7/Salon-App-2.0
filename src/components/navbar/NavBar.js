@@ -23,6 +23,7 @@ const NavBar = ({
   const onLogout = () => {
     localStorage.removeItem("ownerToken");
     localStorage.removeItem("branchToken");
+    localStorage.removeItem("branchId");
 
     dispatch(authSliceAction.setIsAuthOwnerFalse());
     dispatch(authSliceAction.setIsAuthBranchFalse());

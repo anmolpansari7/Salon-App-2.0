@@ -5,6 +5,7 @@ import { authenticateRequest } from "../store/auth-actions";
 import keyImage from "./../assets/key.svg";
 import { Button, Select, useToast } from "@chakra-ui/react";
 import { getBranches } from "../store/branch-actions";
+import { authSliceAction } from "../store/auth-slice";
 
 const AuthPage = () => {
   const toast = useToast();
@@ -26,6 +27,20 @@ const AuthPage = () => {
     dispatch(getBranches());
   }, [dispatch]);
 
+  useEffect(() => {
+    const ownerToken = localStorage.getItem("ownerToken");
+    const branchToken = localStorage.getItem("branchToken");
+    const branchId = localStorage.getItem("branchId");
+
+    if (ownerToken) {
+      dispatch(authSliceAction.setIsAuthOwnerTrue());
+      navigate("/price");
+    } else if (branchToken) {
+      dispatch(authSliceAction.setIsAuthBranchTrue());
+      dispatch(authSliceAction.setBranchId(branchId));
+      navigate("/price");
+    }
+  }, []);
   return (
     <div className="h-screen w-screen bg-cover bg-center bg-auth-bg">
       <div className="h-full w-full bg-black bg-opacity-60 flex justify-center items-center">
