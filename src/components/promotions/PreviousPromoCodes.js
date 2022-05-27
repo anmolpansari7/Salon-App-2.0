@@ -106,7 +106,6 @@ const PreviousPromoCodes = () => {
     dispatch(
       getPreviousPromocodes(statusFilter, startDateFilter, endDateFilter)
     );
-    console.log(statusFilter, startDateFilter, endDateFilter);
   }, [dispatch, startDateFilter, endDateFilter, statusFilter]);
 
   return (

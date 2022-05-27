@@ -15,7 +15,7 @@ const UsePackageModal = ({ onHideModal, selectedPack, customerId }) => {
 
   const branchId = useSelector((state) => state.authentication.branchId);
   const staff = useSelector((state) => state.staff.staff);
-  console.log(selectedPack);
+  // console.log(selectedPack);
 
   const [remark, setRemark] = useState("");
   const [servedBy, setServedBy] = useState("");
@@ -44,8 +44,6 @@ const UsePackageModal = ({ onHideModal, selectedPack, customerId }) => {
     }
 
     dispatch(sendNewOrderData(newOrder, toast));
-    console.log(newOrder);
-    console.log(selectedPack);
     onHideModal();
   };
 

@@ -9,6 +9,11 @@ export const getReport = (
   nameFilter
 ) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
       .get(`${process.env.REACT_APP_BASE_URL}/report`, {
         params: {
@@ -18,6 +23,7 @@ export const getReport = (
           endDate: endDateFilter,
           name: nameFilter,
         },
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
         if (res.status === 200) {
@@ -46,6 +52,11 @@ export const getReportSummary = (
   nameFilter
 ) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
       .get(`${process.env.REACT_APP_BASE_URL}/report/report-summary`, {
         params: {
@@ -55,6 +66,7 @@ export const getReportSummary = (
           endDate: endDateFilter,
           name: nameFilter,
         },
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
         dispatch(reportActions.loadReportSummary(res.data));
@@ -75,31 +87,17 @@ export const getReportSummary = (
 
 export const getTodaysReportSummary = () => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
-      .get(`${process.env.REACT_APP_BASE_URL}/report/todays-report-summary`)
+      .get(`${process.env.REACT_APP_BASE_URL}/report/todays-report-summary`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         dispatch(reportActions.loadTodaysReportSummary(res.data));
-        console.log(res.data);
-      })
-      .catch((err) => {
-        if (err.response) {
-          // toast.error("Not Authenticated ! for getting customer data");
-          // localStorage.removeItem("ownerToken");
-          // dispatch(authSliceAction.setIsAuthFalse());
-          console.log(err);
-        } else {
-          // toast.error("Server Disconnected!");
-          console.log(err);
-        }
-      });
-  };
-};
-
-export const getCustomerReport = (name) => {
-  return (dispatch) => {
-    axios
-      .get(`${process.env.REACT_APP_BASE_URL}/report/${name}`)
-      .then((res) => {
         console.log(res.data);
       })
       .catch((err) => {

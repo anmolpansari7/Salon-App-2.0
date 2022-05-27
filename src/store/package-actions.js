@@ -1,14 +1,12 @@
 import axios from "axios";
 import { packageActions } from "./package-slice";
-// import { authSliceAction } from "./auth-slice";
-// import { customerListActions } from "./customers-slice";
-// import { currentCustomerActions } from "./current-customer-slice";
-// require("dotenv").config();
 
 export const sendNewPackageData = (newPackage, toast) => {
   return (dispatch) => {
-    // const ownerToken = localStorage.getItem("ownerToken");
-    // console.log(newPackage);
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
 
     axios
       .post(
@@ -21,8 +19,8 @@ export const sendNewPackageData = (newPackage, toast) => {
           packageAmount: newPackage.packageAmount,
           maxUsage: newPackage.maxUsage,
           validFor: newPackage.validFor,
-        }
-        // { headers: { Authorization: `Bearer ${ownerToken}` } }
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
       )
       .then((res) => {
         toast({
@@ -56,6 +54,11 @@ export const getPreviousPackageData = (
   name
 ) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
       .get(`${process.env.REACT_APP_BASE_URL}/package`, {
         params: {
@@ -63,6 +66,7 @@ export const getPreviousPackageData = (
           endDate: endDateFilter,
           name: name,
         },
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
         dispatch(packageActions.loadPreviousPackages(res.data));
@@ -83,8 +87,15 @@ export const getPreviousPackageData = (
 
 export const getAllActivePackages = () => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
-      .get(`${process.env.REACT_APP_BASE_URL}/package/active-package-list`)
+      .get(`${process.env.REACT_APP_BASE_URL}/package/active-package-list`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         dispatch(packageActions.loadAllActivePackages(res.data));
       })
@@ -141,13 +152,24 @@ export const assignPackage = (customerId, pack, toast) => {
   let validTill = getValidity(pack.validFor);
 
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
-      .patch(`${process.env.REACT_APP_BASE_URL}/package/assign-package`, {
-        customerId,
-        packageId,
-        maxUsage,
-        validTill,
-      })
+      .patch(
+        `${process.env.REACT_APP_BASE_URL}/package/assign-package`,
+        {
+          customerId,
+          packageId,
+          maxUsage,
+          validTill,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((res) => {
         console.log("Package Assigned ! ");
         toast({

@@ -17,7 +17,6 @@ import ConfirmDeleteModal from "./ConfirmDeleteModal";
 const StockItems = () => {
   const dispatch = useDispatch();
   const inventoryItems = useSelector((state) => state.inventory.inventoryItems);
-  console.log(inventoryItems);
 
   const [showAddItemToBranchModal, setShowAddItemToBranchModal] =
     useState(false);
@@ -47,7 +46,6 @@ const StockItems = () => {
     dispatch(getInventoryItems());
   }, []);
 
-  console.log(inventoryItems);
   return (
     <Card className="w-7/12 max-h-[42rem] overflow-auto text-center mx-auto">
       <CardHeading className=" text-lg">Items in Stock -</CardHeading>

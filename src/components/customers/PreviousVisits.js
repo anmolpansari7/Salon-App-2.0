@@ -19,8 +19,6 @@ const PreviousVisits = () => {
     (state) => state.currentCustomer.currentCustomerOrders
   );
 
-  console.log(orders);
-
   const data = useMemo(
     () =>
       orders.map((order) => {

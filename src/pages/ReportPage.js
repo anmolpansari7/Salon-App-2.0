@@ -15,13 +15,14 @@ import moment from "moment";
 
 const ReportPage = () => {
   const dispatch = useDispatch();
-  const [branchFilter, setBranchFilter] = useState("");
+  const branch = localStorage.getItem("branchId") || "";
+  const [branchFilter, setBranchFilter] = useState(branch);
   const [staffFilter, setStaffFilter] = useState("");
   const [startDateFilter, setStartDateFilter] = useState("");
   const [endDateFilter, setEndDateFilter] = useState("");
   const [nameFilter, setNameFilter] = useState("");
   const report = useSelector((state) => state.report.report);
-
+  console.log("branchFilter", branchFilter);
   const todaysReportSummary = useSelector(
     (state) => state.report.todaysReportSummary
   );

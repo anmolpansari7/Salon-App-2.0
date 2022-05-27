@@ -12,19 +12,21 @@ export const getCustomers = (
   nameFilter
 ) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
-      .get(
-        `${process.env.REACT_APP_BASE_URL}/customer`,
-        {
-          params: {
-            type: typeFilter,
-            startDate: startDateFilter,
-            endDate: endDateFilter,
-            name: nameFilter,
-          },
-        }
-        // { headers: { Authorization: `Bearer ${ownerToken}` } }
-      )
+      .get(`${process.env.REACT_APP_BASE_URL}/customer`, {
+        params: {
+          type: typeFilter,
+          startDate: startDateFilter,
+          endDate: endDateFilter,
+          name: nameFilter,
+        },
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         if (res.status === 200) {
           dispatch(customerListActions.loadCustomerList(res.data));
@@ -46,11 +48,15 @@ export const getCustomers = (
 
 export const getTodaysBirthday = () => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
-      .get(
-        `${process.env.REACT_APP_BASE_URL}/customer/todays-birthday`
-        // { headers: { Authorization: `Bearer ${ownerToken}` } }
-      )
+      .get(`${process.env.REACT_APP_BASE_URL}/customer/todays-birthday`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         dispatch(customerListActions.loadTodaysBirthday(res.data));
       })

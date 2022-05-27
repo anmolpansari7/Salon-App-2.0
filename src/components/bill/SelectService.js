@@ -9,7 +9,6 @@ const SelectService = ({
   placeholder,
   selectedItems,
   setSelectedItems,
-  setCartValue,
   setPromo,
   setDiscountFromPromoCode,
 }) => {
@@ -22,17 +21,14 @@ const SelectService = ({
       idx: uuidv4(),
     };
     setSelectedItems([...selectedItems, selectedItem]);
-    setCartValue((state) => state + selectedItem.cost);
     setPromo("");
     setDiscountFromPromoCode("");
     e.target.value = "";
   };
 
   const onItemDelete = (idx) => {
-    let currItem = selectedItems.find((item) => item.idx === idx);
     let currList = selectedItems.filter((item) => item.idx !== idx);
     setSelectedItems(currList);
-    setCartValue((state) => state - currItem.cost);
     setPromo("");
     setDiscountFromPromoCode("");
   };

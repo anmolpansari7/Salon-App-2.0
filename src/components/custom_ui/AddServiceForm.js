@@ -19,7 +19,7 @@ const AddServiceForm = ({ category, gender }) => {
     }
 
     dispatch(sendServiceData(gender, category, name, cost));
-    console.log(gender, category, name, cost);
+
     setCost(0);
     setName("");
   };

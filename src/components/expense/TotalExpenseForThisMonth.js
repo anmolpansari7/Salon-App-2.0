@@ -13,7 +13,6 @@ const ExpenseSummary = () => {
     summaries.forEach((summary) => {
       curr += summary.totalAmount;
     });
-    console.log(curr);
     setTotal(curr);
   }, [summaries]);
 

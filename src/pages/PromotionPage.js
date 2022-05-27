@@ -30,8 +30,6 @@ const PromotionPage = () => {
   const [endDateFilter, setEndDateFilter] = useState("");
   const [nameFilter, setNameFilter] = useState("");
 
-  console.log(customers);
-
   const data = customers.map((customer) => {
     const age = getAge(customer.dob);
     return {

@@ -3,8 +3,15 @@ import { inventoryItemActions } from "./inventory-item-slice";
 
 export const getInventoryItems = () => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
-      .get(`${process.env.REACT_APP_BASE_URL}/inventory`)
+      .get(`${process.env.REACT_APP_BASE_URL}/inventory`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) =>
         dispatch(inventoryItemActions.loadInventoryItems(res.data))
       )
@@ -24,6 +31,11 @@ export const getInventoryItems = () => {
 
 export const sendNewInventoryItemData = (newInventoryItem, toast) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
       .post(
         `${process.env.REACT_APP_BASE_URL}/inventory/add`,
@@ -31,8 +43,8 @@ export const sendNewInventoryItemData = (newInventoryItem, toast) => {
           gender: newInventoryItem.gender,
           name: newInventoryItem.name,
           cost: newInventoryItem.cost,
-        }
-        // { headers: { Authorization: `Bearer ${ownerToken}` } }
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
       )
       .then(() => {
         toast({
@@ -61,6 +73,11 @@ export const sendNewInventoryItemData = (newInventoryItem, toast) => {
 
 export const updateInventoryItem = (id, gender, name, cost, toast) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
       .patch(
         `${process.env.REACT_APP_BASE_URL}/inventory/update/${id}`,
@@ -68,8 +85,10 @@ export const updateInventoryItem = (id, gender, name, cost, toast) => {
           gender,
           name,
           cost,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
-        // { headers: { Authorization: `Bearer ${ownerToken}` } }
       )
       .then(() => {
         toast({
@@ -98,13 +117,20 @@ export const updateInventoryItem = (id, gender, name, cost, toast) => {
 
 export const deleteInventoryItem = (itemId, toast) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
       .patch(
         `${process.env.REACT_APP_BASE_URL}/inventory/delete/${itemId}`,
         {
           status: "deleted",
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
-        // { headers: { Authorization: `Bearer ${ownerToken}` } }
       )
       .then(() => {
         toast({
@@ -131,6 +157,11 @@ export const deleteInventoryItem = (itemId, toast) => {
 
 export const addItemToBranch = (itemId, branchId, quantity, toast) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
       .patch(
         `${process.env.REACT_APP_BASE_URL}/inventory/distributions`,
@@ -138,8 +169,10 @@ export const addItemToBranch = (itemId, branchId, quantity, toast) => {
           itemId,
           branchId,
           quantity,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
-        // { headers: { Authorization: `Bearer ${ownerToken}` } }
       )
       .then(() => {
         toast({

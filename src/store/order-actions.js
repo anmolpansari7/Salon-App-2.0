@@ -6,6 +6,11 @@ import {
 
 export const sendNewOrderData = (newOrder, toast) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
       .post(
         `${process.env.REACT_APP_BASE_URL}/order`,
@@ -25,8 +30,8 @@ export const sendNewOrderData = (newOrder, toast) => {
           promoCode: newOrder.promoCode,
           packageId: newOrder.packageId,
           servedBy: newOrder.servedBy,
-        }
-        // { headers: { Authorization: `Bearer ${ownerToken}` } }
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
       )
       .then((res) => {
         toast({

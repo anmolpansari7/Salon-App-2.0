@@ -1,4 +1,4 @@
-export const validateNewOrder = (newOrder, toast) => {
+export const validateNewOrder = (newOrder, inventoryItems, branchId, toast) => {
   if (
     newOrder.serviceIds.length === 0 &&
     newOrder.inventoryItemIds.length === 0

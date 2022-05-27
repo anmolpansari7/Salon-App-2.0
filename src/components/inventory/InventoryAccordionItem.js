@@ -51,7 +51,7 @@ const InventoryAccordionItem = ({
             ) {
               return (
                 <div
-                  key={branch.name}
+                  key={branch.branchId}
                   className=" flex justify-between border-b border-gray-500"
                 >
                   <p className="self-end">{branch.branch}</p>

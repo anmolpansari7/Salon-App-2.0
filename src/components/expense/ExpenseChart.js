@@ -41,7 +41,6 @@ const renderCustomizedLabel = ({
 
 const ExpenseChart = () => {
   const summaries = useSelector((state) => state.expense.expenseSummary);
-  console.log(summaries);
 
   const data = summaries.map((summary) => ({
     name: summary._id,

@@ -66,12 +66,20 @@ export const requestPasswordChangeForOwner = (
   toast
 ) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
       .patch(
         `${process.env.REACT_APP_BASE_URL}/authentication/change-owner-password`,
         {
           newPassword: newPassword,
           currentPassword: currentPassword,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
       )
       .then(() => {
@@ -107,6 +115,11 @@ export const requestPasswordChangeForBranch = (
   toast
 ) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
       .patch(
         `${process.env.REACT_APP_BASE_URL}/authentication/change-branch-password`,
@@ -114,6 +127,9 @@ export const requestPasswordChangeForBranch = (
           newPassword: newPassword,
           currentPassword: currentPassword,
           branchId: branchId,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
       )
       .then(() => {

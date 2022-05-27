@@ -6,8 +6,15 @@ import { servicesAction } from "./services-slice";
 
 export const getServicesData = () => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
-      .get(`${process.env.REACT_APP_BASE_URL}/service`)
+      .get(`${process.env.REACT_APP_BASE_URL}/service`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         if (res.status === 200) {
           dispatch(servicesAction.loadServices(res.data));
@@ -25,6 +32,11 @@ export const sendServiceData = (gender, category, name, cost) => {
     // Send Data to DB
     // const ownerToken = localStorage.getItem("ownerToken");
 
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
       .post(
         `${process.env.REACT_APP_BASE_URL}/service/add`,
@@ -33,8 +45,8 @@ export const sendServiceData = (gender, category, name, cost) => {
           category: category,
           name: name,
           cost: cost,
-        }
-        // { headers: { Authorization: `Bearer ${ownerToken}` } }
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
       )
       .then(() => {
         // toast.success("Item Added! 👍");
@@ -57,6 +69,10 @@ export const sendServiceData = (gender, category, name, cost) => {
 
 export const deleteServiceData = (id) => {
   // const ownerToken = localStorage.getItem("ownerToken");
+  let token = localStorage.getItem("ownerToken");
+  if (token === null) {
+    token = localStorage.getItem("branchToken");
+  }
 
   return (dispatch) => {
     axios
@@ -64,10 +80,10 @@ export const deleteServiceData = (id) => {
         `${process.env.REACT_APP_BASE_URL}/service/${id}`,
         {
           status: "deleted",
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
-        // {
-        //   headers: { Authorization: `Bearer ${ownerToken}` },
-        // }
       )
       .then(() => {
         // toast.success("Item Removed! ✌");

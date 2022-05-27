@@ -18,7 +18,7 @@ const ReportFilters = ({
 }) => {
   const staff = useSelector((state) => state.staff.staff);
   const branches = useSelector((state) => state.branch.branchList);
-
+  const isOwner = localStorage.getItem("ownerToken");
   const clearFilters = () => {
     setBranchFilter("");
     setStaffFilter("");
@@ -34,6 +34,7 @@ const ReportFilters = ({
           placeholder="Filter by Branch"
           fontSize={"0.875rem"}
           size={"sm"}
+          disabled={!isOwner}
           alignSelf={"center"}
           value={branchFilter}
           onChange={(e) => {

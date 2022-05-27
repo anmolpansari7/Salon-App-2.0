@@ -3,14 +3,24 @@ import { promoCodeActions } from "./promocode-slice";
 
 export const sendNewPromoCodeData = (newPromoCode, toast) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
     axios
-      .post(`${process.env.REACT_APP_BASE_URL}/promocode/create`, {
-        promoCode: newPromoCode.promoCode,
-        validFrom: newPromoCode.validFrom,
-        validTill: newPromoCode.validTill,
-        discountType: newPromoCode.discountType,
-        discountValue: newPromoCode.discountValue,
-      })
+      .post(
+        `${process.env.REACT_APP_BASE_URL}/promocode/create`,
+        {
+          promoCode: newPromoCode.promoCode,
+          validFrom: newPromoCode.validFrom,
+          validTill: newPromoCode.validTill,
+          discountType: newPromoCode.discountType,
+          discountValue: newPromoCode.discountValue,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((res) => {
         toast({
           title: "New PromoCode Created.",
@@ -42,6 +52,10 @@ export const getPreviousPromocodes = (
   endDateFilter
 ) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
     axios
       .get(`${process.env.REACT_APP_BASE_URL}/promocode`, {
         params: {
@@ -49,6 +63,7 @@ export const getPreviousPromocodes = (
           startDate: startDateFilter,
           endDate: endDateFilter,
         },
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
         dispatch(promoCodeActions.loadPreviousPromoCodes(res.data));
@@ -69,8 +84,17 @@ export const getPreviousPromocodes = (
 
 export const getAllActivePromocodes = () => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
     axios
-      .get(`${process.env.REACT_APP_BASE_URL}/promocode/active-promocode-list`)
+      .get(
+        `${process.env.REACT_APP_BASE_URL}/promocode/active-promocode-list`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((res) => {
         dispatch(promoCodeActions.loadAllActivePromoCodes(res.data));
       })
@@ -90,13 +114,23 @@ export const getAllActivePromocodes = () => {
 
 export const updateStatus = (id, status) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
-      .patch(`${process.env.REACT_APP_BASE_URL}/promocode/${id}`, {
-        status: status,
-      })
+      .patch(
+        `${process.env.REACT_APP_BASE_URL}/promocode/${id}`,
+        {
+          status: status,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((res) => {
         // dispatch(promoCodeActions.loadAllActivePromoCodes(res.data));
-        console.log(res.data);
         dispatch(getPreviousPromocodes("", "", ""));
       })
       .catch((err) => {

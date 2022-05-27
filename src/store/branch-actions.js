@@ -3,8 +3,14 @@ import { branchAction } from "./branch-slice";
 
 export const getBranches = () => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
     axios
-      .get(`${process.env.REACT_APP_BASE_URL}/branch`)
+      .get(`${process.env.REACT_APP_BASE_URL}/branch`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         dispatch(branchAction.loadBranches(res.data));
       })
@@ -24,11 +30,21 @@ export const getBranches = () => {
 
 export const sendNewBranchData = (newBranch, onHideModal, toast) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
     axios
-      .post(`${process.env.REACT_APP_BASE_URL}/branch/add`, {
-        name: newBranch.name,
-        password: newBranch.password,
-      })
+      .post(
+        `${process.env.REACT_APP_BASE_URL}/branch/add`,
+        {
+          name: newBranch.name,
+          password: newBranch.password,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((res) => {
         toast({
           title: "Congratulations!",
@@ -72,10 +88,21 @@ export const deleteBranch = (id, branches, toast) => {
   }
 
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
-      .patch(`${process.env.REACT_APP_BASE_URL}/branch/delete/${id}`, {
-        status: "deleted",
-      })
+      .patch(
+        `${process.env.REACT_APP_BASE_URL}/branch/delete/${id}`,
+        {
+          status: "deleted",
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((res) => {
         toast({
           title: "Branch Deleted!",

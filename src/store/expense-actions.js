@@ -3,8 +3,15 @@ import { expenseActions } from "./expense-slice";
 
 export const getExpenseCategories = () => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
-      .get(`${process.env.REACT_APP_BASE_URL}/expense/categories`)
+      .get(`${process.env.REACT_APP_BASE_URL}/expense/categories`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         dispatch(expenseActions.loadExpenseCategories(res.data));
       })
@@ -24,13 +31,20 @@ export const getExpenseCategories = () => {
 
 export const sendNewExpenseCategories = (newExpenseCategory, toast) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
       .post(
         `${process.env.REACT_APP_BASE_URL}/expense/add-expense-category`,
         {
           name: newExpenseCategory,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
-        // { headers: { Authorization: `Bearer ${ownerToken}` } }
       )
       .then((res) => {
         toast({
@@ -58,11 +72,19 @@ export const sendNewExpenseCategories = (newExpenseCategory, toast) => {
 
 export const deleteExpenseCategory = (id, toast) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
       .patch(
         `${process.env.REACT_APP_BASE_URL}/expense/delete-expense-category/${id}`,
         {
           status: "deleted",
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
       )
       .then((res) => {
@@ -91,15 +113,25 @@ export const deleteExpenseCategory = (id, toast) => {
 
 export const sendNewExpenseData = (newExpense, toast) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
-      .post(`${process.env.REACT_APP_BASE_URL}/expense/add`, {
-        branch: newExpense.branch,
-        category: newExpense.category,
-        amount: newExpense.amount,
-        remark: newExpense.remark,
-      })
+      .post(
+        `${process.env.REACT_APP_BASE_URL}/expense/add`,
+        {
+          branch: newExpense.branch,
+          category: newExpense.category,
+          amount: newExpense.amount,
+          remark: newExpense.remark,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((res) => {
-        console.log(res.data);
         toast({
           title: "Added !",
           description: "New expense has been added successfully",
@@ -125,26 +157,33 @@ export const sendNewExpenseData = (newExpense, toast) => {
 };
 
 // get all expenses
-// export const getExpenses = () => {
-//   return (dispatch) => {
-//     axios
-//       .get(`${process.env.REACT_APP_BASE_URL}/expense`)
-//       .then((res) => {
-//         dispatch(expenseActions.loadPreviousExpenses(res.data));
-//       })
-//       .catch((err) => {
-//         if (err.response) {
-//           //   toast.error("Not Authenticated !");
-//           //   localStorage.removeItem("ownerToken");
-//           //   dispatch(authSliceAction.setIsAuthFalse());
-//           console.log(err);
-//         } else {
-//           //   toast.error("Server Disconnected!");
-//           console.log(err);
-//         }
-//       });
-//   };
-// };
+export const getExpenses = () => {
+  return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
+    axios
+      .get(`${process.env.REACT_APP_BASE_URL}/expense`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        dispatch(expenseActions.loadPreviousExpenses(res.data));
+      })
+      .catch((err) => {
+        if (err.response) {
+          //   toast.error("Not Authenticated !");
+          //   localStorage.removeItem("ownerToken");
+          //   dispatch(authSliceAction.setIsAuthFalse());
+          console.log(err);
+        } else {
+          //   toast.error("Server Disconnected!");
+          console.log(err);
+        }
+      });
+  };
+};
 
 export const getExpenseSummary = (
   branchFilter,
@@ -152,6 +191,11 @@ export const getExpenseSummary = (
   endDateFilter
 ) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
       .get(
         //summary?branch=b&startdate=date1&enddate=date2
@@ -162,6 +206,7 @@ export const getExpenseSummary = (
             startdate: startDateFilter,
             enddate: endDateFilter,
           },
+          headers: { Authorization: `Bearer ${token}` },
         }
       )
       .then((res) => {
@@ -188,6 +233,11 @@ export const getExpenseDetails = (
   endDateFilter
 ) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
       .get(
         //summary?branch=b&startdate=date1&enddate=date2
@@ -198,6 +248,7 @@ export const getExpenseDetails = (
             startdate: startDateFilter,
             enddate: endDateFilter,
           },
+          headers: { Authorization: `Bearer ${token}` },
         }
       )
       .then((res) => {

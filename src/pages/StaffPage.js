@@ -8,6 +8,7 @@ import AddStaffModal from "../components/staff/AddStaffModal";
 import { useDispatch, useSelector } from "react-redux";
 import { getStaffList } from "../store/staff-actions";
 import moment from "moment";
+import AadharPreviewModal from "../components/staff/AadharPreviewModal";
 
 const StaffPage = () => {
   const dispatch = useDispatch();
@@ -19,7 +20,9 @@ const StaffPage = () => {
   const [startDateFilter, setStartDateFilter] = useState("");
   const [endDateFilter, setEndDateFilter] = useState("");
 
+  const [imageId, setImageId] = useState("");
   const [showAddStaffModal, setShowAddStaffModal] = useState(false);
+  const [showAadharPreviewModal, setShowAadharPreviewModal] = useState(false);
 
   const onShowAddStaffModal = () => {
     setShowAddStaffModal(true);
@@ -27,6 +30,9 @@ const StaffPage = () => {
 
   const onHideStaffModal = () => {
     setShowAddStaffModal(false);
+  };
+  const onHideAadharPreviewModal = () => {
+    setShowAadharPreviewModal(false);
   };
 
   function getAge(dateString) {
@@ -44,7 +50,6 @@ const StaffPage = () => {
     () =>
       staff.map((member) => {
         const age = getAge(member.dob);
-
         return {
           col1: `${member.name}`,
           col2: `${age} ${member.gender}`,
@@ -52,7 +57,18 @@ const StaffPage = () => {
           col4: `${member.due}`,
           col5: `${member.address}`,
           col6: `${moment(member.createdAt).format("ll")}`,
-          col7: "click to see",
+          col7: (
+            <button
+              type="button"
+              id={member.aadhar}
+              onClick={() => {
+                setImageId(member.aadhar);
+                setShowAadharPreviewModal(true);
+              }}
+            >
+              click to see
+            </button>
+          ),
         };
       }),
     [staff]
@@ -154,6 +170,12 @@ const StaffPage = () => {
         />
       )}
       {showAddStaffModal && <AddStaffModal onHideModal={onHideStaffModal} />}
+      {showAadharPreviewModal && (
+        <AadharPreviewModal
+          onHideModal={onHideAadharPreviewModal}
+          imageId={imageId}
+        />
+      )}
     </div>
   );
 };

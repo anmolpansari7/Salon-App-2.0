@@ -7,7 +7,10 @@ import { currentCustomerActions } from "./current-customer-slice";
 
 export const sendNewCustomerData = (newCustomer, navigate, toast) => {
   return (dispatch) => {
-    // const ownerToken = localStorage.getItem("ownerToken");
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
 
     axios
       .post(
@@ -18,8 +21,8 @@ export const sendNewCustomerData = (newCustomer, navigate, toast) => {
           contact: newCustomer.contact,
           dob: newCustomer.dob,
           address: newCustomer.address,
-        }
-        // { headers: { Authorization: `Bearer ${ownerToken}` } }
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
       )
       .then((res) => {
         const newCustomerId = res.data;
@@ -51,14 +54,14 @@ export const sendNewCustomerData = (newCustomer, navigate, toast) => {
 
 export const getCurrentCustomerData = (id) => {
   return (dispatch) => {
-    // const ownerToken = localStorage.getItem("ownerToken");
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
 
     const url = `${process.env.REACT_APP_BASE_URL}/customer/details/${id}`;
     axios
-      .get(
-        url
-        // { headers: { Authorization: `Bearer ${ownerToken}` } }
-      )
+      .get(url, { headers: { Authorization: `Bearer ${token}` } })
       .then((res) => {
         if (res.status === 200) {
           dispatch(currentCustomerActions.loadCurrCustomer(res.data));
@@ -84,20 +87,22 @@ export const getCurrentCustomerOrders = (
   startDateFilter,
   endDateFilter
 ) => {
+  let token = localStorage.getItem("ownerToken");
+  if (token === null) {
+    token = localStorage.getItem("branchToken");
+  }
+
   return (dispatch) => {
     const url = `${process.env.REACT_APP_BASE_URL}/customer/details/${id}/orders`;
     axios
-      .get(
-        url,
-        {
-          params: {
-            staff: staffFilter,
-            startDate: startDateFilter,
-            endDate: endDateFilter,
-          },
-        }
-        // { headers: { Authorization: `Bearer ${ownerToken}` } }
-      )
+      .get(url, {
+        params: {
+          staff: staffFilter,
+          startDate: startDateFilter,
+          endDate: endDateFilter,
+        },
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         if (res.status === 200) {
           dispatch(currentCustomerActions.loadCurrCustomerOrders(res.data));
@@ -119,13 +124,19 @@ export const getCurrentCustomerOrders = (
 
 export const updateCurrentCustomerData = (id, points, dues) => {
   return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
     axios
       .patch(
         `${process.env.REACT_APP_BASE_URL}/customer/update-dues-points/${id}`,
         {
           points: points,
           dues: dues,
-        }
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
       )
       .then((res) => {
         if (res.status === 200) {

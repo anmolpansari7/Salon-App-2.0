@@ -66,7 +66,6 @@ const AddCustomerModal = ({ onHideModal }) => {
       address: address,
     };
 
-    console.log(newCustomer);
     dispatch(sendNewCustomerData(newCustomer, navigate, toast));
     onHideModal();
   };

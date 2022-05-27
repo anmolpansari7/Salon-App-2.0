@@ -17,12 +17,6 @@ const UpdateInventoryItemModal = ({ id, n, g, c, onHideModal }) => {
   const [cost, setCost] = useState(c);
 
   const onItemModify = () => {
-    const newInventoryItem = {
-      gender: forGender,
-      name: itemName,
-      cost: cost,
-    };
-    console.log(newInventoryItem);
     dispatch(updateInventoryItem(id, forGender, itemName, cost, toast));
     onHideModal();
   };

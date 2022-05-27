@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Modal from "../custom_ui/Modal";
 import CardHeading from "../custom_ui/CardHeading";
 import SelectService from "./SelectService";
+import SelectInventoryItem from "./SelectInventoryItem";
 import TotalingDetails from "./TotalingDetails";
 import PrimaryButton from "../custom_ui/PrimaryButton";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,7 +30,10 @@ const BillingModal = ({ onHideBillingModal, customerId }) => {
   inventoryItems.forEach((item) => {
     item.distributions.forEach((distribution) => {
       if (distribution.branchId === branchId) {
-        currentBranchInventoryItem.push(item);
+        currentBranchInventoryItem.push({
+          ...item,
+          maxQuantity: distribution.quantity,
+        });
       }
     });
   });
@@ -47,8 +51,25 @@ const BillingModal = ({ onHideBillingModal, customerId }) => {
   const [paymentMode, setPaymentMode] = useState("");
   const [serviceGivenBy, setServiceGivenBy] = useState("");
   const [remark, setRemark] = useState("");
+  const [render, setRender] = useState(false);
 
-  console.log(branchId);
+  const updateCartValue = () => {
+    const items = [...selectedInventoryItems, ...selectedServices];
+    let totalCost = 0;
+    items.forEach((item) => {
+      if (item.hasOwnProperty("quantity")) {
+        totalCost += item.quantity * item.cost;
+      } else {
+        totalCost += item.cost;
+      }
+    });
+    setCartValue(totalCost);
+  };
+
+  useEffect(
+    () => updateCartValue(),
+    [selectedInventoryItems, selectedServices, render]
+  );
 
   const onPlaceOrder = () => {
     const totalAmount = cartValue - discountFromPoints - discountFromPromoCode;
@@ -57,9 +78,13 @@ const BillingModal = ({ onHideBillingModal, customerId }) => {
     const pointsEarned = Math.floor(totalAmount * pointsPerRupee);
 
     const selectedServiceIds = selectedServices.map((service) => service._id);
-    const selectedInventoryItemIds = selectedInventoryItems.map(
-      (item) => item._id
-    );
+    const selectedInventoryItemIds = selectedInventoryItems.map((item) => {
+      return {
+        _id: item._id,
+        quantity: item.quantity,
+      };
+    });
+
     const newOrder = {
       type: "order",
       branchId: branchId,
@@ -78,7 +103,7 @@ const BillingModal = ({ onHideBillingModal, customerId }) => {
       servedBy: serviceGivenBy,
     };
 
-    if (!validateNewOrder(newOrder, toast)) {
+    if (!validateNewOrder(newOrder, inventoryItems, branchId, toast)) {
       return;
     }
 
@@ -100,6 +125,23 @@ const BillingModal = ({ onHideBillingModal, customerId }) => {
     dis(getAllActivePromocodes());
   }, [dis]);
 
+  const onQuantityChange = (id, quantity) => {
+    if (quantity < 0) {
+      quantity = 1;
+    }
+    let selectedItemIndex = selectedInventoryItems.findIndex(
+      (item) => item._id === id
+    );
+    if (selectedInventoryItems[selectedItemIndex].maxQuantity >= quantity) {
+      selectedInventoryItems[selectedItemIndex].quantity = quantity;
+    } else {
+      selectedInventoryItems[selectedItemIndex].quantity =
+        selectedInventoryItems[selectedItemIndex].maxQuantity;
+    }
+    setRender((state) => !state);
+    setSelectedInventoryItems(selectedInventoryItems);
+  };
+
   return (
     <Modal onHideModal={onHideBillingModal}>
       <CardHeading className=" font-medium text-lg text-center">
@@ -112,16 +154,16 @@ const BillingModal = ({ onHideBillingModal, customerId }) => {
             placeholder={"Select Services"}
             selectedItems={selectedServices}
             setSelectedItems={setSelectedServices}
-            setCartValue={setCartValue}
             setPromo={setPromo}
             setDiscountFromPromoCode={setDiscountFromPromoCode}
           />
-          <SelectService
+          <SelectInventoryItem
             listItems={currentBranchInventoryItem}
             placeholder={"Select Inventory Items"}
             selectedItems={selectedInventoryItems}
             setSelectedItems={setSelectedInventoryItems}
-            setCartValue={setCartValue}
+            // updateCartValue={updateCartValue}
+            onQuantityChange={onQuantityChange}
             setPromo={setPromo}
             setDiscountFromPromoCode={setDiscountFromPromoCode}
           />

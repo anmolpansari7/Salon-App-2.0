@@ -10,8 +10,6 @@ const PreviousExpenses = () => {
     (state) => state.expense.previousExpenses
   );
 
-  console.log(previousExpenses);
-
   const data = useMemo(
     () =>
       previousExpenses.map((expense) => {

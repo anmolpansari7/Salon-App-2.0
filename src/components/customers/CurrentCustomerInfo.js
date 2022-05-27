@@ -9,8 +9,6 @@ const CurrentCustomerInfo = () => {
     (state) => state.currentCustomer.currentCustomer
   );
 
-  console.log(currCustomer);
-
   return (
     <Card>
       <div className="w-full border-b border-dashed border-black pb-2">
