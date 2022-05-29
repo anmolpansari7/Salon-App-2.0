@@ -28,11 +28,13 @@ const MessagePage = () => {
   const [startDateFilter, setStartDateFilter] = useState("");
   const [endDateFilter, setEndDateFilter] = useState("");
   const [nameFilter, setNameFilter] = useState("");
+  const [recipients, setRecipients] = useState([]);
 
   const data = useMemo(() =>
     customers.map((customer) => {
       const age = getAge(customer.dob);
       return {
+        id: `${customer._id}`,
         col1: `${customer.name}`,
         col2: `${customer.gender}`,
         col3: `${age}`,
@@ -45,6 +47,11 @@ const MessagePage = () => {
 
   const columns = useMemo(
     () => [
+      {
+        Header: "Id",
+        accessor: "id",
+        show: false,
+      },
       {
         Header: "Name",
         accessor: "col1", // accessor is the "key" in the data
@@ -100,6 +107,8 @@ const MessagePage = () => {
               className="w-full"
               data={data}
               columns={columns}
+              recipients={recipients}
+              setRecipients={setRecipients}
             />
           </Card>
           <MessagePreview />

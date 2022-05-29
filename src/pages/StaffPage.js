@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getStaffList } from "../store/staff-actions";
 import moment from "moment";
 import AadharPreviewModal from "../components/staff/AadharPreviewModal";
+import EditStaffModal from "../components/staff/EditStaffModal";
 
 const StaffPage = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,8 @@ const StaffPage = () => {
   const [imageId, setImageId] = useState("");
   const [showAddStaffModal, setShowAddStaffModal] = useState(false);
   const [showAadharPreviewModal, setShowAadharPreviewModal] = useState(false);
+  const [showEditStaffModal, setShowEditStaffModal] = useState(false);
+  const [staffMember, setStaffMember] = useState();
 
   const onShowAddStaffModal = () => {
     setShowAddStaffModal(true);
@@ -33,6 +36,9 @@ const StaffPage = () => {
   };
   const onHideAadharPreviewModal = () => {
     setShowAadharPreviewModal(false);
+  };
+  const onHideEditStaffModal = () => {
+    setShowEditStaffModal(false);
   };
 
   function getAge(dateString) {
@@ -45,6 +51,8 @@ const StaffPage = () => {
     }
     return age;
   }
+
+  const isOwner = localStorage.getItem("ownerToken");
 
   const data = useMemo(
     () =>
@@ -67,6 +75,18 @@ const StaffPage = () => {
               }}
             >
               click to see
+            </button>
+          ),
+          col8: (
+            <button
+              type="button"
+              disabled={!isOwner}
+              onClick={() => {
+                setStaffMember(member);
+                setShowEditStaffModal(true);
+              }}
+            >
+              Edit
             </button>
           ),
         };
@@ -103,6 +123,10 @@ const StaffPage = () => {
       {
         Header: "Aadhar Details",
         accessor: "col7",
+      },
+      {
+        Header: "Edit",
+        accessor: "col8",
       },
     ],
     []
@@ -174,6 +198,12 @@ const StaffPage = () => {
         <AadharPreviewModal
           onHideModal={onHideAadharPreviewModal}
           imageId={imageId}
+        />
+      )}
+      {showEditStaffModal && (
+        <EditStaffModal
+          staffMember={staffMember}
+          onHideModal={onHideEditStaffModal}
         />
       )}
     </div>

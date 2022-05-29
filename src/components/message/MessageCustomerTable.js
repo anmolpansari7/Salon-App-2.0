@@ -26,12 +26,15 @@ const MessageCustomerTable = ({ columns, data, className }) => {
     headerGroups,
     rows,
     prepareRow,
-    // selectedFlatRows,
+    selectedFlatRows,
     state: { selectedRowIds },
   } = useTable(
     {
       columns,
       data,
+      initialState: {
+        hiddenColumns: ["id"],
+      },
     },
     useRowSelect,
     (hooks) => {
@@ -97,7 +100,7 @@ const MessageCustomerTable = ({ columns, data, className }) => {
           })}
         </tbody>
       </table>
-      <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
+      <p>Selected Customers: {Object.keys(selectedRowIds).length}</p>
       {/* <pre>
         <code>
           {JSON.stringify(

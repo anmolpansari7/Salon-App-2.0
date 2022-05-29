@@ -2,15 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Modal from "../custom_ui/Modal";
 import { getAadharPreview } from "../../store/staff-actions";
+import loadingGIF from "./../../assets/loading-loading-forever.gif";
 
 const AadharPreviewModal = ({ onHideModal, imageId }) => {
   const dispatch = useDispatch();
   const [file, setFile] = useState("");
-  const [imageSrc, setImageSrc] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (imageId) {
-      dispatch(getAadharPreview(imageId, setFile));
+      dispatch(getAadharPreview(imageId, setFile, setLoading));
     }
   }, [dispatch, imageId]);
 
@@ -21,8 +22,14 @@ const AadharPreviewModal = ({ onHideModal, imageId }) => {
           <span className="m-auto text-gray-400 ">
             Uploaded Document Preview
           </span>
+        ) : loading ? (
+          <img
+            className="h-10 self-center px-56"
+            src={loadingGIF}
+            alt="Loading ..."
+          />
         ) : (
-          <img className=" h-56 w-52" src={file} />
+          <img className="w-96  max-h-96" src={file} alt="Upload Preview" />
         )}
       </div>
     </Modal>

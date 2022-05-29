@@ -11,8 +11,7 @@ import pointsCalculatorSlice from "./points-calculator-slice";
 import staffSlice from "./staff-slice";
 import authSlice from "./auth-slice";
 import reportSlice from "./report-slice";
-
-// import reportSlice from "./report-slice";
+import messageSlice from "./message-slice";
 
 const store = configureStore({
   reducer: {
@@ -28,6 +27,7 @@ const store = configureStore({
     staff: staffSlice.reducer,
     authentication: authSlice.reducer,
     report: reportSlice.reducer,
+    message: messageSlice.reducer,
   },
 });
 

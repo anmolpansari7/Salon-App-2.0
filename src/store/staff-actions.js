@@ -93,23 +93,74 @@ export const sendNewStaffData = (newStaff, toast) => {
   };
 };
 
-export const getAadharPreview = (imageId, setFile) => {
+export const updateCurrentStaffData = (staffId, newData, toast) => {
   return (dispatch) => {
-    // axios
-    //   .get(`${process.env.REACT_APP_BASE_URL}/staff/images/${imageId}`)
-    //   .then((res) => {
-    //     console.log(res);
-    //     setFile(res.data);
-    //   })
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
+    axios
+      .patch(
+        `${process.env.REACT_APP_BASE_URL}/staff/${staffId}`,
+        {
+          gender: newData.gender,
+          name: newData.name,
+          contact: newData.contact,
+          dob: newData.dob,
+          address: newData.address,
+          aadhar: newData.aadhar,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((res) => {
+        toast({
+          title: "Staff's Data Updated !",
+          description: "You have updated staff member's data.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        dispatch(getStaffList("", "", "", ""));
+      })
+      .catch((err) => {
+        if (err.response) {
+          //   toast.error("Not Authenticated !");
+          //   localStorage.removeItem("ownerToken");
+          //   dispatch(authSliceAction.setIsAuthFalse());
+          console.log(err);
+        } else {
+          //   toast.error("Server Disconnected!");
+          console.log(err);
+        }
+      });
+  };
+};
+
+export const deleteImage = async (fileKey) => {
+  const result = await axios.delete(
+    `${process.env.REACT_APP_BASE_URL}/staff/images/${fileKey}`,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    }
+  );
+  return result.data;
+};
+
+export const getAadharPreview = (imageId, setFile, setLoading) => {
+  return (dispatch) => {
+    setLoading(true);
     axios({
       method: "get",
       url: `${process.env.REACT_APP_BASE_URL}/staff/images/${imageId}`,
       responseType: "blob",
     })
       .then((res) => {
-        console.log(res);
         const new_blob = new Blob([res.data], { type: "image/png" });
         const url = URL.createObjectURL(new_blob);
+        setLoading(false);
         setFile(url);
       })
       .catch((err) => {
@@ -122,6 +173,7 @@ export const getAadharPreview = (imageId, setFile) => {
           //   toast.error("Server Disconnected!");
           console.log(err);
         }
+        setLoading(false);
       });
   };
 };

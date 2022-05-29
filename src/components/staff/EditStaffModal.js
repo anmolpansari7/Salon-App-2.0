@@ -4,42 +4,59 @@ import Modal from "../custom_ui/Modal";
 import PrimaryButton from "../custom_ui/PrimaryButton";
 import Input from "../custom_ui/Input";
 import { useDispatch } from "react-redux";
-import { postImage, sendNewStaffData } from "../../store/staff-actions";
+import {
+  deleteImage,
+  getAadharPreview,
+  postImage,
+  updateCurrentStaffData,
+} from "../../store/staff-actions";
 import { useToast } from "@chakra-ui/react";
 import loadingGIF from "./../../assets/loading-loading-forever.gif";
 
-const AddStaffModal = ({ onHideModal }) => {
+const EditStaffModal = ({ onHideModal, staffMember }) => {
   const dispatch = useDispatch();
   const toast = useToast();
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [name, setName] = useState("");
-  const [gender, setGender] = useState("");
-  const [contact, setContact] = useState("");
-  const [dob, setDOB] = useState("");
-  const [address, setAddress] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [name, setName] = useState(staffMember.name);
+  const [gender, setGender] = useState(staffMember.gender);
+  const [contact, setContact] = useState(staffMember.contact);
+  const [dob, setDOB] = useState(staffMember.dob.slice(0, 10));
+  const [address, setAddress] = useState(staffMember.address);
+  const [file, setFile] = useState("");
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
 
-  const onAddStaff = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    let formData = new FormData();
-    formData.append("image", selectedFile);
+  console.log(staffMember);
 
-    const fileName = await postImage(formData);
-    console.log("fileName", fileName);
-    const newStaff = {
+  const onEditStaff = async (e) => {
+    e.preventDefault();
+    setIsUploading(true);
+    let fileName = staffMember.aadhar;
+    if (selectedFile) {
+      let formData = new FormData();
+      formData.append("image", selectedFile);
+      if (staffMember.aadhar) {
+        const delRes = await deleteImage(staffMember.aadhar);
+        console.log(delRes);
+      }
+      const fileObj = await postImage(formData);
+      fileName = fileObj.Key;
+    }
+
+    const newData = {
       name,
       gender,
       contact,
       dob,
       address,
-      fileName: fileName.Key,
+      aadhar: fileName,
     };
 
-    dispatch(sendNewStaffData(newStaff, toast));
-    setIsLoading(false);
+    dispatch(updateCurrentStaffData(staffMember._id, newData, toast));
+    setIsUploading(false);
     onHideModal();
   };
 
@@ -65,16 +82,22 @@ const AddStaffModal = ({ onHideModal }) => {
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedFile]);
 
+  useEffect(() => {
+    if (staffMember.aadhar) {
+      dispatch(getAadharPreview(staffMember.aadhar, setFile, setLoading));
+    }
+  }, [dispatch]);
+
   return (
-    <Modal onHideModal={isLoading ? () => {} : onHideModal} className="">
+    <Modal onHideModal={isUploading ? () => {} : onHideModal} className="">
       <h3
         className={` text-lg border-b border-dashed border-black min-w-[50rem] ${
-          !isLoading && "mb-7"
+          !isUploading && "mb-7"
         }`}
       >
-        Add Staff -
+        Edit Staff -
       </h3>
-      {isLoading && (
+      {isUploading && (
         <div className=" mb-7 flex justify-evenly bg-blue-100 py-3">
           <p className=" self-center">Uploading new Staff data ...</p>
           <img src={loadingGIF} alt="Loading ..." className={" h-10"} />
@@ -84,7 +107,7 @@ const AddStaffModal = ({ onHideModal }) => {
         <form
           action=""
           className="w-1/2"
-          onSubmit={onAddStaff}
+          onSubmit={onEditStaff}
           enctype="multipart/form-data"
         >
           <div className="flex border-b border-dashed border-black justify-between mb-3">
@@ -97,20 +120,24 @@ const AddStaffModal = ({ onHideModal }) => {
               onChange={(e) => {
                 setGender(e.target.value);
               }}
+              checked={gender === "M"}
             />
             <RadioButton
               name="staff-gender"
               id="staff-gender-female"
+              value={gender}
               val="F"
               label="Female"
               onChange={(e) => {
                 setGender(e.target.value);
               }}
+              checked={gender === "F"}
             />
           </div>
           <Input
             type="text"
             id="staff-name"
+            value={name}
             placeholder="-"
             label="Name"
             onChange={(e) => {
@@ -120,6 +147,7 @@ const AddStaffModal = ({ onHideModal }) => {
           <Input
             type="number"
             id="staff-contact"
+            value={contact}
             placeholder="-"
             label="Contact number"
             onChange={(e) => {
@@ -129,6 +157,7 @@ const AddStaffModal = ({ onHideModal }) => {
           <Input
             type="date"
             id="staff-dob"
+            value={dob}
             placeholder="-"
             label="D.O.B"
             onChange={(e) => {
@@ -138,6 +167,7 @@ const AddStaffModal = ({ onHideModal }) => {
           <Input
             type="text"
             id="staff-address"
+            value={address}
             placeholder="-"
             label="Address"
             onChange={(e) => {
@@ -152,15 +182,23 @@ const AddStaffModal = ({ onHideModal }) => {
             onChange={onSelectFile}
             accept="image/*"
           />
-          <PrimaryButton content="Add" type="submit" disabled={isLoading} />
+          <PrimaryButton content="Edit" type="submit" disabled={isUploading} />
         </form>
         <div className=" border-2 border-gray-400 rounded-md flex-1 flex h-64">
           {selectedFile ? (
             <img src={preview} alt="Upload Preview" className={" mx-auto"} />
+          ) : loading ? (
+            <img
+              className="h-10 self-center px-56"
+              src={loadingGIF}
+              alt="Loading ..."
+            />
           ) : (
-            <span className="m-auto text-gray-400 ">
-              Uploaded Document Preview
-            </span>
+            <img
+              className="w-96  max-h-96"
+              src={file}
+              alt="Previous Uploaded File"
+            />
           )}
         </div>
       </div>
@@ -168,4 +206,4 @@ const AddStaffModal = ({ onHideModal }) => {
   );
 };
 
-export default AddStaffModal;
+export default EditStaffModal;
