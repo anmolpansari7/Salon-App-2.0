@@ -52,9 +52,9 @@ const AddInventoryItemModal = ({ onHideModal }) => {
           />
           <RadioButton
             name={"for-gender"}
-            id={"anyones-item"}
-            val={"A"}
-            label={"Anyone"}
+            id={"unisex-item"}
+            val={"U"}
+            label={"Unisex"}
             onChange={(e) => {
               setForGender(e.target.value);
             }}
