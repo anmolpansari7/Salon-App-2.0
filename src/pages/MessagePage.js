@@ -8,6 +8,7 @@ import PreviousMessages from "../components/message/PreviousMessages";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import { getCustomers } from "../store/customer-actions";
+import { sendMessage } from "../store/message-action";
 
 function getAge(dateString) {
   var today = new Date();
@@ -23,18 +24,18 @@ function getAge(dateString) {
 const MessagePage = () => {
   const dispatch = useDispatch();
   const customers = useSelector((state) => state.customers.customerList);
+  const child = React.createRef();
 
   const [typeFilter, setTypeFilter] = useState("");
   const [startDateFilter, setStartDateFilter] = useState("");
   const [endDateFilter, setEndDateFilter] = useState("");
   const [nameFilter, setNameFilter] = useState("");
-  const [recipients, setRecipients] = useState([]);
 
   const data = useMemo(() =>
     customers.map((customer) => {
       const age = getAge(customer.dob);
       return {
-        id: `${customer._id}`,
+        id: `${customer.contact}`,
         col1: `${customer.name}`,
         col2: `${customer.gender}`,
         col3: `${age}`,
@@ -80,6 +81,17 @@ const MessagePage = () => {
     []
   );
 
+  const onSendMessage = (message) => {
+    const g = child.current.getSelectedRows();
+    let recipients = [];
+    g.forEach((ele) => {
+      recipients.push(ele.values.id);
+    });
+    console.log("message : ", message);
+    console.log("recipients : ", recipients);
+    // dispatch(sendMessage(message, recipients));
+  };
+
   useEffect(() => {
     dispatch(
       getCustomers(typeFilter, startDateFilter, endDateFilter, nameFilter)
@@ -105,13 +117,12 @@ const MessagePage = () => {
           <Card className="h-full w-[38rem] overflow-auto">
             <MessageCustomerTable
               className="w-full"
-              data={data}
               columns={columns}
-              recipients={recipients}
-              setRecipients={setRecipients}
+              data={data}
+              setRef={child}
             />
           </Card>
-          <MessagePreview />
+          <MessagePreview onSendMessage={onSendMessage} />
         </div>
       </div>
       <PreviousMessages />

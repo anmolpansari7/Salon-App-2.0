@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useImperativeHandle } from "react";
 import { useTable, useRowSelect } from "react-table";
 
 const IndeterminateCheckbox = React.forwardRef(
@@ -18,7 +18,7 @@ const IndeterminateCheckbox = React.forwardRef(
   }
 );
 
-const MessageCustomerTable = ({ columns, data, className }) => {
+const MessageCustomerTable = ({ className, columns, data, setRef }) => {
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -62,6 +62,14 @@ const MessageCustomerTable = ({ columns, data, className }) => {
     }
   );
 
+  useImperativeHandle(
+    setRef,
+    () => ({
+      getSelectedRows: () => selectedFlatRows,
+    }),
+    [selectedRowIds]
+  );
+
   // Render the UI for your table
   return (
     <>
@@ -81,7 +89,7 @@ const MessageCustomerTable = ({ columns, data, className }) => {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.slice(0, 10).map((row, i) => {
+          {rows.map((row, i) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>

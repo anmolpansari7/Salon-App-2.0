@@ -10,12 +10,15 @@ const useSearchSuggestions = (query) => {
 
   useEffect(() => {
     const source = axios.CancelToken.source();
-    // const ownerToken = localStorage.getItem("ownerToken");
+    let token = localStorage.getItem("ownerToken");
+    if (!token) {
+      token = localStorage.getItem("branchToken");
+    }
 
     if (query.length !== 0) {
       axios
         .get(`${process.env.REACT_APP_BASE_URL}/customer/${query}`, {
-          //   headers: { Authorization: `Bearer ${ownerToken}` },
+          headers: { Authorization: `Bearer ${token}` },
           cancelToken: source.token,
         })
         .then((res) => {

@@ -1,19 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
 import { Textarea } from "@chakra-ui/react";
 import Card from "../container/Card";
 import CardHeading from "../custom_ui/CardHeading";
 import PrimaryButton from "../custom_ui/PrimaryButton";
-import { sendMessage } from "../../store/message-action";
 
-const MessagePreview = ({ recipients }) => {
-  const dispatch = useDispatch();
+const MessagePreview = ({ onSendMessage }) => {
   const [message, setMessage] = useState("");
-
-  const onSendMessage = () => {
-    console.log("Message Body : ", message);
-    // dispatch(sendMessage(message, recipients));
-  };
 
   return (
     <Card className=" max-w-[23rem] flex flex-col justify-between">
@@ -47,7 +39,12 @@ const MessagePreview = ({ recipients }) => {
           pannel.
         </p>
       </div>
-      <PrimaryButton content={"send"} />
+      <PrimaryButton
+        content={"send"}
+        onClick={() => {
+          onSendMessage(message);
+        }}
+      />
     </Card>
   );
 };
