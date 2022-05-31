@@ -42,7 +42,7 @@ const AuthPage = () => {
     }
   }, []);
   return (
-    <div className="h-screen w-screen bg-cover bg-center bg-auth-bg">
+    <div className="h-screen bg-cover bg-center bg-auth-bg">
       <div className="h-full w-full bg-black bg-opacity-60 flex justify-center items-center">
         <form className="bg-white h-78 w-[22rem] py-8 rounded-3xl flex flex-col justify-between space-y-3">
           <h1 className=" text-center font-medium text-2xl">

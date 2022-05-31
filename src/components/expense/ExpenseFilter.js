@@ -36,7 +36,7 @@ const ExpenseFilter = ({
             )
         )}
       </Select>
-      <p className=" self-center">Expense From -</p>
+      <p className=" text-center">Expense From -</p>
       <Input
         type="date"
         size="sm"

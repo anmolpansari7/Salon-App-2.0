@@ -63,7 +63,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className="w-full h-screen bg-app-bg flex flex-col">
+    <div className="w-full max-w-7xl mx-auto h-screen bg-app-bg flex flex-col">
       {(isAuthBranch || isAuthOwner) && (
         <NavBar
           onShowAddCustomerModal={onShowAddCustomerModal}

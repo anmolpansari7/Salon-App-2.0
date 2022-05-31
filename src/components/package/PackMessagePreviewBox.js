@@ -78,16 +78,16 @@ const PackMessagePreviewBox = ({ selectedCustomer, setSelectedCustomer }) => {
           ))}
         </Select>
       </div>
-      <div className="flex-1 flex flex-col justify-between">
+      <div className="flex flex-col">
         <CardHeading className="mb-1 mt-5 text-sm">
           Send this package to
         </CardHeading>
-        <div className=" relative">
+        <div className="relative">
           <Input
             type={"text"}
             size={"sm"}
             placeholder={"Search Customers."}
-            marginTop={"1rem"}
+            marginTop="0.50rem"
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
@@ -100,31 +100,9 @@ const PackMessagePreviewBox = ({ selectedCustomer, setSelectedCustomer }) => {
             onCustomerSelect={onCustomerSelect}
           />
         </div>
-        <p className=" mt-3 text-sm text-gray-400">Selected Customer - </p>
-        <div className=" flex-wrap  border border-gray-400 rounded-md p-3 overflow-auto first:mt-0 h-20">
-          {selectedCustomer.map((customer) => (
-            <Tag
-              kye={customer._id}
-              size={"sm"}
-              borderRadius="full"
-              variant="outline"
-              fontSize={"sm"}
-              padding={"5px"}
-              paddingLeft={"15px"}
-              colorScheme={"blackAlpha"}
-              width={"7rem"}
-              marginRight={"5px"}
-              marginTop={"5px"}
-            >
-              <TagLabel>{customer.name}</TagLabel>
-              <TagCloseButton
-                onClick={() => {
-                  onCustomerRemove(customer._id);
-                }}
-              />
-            </Tag>
-          ))}
-        </div>
+        <p className=" text-sm text-gray-400 mt-2">
+          Selected Customer - {selectedCustomer[0]?.name}
+        </p>
         <PackageBilling
           initialSelectedPackage={initialSelectedPackage}
           selectedPackage={selectedPackage}

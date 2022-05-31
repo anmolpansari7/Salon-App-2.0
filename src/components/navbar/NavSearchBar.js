@@ -17,7 +17,7 @@ const NavSearchBar = () => {
   useShowSuggestions(query);
 
   return (
-    <div className="self-center flex flex-col">
+    <div className="self-center flex flex-col relative">
       <div className=" w-56 h-10 flex justify-between rounded-lg bg-nav-bar-search self-center pr-4">
         <input
           type="text"
@@ -31,7 +31,7 @@ const NavSearchBar = () => {
         />
         <img src={searchIcon} className="h-4 self-center" alt="Search Icon" />
       </div>
-      <div className="absolute top-14 left-10 w-56 max-h-60 overflow-auto z-50">
+      <div className="absolute top-11 w-56 max-h-60 overflow-auto z-50">
         {suggestions.map((customer) => (
           <CustomeLink
             key={customer._id}

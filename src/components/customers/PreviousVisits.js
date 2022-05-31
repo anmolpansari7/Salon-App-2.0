@@ -37,6 +37,8 @@ const PreviousVisits = () => {
           services = `Package Assign - ${order.packageName}`;
         } else if (order.type === "package-usage") {
           services = `Package Usage - ${order.packageName}`;
+        } else if (order.type === "clear-due") {
+          services = `Due Clearance`;
         }
 
         return {

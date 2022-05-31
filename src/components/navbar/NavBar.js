@@ -30,7 +30,7 @@ const NavBar = ({
   };
 
   return (
-    <div className=" h-16 min-h-[4rem] bg-nav-bar-bg flex px-10 font-tabs text-sm justify-between">
+    <div className=" h-16 min-h-[4rem] bg-nav-bar-bg flex px-4 font-tabs text-sm justify-between">
       <NavSearchBar />
       <NavButton title={"Add Customer"} onClick={onShowAddCustomerModal} />
       <CustomLink to="/price">

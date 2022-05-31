@@ -9,7 +9,7 @@ const NavTab = ({ title, isactive }) => {
     <div
       className={
         Bgcolor +
-        " h-10 w-24 flex self-center rounded-lg border-2 border-nav-bar-search shadow-sm hover:border-2 hover:border-nav-active-tab-bg"
+        " h-10 w-[90px] flex self-center rounded-lg border-2 border-nav-bar-search shadow-sm hover:border-2 hover:border-nav-active-tab-bg"
       }
     >
       <p className="w-full self-center text-center">{title}</p>

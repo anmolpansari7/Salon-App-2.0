@@ -89,7 +89,7 @@ const PreviousPromoCodes = () => {
         accessor: "col3",
       },
       {
-        Header: "Valid Before",
+        Header: "Valid Till",
         accessor: "col4",
       },
     ],
@@ -113,7 +113,7 @@ const PreviousPromoCodes = () => {
       <h1 className=" text-base border-b border-dashed border-black mb-2">
         Previous Promocodes.
       </h1>
-      <div className=" flex justify-between">
+      <div className="grid grid-rows-2 grid-flow-col">
         <RadioButton
           name="promocode-status"
           id="promo-active"
@@ -156,21 +156,22 @@ const PreviousPromoCodes = () => {
           }}
           checked={statusFilter === "expired"}
         />
-        <button
-          className=" border border-black px-3 rounded-md"
-          onClick={onClearFilter}
-        >
-          clear
-        </button>
       </div>
-      <div className="flex justify-between">
-        <p className=" text-sm self-center">Valid Btw</p>
+      <button
+        className=" border border-black px-3 rounded-md"
+        onClick={onClearFilter}
+      >
+        clear
+      </button>
+      <div className="flex flex-col ">
+        <p className=" text-sm mb-2">Valid Between</p>
         <Input
           type="date"
           placeholder=""
           size="sm"
           width={"9.5rem"}
           value={startDateFilter}
+          marginBottom="4px"
           onChange={(e) => {
             setStartDateFilter(e.target.value);
           }}
@@ -186,7 +187,7 @@ const PreviousPromoCodes = () => {
           }}
         />
       </div>
-      <div className=" h-[29rem] overflow-auto">
+      <div className="max-h-80 overflow-auto">
         <PreviousPromoTable
           data={data}
           columns={columns}

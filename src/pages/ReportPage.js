@@ -184,7 +184,7 @@ const ReportPage = () => {
   }, [dispatch]);
 
   return (
-    <div className=" bg-app-bg flex-1 px-10 py-5 flex font-body">
+    <div className=" bg-app-bg flex-1 py-5 flex font-body">
       <div className="h-full w-10/12">
         <ReportFilters
           branchFilter={branchFilter}

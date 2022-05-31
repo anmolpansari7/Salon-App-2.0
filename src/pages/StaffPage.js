@@ -58,11 +58,12 @@ const StaffPage = () => {
     () =>
       staff.map((member) => {
         const age = getAge(member.dob);
+        const contactNo = member.contact ? `+91 ${member.contact}` : "--";
         return {
           col1: `${member.name}`,
           col2: `${age} ${member.gender}`,
-          col3: `+91 ${member.contact}`,
-          col4: `${member.due}`,
+          col3: contactNo,
+          // col4: `${member.due}`,
           col5: `${member.address}`,
           col6: `${moment(member.createdAt).format("ll")}`,
           col7: (
@@ -108,10 +109,10 @@ const StaffPage = () => {
         Header: "Contact Number",
         accessor: "col3",
       },
-      {
-        Header: "Due",
-        accessor: "col4",
-      },
+      // {
+      //   Header: "Due",
+      //   accessor: "col4",
+      // },
       {
         Header: "Address",
         accessor: "col5",
@@ -154,10 +155,10 @@ const StaffPage = () => {
       content: "Total Total Staff",
       content2: `${totalMaleStaff + totalFemaleStaff}`,
     },
-    {
-      content: "Total Staff's Due",
-      content2: totalDues,
-    },
+    // {
+    //   content: "Total Staff's Due",
+    //   content2: totalDues,
+    // },
   ];
 
   useEffect(() => {
@@ -167,7 +168,7 @@ const StaffPage = () => {
   }, [dispatch, genderFilter, startDateFilter, endDateFilter, nameFilter]);
 
   return (
-    <div className=" bg-app-bg flex-1 px-10 py-5 flex font-body">
+    <div className=" bg-app-bg flex-1 py-5 flex font-body">
       <div className="h-full w-10/12">
         <StaffFilters
           genderFilter={genderFilter}

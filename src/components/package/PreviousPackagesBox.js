@@ -128,7 +128,9 @@ const PreviousPackagesBox = ({
             clearFilters();
           }}
         />
-        <span className=" self-center text-sm">created between</span>
+        <span className=" self-center text-sm ml-3 text-center">
+          created btw
+        </span>
         <Input
           type="date"
           width={"9.5rem"}

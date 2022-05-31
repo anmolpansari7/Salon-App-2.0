@@ -88,7 +88,7 @@ const PackageBilling = ({
   };
 
   return (
-    <div className="h-72 flex flex-col justify-evenly">
+    <div className=" h-96 flex flex-col justify-end space-y-2 mt-8">
       <ListItemDBtn
         content={"Max Usage : "}
         content2={selectedPackage.maxUsage}
@@ -175,7 +175,7 @@ const PackageBilling = ({
       </div>
       {isAuthOwner ? (
         <p
-          className=" text-center p-1 bg-slate-400 mt-3 text-white rounded-sm"
+          className=" text-center p-1 bg-slate-400 text-white rounded-sm"
           title="Please Login as a Branch to assign packages."
         >
           Package can be assigned by branch only.
