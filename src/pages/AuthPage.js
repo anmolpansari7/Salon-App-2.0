@@ -46,7 +46,7 @@ const AuthPage = () => {
       <div className="h-full w-full bg-black bg-opacity-60 flex justify-center items-center">
         <form className="bg-white h-78 w-[22rem] py-8 rounded-3xl flex flex-col justify-between space-y-3">
           <h1 className=" text-center font-medium text-2xl">
-            Big Boss Unisex Salon
+            Style Zone Unisex Salon
           </h1>
           <img src={keyImage} alt="key" className="h-10" />
           <h2 className="text-lg text-center font-normal -mt-1">
