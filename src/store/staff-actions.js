@@ -62,6 +62,7 @@ export const sendNewStaffData = (newStaff, toast) => {
           address: newStaff.address,
           due: 0,
           aadhar: newStaff.fileName,
+          status: "active",
         },
         {
           headers: {
@@ -110,6 +111,7 @@ export const updateCurrentStaffData = (staffId, newData, toast) => {
           dob: newData.dob,
           address: newData.address,
           aadhar: newData.aadhar,
+          status: "active",
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -174,6 +176,47 @@ export const getAadharPreview = (imageId, setFile, setLoading) => {
           console.log(err);
         }
         setLoading(false);
+      });
+  };
+};
+
+export const removeStaff = (staffId, toast) => {
+  return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
+    axios
+      .patch(
+        `${process.env.REACT_APP_BASE_URL}/staff/remove/${staffId}`,
+        {
+          status: "deleted",
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((res) => {
+        toast({
+          title: "Staff Removed !",
+          description: "",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        dispatch(getStaffList("", "", "", ""));
+      })
+      .catch((err) => {
+        if (err.response) {
+          //   toast.error("Not Authenticated !");
+          //   localStorage.removeItem("ownerToken");
+          //   dispatch(authSliceAction.setIsAuthFalse());
+          console.log(err);
+        } else {
+          //   toast.error("Server Disconnected!");
+          console.log(err);
+        }
       });
   };
 };

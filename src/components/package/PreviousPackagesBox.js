@@ -1,11 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Input, Tooltip } from "@chakra-ui/react";
+import { Input, useToast, Tooltip } from "@chakra-ui/react";
 import Card from "../container/Card";
 import PreviousPackageTable from "./PreviousPackageTable";
 import infoIcon from "./../../assets/info_icon.svg";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { getPreviousPackageData } from "../../store/package-actions";
+import {
+  deletePackage,
+  getPreviousPackageData,
+} from "../../store/package-actions";
 
 const DetailBox = ({ services }) => {
   return (
@@ -22,6 +25,7 @@ const PreviousPackagesBox = ({
   setEndDateFilter,
 }) => {
   const dispatch = useDispatch();
+  const toast = useToast();
 
   const previousPackages = useSelector(
     (state) => state.packages.previousPackages
@@ -29,19 +33,38 @@ const PreviousPackagesBox = ({
 
   const [name, setName] = useState("");
 
+  const onDeletePacakge = (packageId) => {
+    dispatch(deletePackage(packageId, toast));
+  };
+
   const data = previousPackages.map((pack) => {
     let services = "";
     pack.services.forEach((service) => {
       services += service + ", ";
     });
-
     return {
       col1: `${pack.name}`,
-      col2: `${pack.packageAmount} Rs.`,
-      col3: `${pack.maxUsage}`,
-      col4: `${moment(pack.createdAt).format("ll")}`,
-      col5: `${pack.validFor}`,
-      col6: <DetailBox services={services} />,
+      col2:
+        pack.status !== "active" ? (
+          <span className=" text-red-500 px-2 py-[0.10rem] rounded-md border border-red-500">
+            {pack.status}
+          </span>
+        ) : (
+          <button
+            className=" border border-blue-400 rounded-md px-2"
+            onClick={() => {
+              onDeletePacakge(pack._id);
+            }}
+            title={"delete package"}
+          >
+            delete
+          </button>
+        ),
+      col3: `${pack.packageAmount} Rs.`,
+      col4: `${pack.maxUsage}`,
+      col5: `${moment(pack.createdAt).format("ll")}`,
+      col6: `${pack.validFor}`,
+      col7: <DetailBox services={services} />,
     };
   });
 
@@ -52,24 +75,28 @@ const PreviousPackagesBox = ({
         accessor: "col1", // accessor is the "key" in the data
       },
       {
-        Header: "Amount",
-        accessor: "col2",
+        Header: "",
+        accessor: "col2", // accessor is the "key" in the data
       },
       {
-        Header: "Max-Usage",
+        Header: "Amount",
         accessor: "col3",
       },
       {
-        Header: "Created At",
+        Header: "Max-Usage",
         accessor: "col4",
       },
       {
-        Header: "Valid For",
+        Header: "Created At",
         accessor: "col5",
       },
       {
-        Header: "",
+        Header: "Valid For",
         accessor: "col6",
+      },
+      {
+        Header: "",
+        accessor: "col7",
       },
     ],
     []

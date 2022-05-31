@@ -8,6 +8,7 @@ import {
   deleteImage,
   getAadharPreview,
   postImage,
+  removeStaff,
   updateCurrentStaffData,
 } from "../../store/staff-actions";
 import { useToast } from "@chakra-ui/react";
@@ -28,8 +29,6 @@ const EditStaffModal = ({ onHideModal, staffMember }) => {
   const [file, setFile] = useState("");
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
-
-  console.log(staffMember);
 
   const onEditStaff = async (e) => {
     e.preventDefault();
@@ -57,6 +56,11 @@ const EditStaffModal = ({ onHideModal, staffMember }) => {
 
     dispatch(updateCurrentStaffData(staffMember._id, newData, toast));
     setIsUploading(false);
+    onHideModal();
+  };
+
+  const onRemoveStaff = (staffId) => {
+    dispatch(removeStaff(staffId, toast));
     onHideModal();
   };
 
@@ -182,7 +186,21 @@ const EditStaffModal = ({ onHideModal, staffMember }) => {
             onChange={onSelectFile}
             accept="image/*"
           />
-          <PrimaryButton content="Edit" type="submit" disabled={isUploading} />
+          <div className="flex space-x-2">
+            <PrimaryButton
+              content="Edit"
+              type="submit"
+              disabled={isUploading}
+            />
+            <PrimaryButton
+              onClick={() => {
+                onRemoveStaff(staffMember._id);
+              }}
+              content="Remove Staff"
+              type="button"
+              disabled={isUploading}
+            />
+          </div>
         </form>
         <div className=" border-2 border-gray-400 rounded-md flex-1 flex h-64">
           {selectedFile ? (

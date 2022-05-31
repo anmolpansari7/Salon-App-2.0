@@ -19,6 +19,7 @@ export const sendNewPackageData = (newPackage, toast) => {
           packageAmount: newPackage.packageAmount,
           maxUsage: newPackage.maxUsage,
           validFor: newPackage.validFor,
+          status: "active",
         },
         { headers: { Authorization: `Bearer ${token}` } }
       )
@@ -179,6 +180,49 @@ export const assignPackage = (customerId, pack, toast) => {
           duration: 3000,
           isClosable: true,
         });
+      })
+      .catch((err) => {
+        if (err.response) {
+          //   toast.error("Not Authenticated !");
+          //   localStorage.removeItem("ownerToken");
+          //   dispatch(authSliceAction.setIsAuthFalse());
+          console.log(err);
+        } else {
+          //   toast.error("Server Disconnected!");
+          console.log(err);
+        }
+      });
+  };
+};
+
+export const deletePackage = (packageId, toast) => {
+  return (dispatch) => {
+    let token = localStorage.getItem("ownerToken");
+    if (token === null) {
+      token = localStorage.getItem("branchToken");
+    }
+
+    axios
+      .patch(
+        `${process.env.REACT_APP_BASE_URL}/package/${packageId}`,
+        {
+          status: "deleted",
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((res) => {
+        console.log("Package Deleted ! ");
+        toast({
+          title: "Package Deleted !",
+          description: "",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        dispatch(getPreviousPackageData());
+        dispatch(getAllActivePackages());
       })
       .catch((err) => {
         if (err.response) {

@@ -21,6 +21,7 @@ const CurrentCustomerPage = () => {
   const [staffFilter, setStaffFilter] = useState("");
   const [startDateFilter, setStartDateFilter] = useState("");
   const [endDateFilter, setEndDateFilter] = useState("");
+  const [showClearDueModal, setShowClearDueModal] = useState(false);
 
   const onShowBillingModal = () => {
     setShowBillingModal(true);
@@ -28,6 +29,14 @@ const CurrentCustomerPage = () => {
 
   const onHideBillingModal = () => {
     setShowBillingModal(false);
+  };
+
+  const onShowClearDueModal = () => {
+    setShowClearDueModal(true);
+  };
+
+  const onHideClearDueModal = () => {
+    setShowClearDueModal(false);
   };
 
   useEffect(() => {
@@ -59,11 +68,18 @@ const CurrentCustomerPage = () => {
           Order can be placed by branch only.
         </p>
       ) : (
-        <FloatingButton
-          content={"New Order"}
-          className={" bottom-8 right-12 "}
-          onClick={onShowBillingModal}
-        />
+        <>
+          <FloatingButton
+            content={"New Order"}
+            className={" bottom-8 right-12 "}
+            onClick={onShowBillingModal}
+          />
+          {/* <FloatingButton
+            content={"Clear Due"}
+            className={" bottom-8 right-44 "}
+            onClick={onShowClearDueModal}
+          /> */}
+        </>
       )}
       {showBillingModal && (
         <BillingModal onHideBillingModal={onHideBillingModal} customerId={id} />

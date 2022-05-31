@@ -15,7 +15,6 @@ const Input = ({ type, id, placeholder, label, onChange, value }) => {
           onChange(e);
         }}
         value={value}
-        required
       />
     </div>
   );

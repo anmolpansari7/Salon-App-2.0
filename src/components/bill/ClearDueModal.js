@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal from "../custom_ui/Modal";
 import CardHeading from "../custom_ui/CardHeading";
-import SelectService from "./SelectService";
-import SelectInventoryItem from "./SelectInventoryItem";
-import TotalingDetails from "./TotalingDetails";
 import PrimaryButton from "../custom_ui/PrimaryButton";
 import { useDispatch, useSelector } from "react-redux";
 import { getServicesData } from "../../store/services-actions";
@@ -15,12 +12,11 @@ import { useToast } from "@chakra-ui/react";
 import { sendNewOrderData } from "../../store/order-actions";
 import { updateCurrentCustomerData } from "../../store/current-customer-actions";
 
-const BillingModal = ({ onHideBillingModal, customerId }) => {
+const ClearDueModal = ({ onHideBillingModal, customerId }) => {
   const toast = useToast();
   const dis = useDispatch();
 
   const branchId = useSelector((state) => state.authentication.branchId);
-  const services = useSelector((state) => state.serviceList.services);
   const forRupee = useSelector((state) => state.pointsCalculator.forRupee);
   const givenPoints = useSelector(
     (state) => state.pointsCalculator.givenPoints
@@ -145,61 +141,84 @@ const BillingModal = ({ onHideBillingModal, customerId }) => {
   return (
     <Modal onHideModal={onHideBillingModal}>
       <CardHeading className=" font-medium text-lg text-center">
-        Billing Section
+        Clear Due -
       </CardHeading>
       <form className=" flex space-x-5">
-        <div className=" h-[26rem] w-[18rem] flex flex-col justify-between">
-          <SelectService
-            listItems={services}
-            placeholder={"Select Services"}
-            selectedItems={selectedServices}
-            setSelectedItems={setSelectedServices}
-            setPromo={setPromo}
-            setDiscountFromPromoCode={setDiscountFromPromoCode}
-          />
-          <SelectInventoryItem
-            listItems={currentBranchInventoryItem}
-            placeholder={"Select Inventory Items"}
-            selectedItems={selectedInventoryItems}
-            setSelectedItems={setSelectedInventoryItems}
-            // updateCartValue={updateCartValue}
-            onQuantityChange={onQuantityChange}
-            setPromo={setPromo}
-            setDiscountFromPromoCode={setDiscountFromPromoCode}
-          />
+        <div className=" flex justify-between border-b border-dashed border-black">
+            <p className=" self-end font-medium">Paid Amount -</p>
+            <Input
+            type="text"
+            size="sm"
+            width={"10rem"}
+            textAlign="right"
+            border={"gray"}
+            placeholder={"Paid Amount"}
+            value={paidAmount}
+            onChange={(e) => {
+                setPaidAmount(e.target.value);
+            }}
+            />
         </div>
-        <div className="h-[26rem] w-[20rem] flex flex-col justify-between">
-          <TotalingDetails
-            selectedServices={selectedServices}
-            selectedInventoryItems={selectedInventoryItems}
-            cartValue={cartValue}
-            promo={promo}
-            setPromo={setPromo}
-            discountFromPromoCode={discountFromPromoCode}
-            setDiscountFromPromoCode={setDiscountFromPromoCode}
-            discountFromPoints={discountFromPoints}
-            setDiscountFromPoints={setDiscountFromPoints}
-            pointsUsed={pointsUsed}
-            setPointsUsed={setPointsUsed}
-            paidAmount={paidAmount}
-            setPaidAmount={setPaidAmount}
-            paymentMode={paymentMode}
-            setPaymentMode={setPaymentMode}
-            serviceGivenBy={serviceGivenBy}
-            setServiceGivenBy={setServiceGivenBy}
-            remark={remark}
-            setRemark={setRemark}
-          />
+        <div className=" flex justify-between border-b border-dashed border-black">
+            <p className="self-end font-medium">Payment Mode -</p>
+            <Select
+            placeholder="Select Mode"
+            fontSize={"0.875rem"}
+            size={"sm"}
+            alignSelf={"center"}
+            width="11rem"
+            value={paymentMode}
+            onChange={(e) => {
+                setPaymentMode(e.target.value);
+            }}
+            >
+            <option value="cash">Cash</option>
+            <option value="upi">UPI</option>
+            <option value="card">Card</option>
+            </Select>
+        </div>
+        <div className=" flex justify-between border-b border-dashed border-black">
+            <p className=" self-end">Remark -</p>
+            <Input
+            type="text"
+            size="sm"
+            width={"10rem"}
+            textAlign="right"
+            border={"gray"}
+            placeholder={"Add remark"}
+            value={remark}
+            onChange={(e) => {
+                setRemark(e.target.value);
+            }}
+            />
+        </div>
+        <div className=" flex justify-between border-b border-dashed border-black">
+            <p className=" self-end">Service Given By -</p>
+            <Select
+            placeholder="Select Staff"
+            fontSize={"0.875rem"}
+            size={"sm"}
+            alignSelf={"center"}
+            width="11rem"
+            value={serviceGivenBy}
+            onChange={(e) => {
+                setServiceGivenBy(e.target.value);
+            }}
+            >
+            {staff.map((member) => (
+                <option key={member._id} value={member._id}>
+                {member.name}
+                </option>
+            ))}
+            </Select>
+        </div>
           <PrimaryButton
             type="button"
             content={"Proceed"}
             className={" mt-7"}
             onClick={onPlaceOrder}
           />
-        </div>
       </form>
     </Modal>
-  );
-};
 
-export default BillingModal;
+export default ClearDueModal;
