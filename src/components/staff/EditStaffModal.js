@@ -21,11 +21,11 @@ const EditStaffModal = ({ onHideModal, staffMember }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [name, setName] = useState(staffMember.name);
-  const [gender, setGender] = useState(staffMember.gender);
-  const [contact, setContact] = useState(staffMember.contact);
-  const [dob, setDOB] = useState(staffMember.dob.slice(0, 10));
-  const [address, setAddress] = useState(staffMember.address);
+  const [name, setName] = useState(staffMember?.name);
+  const [gender, setGender] = useState(staffMember?.gender);
+  const [contact, setContact] = useState(staffMember?.contact);
+  const [dob, setDOB] = useState(staffMember?.dob?.slice(0, 10));
+  const [address, setAddress] = useState(staffMember?.address);
   const [file, setFile] = useState("");
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
@@ -211,12 +211,14 @@ const EditStaffModal = ({ onHideModal, staffMember }) => {
               src={loadingGIF}
               alt="Loading ..."
             />
-          ) : (
+          ) : file ? (
             <img
               className="w-96  max-h-96"
               src={file}
               alt="Previous Uploaded File"
             />
+          ) : (
+            <span className="m-auto text-gray-400 ">Document Not Uploaded</span>
           )}
         </div>
       </div>

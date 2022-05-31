@@ -17,11 +17,13 @@ const AadharPreviewModal = ({ onHideModal, imageId }) => {
 
   return (
     <Modal onHideModal={onHideModal} className="">
-      <div className=" border-2 border-gray-400 rounded-md flex-1 flex h-64">
-        {imageId === "" ? (
-          <span className="m-auto text-gray-400 ">
-            Uploaded Document Preview
-          </span>
+      <div
+        className={`border-2 border-gray-400 rounded-md flex-1 flex h-64 ${
+          !imageId ? "px-4" : ""
+        }`}
+      >
+        {!imageId ? (
+          <span className="m-auto text-gray-400 ">Document Not Uploaded</span>
         ) : loading ? (
           <img
             className="h-10 self-center px-56"

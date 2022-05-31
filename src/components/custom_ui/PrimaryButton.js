@@ -9,7 +9,7 @@ const PrimaryButton = ({ type, content, onClick, className, disabled }) => {
         className
       }
       onClick={(e) => {
-        onClick(e);
+        if (onClick) onClick(e);
       }}
       disabled={disabled}
     >
