@@ -104,6 +104,7 @@ const PackMessagePreviewBox = ({ selectedCustomer, setSelectedCustomer }) => {
           Selected Customer - {selectedCustomer[0]?.name}
         </p>
         <PackageBilling
+          selectedCustomerGender={selectedCustomer[0]?.gender}
           initialSelectedPackage={initialSelectedPackage}
           selectedPackage={selectedPackage}
           setSelectedPackage={setSelectedPackage}

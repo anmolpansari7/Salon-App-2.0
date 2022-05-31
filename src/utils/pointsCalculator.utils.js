@@ -1,9 +1,13 @@
 export const validatePointsCalculator = (calc, toast) => {
   if (
-    calc.forRupee <= 0 ||
-    calc.givenPoints <= 0 ||
-    calc.forPoints <= 0 ||
-    calc.givenDiscount <= 0
+    calc.forRupeeMale <= 0 ||
+    calc.givenPointsMale <= 0 ||
+    calc.forPointsMale <= 0 ||
+    calc.givenDiscountMale <= 0 ||
+    calc.forRupeeFemale <= 0 ||
+    calc.givenPointsFemale <= 0 ||
+    calc.forPointsFemale <= 0 ||
+    calc.givenDiscountFemale <= 0
   ) {
     toast({
       title: "Invalid Case",

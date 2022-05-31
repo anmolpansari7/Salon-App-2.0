@@ -8,10 +8,26 @@ const UsePointsInput = ({
   pointsUsed,
   setPointsUsed,
 }) => {
-  const forPoints = useSelector((state) => state.pointsCalculator.forPoints);
-  const givenDiscount = useSelector(
-    (state) => state.pointsCalculator.givenDiscount
+  const currCustomer = useSelector(
+    (state) => state.currentCustomer.currentCustomer
   );
+
+  const forPointsMale = useSelector(
+    (state) => state.pointsCalculator.forPointsMale
+  );
+  const forPointsFemale = useSelector(
+    (state) => state.pointsCalculator.forPointsFemale
+  );
+  const givenDiscountMale = useSelector(
+    (state) => state.pointsCalculator.givenDiscountMale
+  );
+  const givenDiscountFemale = useSelector(
+    (state) => state.pointsCalculator.givenDiscountFemale
+  );
+  const forPoints =
+    currCustomer.gender === "M" ? forPointsMale : forPointsFemale;
+  const givenDiscount =
+    currCustomer.gender === "M" ? givenDiscountMale : givenDiscountFemale;
 
   const onPointsValueChange = (e) => {
     let currPointsValue = e.target.value;

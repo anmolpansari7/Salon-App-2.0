@@ -13,11 +13,37 @@ export const getPointsCalculatorData = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        dispatch(pointCalculatorActions.loadForRupee(res.data.forRupee));
-        dispatch(pointCalculatorActions.loadGivenPoints(res.data.givenPoints));
-        dispatch(pointCalculatorActions.loadForPoints(res.data.forPoints));
+        console.log(res.data);
+
         dispatch(
-          pointCalculatorActions.loadGivenDiscount(res.data.givenDiscount)
+          pointCalculatorActions.loadForRupeeMale(res.data.forRupeeMale)
+        );
+        dispatch(
+          pointCalculatorActions.loadGivenPointsMale(res.data.givenPointsMale)
+        );
+        dispatch(
+          pointCalculatorActions.loadForPointsMale(res.data.forPointsMale)
+        );
+        dispatch(
+          pointCalculatorActions.loadGivenDiscountMale(
+            res.data.givenDiscountMale
+          )
+        );
+        dispatch(
+          pointCalculatorActions.loadForRupeeFemale(res.data.forRupeeFemale)
+        );
+        dispatch(
+          pointCalculatorActions.loadGivenPointsFemale(
+            res.data.givenPointsFemale
+          )
+        );
+        dispatch(
+          pointCalculatorActions.loadForPointsFemale(res.data.forPointsFemale)
+        );
+        dispatch(
+          pointCalculatorActions.loadGivenDiscountFemale(
+            res.data.givenDiscountFemale
+          )
         );
       })
       .catch((err) => {
@@ -84,10 +110,14 @@ export const sendPointsCalculatorData = (
 };
 
 export const updatePointsCalculatorData = (
-  forRupee,
-  givenPoints,
-  forPoints,
-  givenDiscount,
+  forRupeeMale,
+  givenPointsMale,
+  forPointsMale,
+  givenDiscountMale,
+  forRupeeFemale,
+  givenPointsFemale,
+  forPointsFemale,
+  givenDiscountFemale,
   toast
 ) => {
   return (dispatch) => {
@@ -100,10 +130,14 @@ export const updatePointsCalculatorData = (
       .patch(
         `${process.env.REACT_APP_BASE_URL}/points-calculator`,
         {
-          forRupee: forRupee,
-          givenPoints: givenPoints,
-          forPoints: forPoints,
-          givenDiscount: givenDiscount,
+          forRupeeMale: forRupeeMale,
+          givenPointsMale: givenPointsMale,
+          forPointsMale: forPointsMale,
+          givenDiscountMale: givenDiscountMale,
+          forRupeeFemale: forRupeeFemale,
+          givenPointsFemale: givenPointsFemale,
+          forPointsFemale: forPointsFemale,
+          givenDiscountFemale: givenDiscountFemale,
         },
         {
           headers: { Authorization: `Bearer ${token}` },

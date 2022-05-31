@@ -10,6 +10,7 @@ import { assignPackage } from "../../store/package-actions";
 import { updateCurrentCustomerData } from "../../store/current-customer-actions";
 
 const PackageBilling = ({
+  selectedCustomerGender,
   initialSelectedPackage,
   selectedPackage,
   setSelectedPackage,
@@ -29,9 +30,17 @@ const PackageBilling = ({
   const [remark, setRemark] = useState("");
   const [servedBy, setServedBy] = useState("");
 
-  const forRupee = useSelector((state) => state.pointsCalculator.forRupee);
-  const givenPoints = useSelector(
-    (state) => state.pointsCalculator.givenPoints
+  const forRupeeMale = useSelector(
+    (state) => state.pointsCalculator.forRupeeMale
+  );
+  const forRupeeFemale = useSelector(
+    (state) => state.pointsCalculator.forRupeeFemale
+  );
+  const givenPointsMale = useSelector(
+    (state) => state.pointsCalculator.givenPointsMale
+  );
+  const givenPointsFemale = useSelector(
+    (state) => state.pointsCalculator.givenPointsFemale
   );
 
   useEffect(() => {
@@ -40,6 +49,11 @@ const PackageBilling = ({
 
   const onSendPackage = () => {
     // dispatch(assignPackage(selectedCustomer, selectedPackage[0], toast));
+
+    const forRupee =
+      selectedCustomerGender === "M" ? forRupeeMale : forRupeeFemale;
+    const givenPoints =
+      selectedCustomerGender === "M" ? givenPointsMale : givenPointsFemale;
 
     let pointsPerRupee = givenPoints / forRupee;
     const pointsEarned = Math.floor(
@@ -68,15 +82,15 @@ const PackageBilling = ({
       return;
     }
 
-    dispatch(sendNewOrderData(newOrder, toast));
-    dispatch(assignPackage(selectedCustomer[0]._id, selectedPackage, toast));
-    dispatch(
-      updateCurrentCustomerData(
-        newOrder.customerId,
-        newOrder.pointsEarned,
-        newOrder.totalAmount - newOrder.paidAmount
-      )
-    );
+    // dispatch(sendNewOrderData(newOrder, toast));
+    // dispatch(assignPackage(selectedCustomer[0]._id, selectedPackage, toast));
+    // dispatch(
+    //   updateCurrentCustomerData(
+    //     newOrder.customerId,
+    //     newOrder.pointsEarned,
+    //     newOrder.totalAmount - newOrder.paidAmount
+    //   )
+    // );
 
     setSelectedCustomer([]);
     setSelectedPackageId("");

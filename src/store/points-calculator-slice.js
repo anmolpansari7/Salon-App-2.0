@@ -3,27 +3,47 @@ import { createSlice } from "@reduxjs/toolkit";
 const pointsCalculatorSlice = createSlice({
   name: "points-calculator",
   initialState: {
-    forRupee: 0,
-    givenPoints: 0,
-    forPoints: 0,
-    givenDiscount: 0,
+    forRupeeMale: 0,
+    givenPointsMale: 0,
+    forPointsMale: 0,
+    givenDiscountMale: 0,
+    forRupeeFemale: 0,
+    givenPointsFemale: 0,
+    forPointsFemale: 0,
+    givenDiscountFemale: 0,
   },
   reducers: {
-    loadForRupee(state, action) {
+    loadForRupeeMale(state, action) {
       const data = action.payload;
-      state.forRupee = data;
+      state.forRupeeMale = data;
     },
-    loadGivenPoints(state, action) {
+    loadGivenPointsMale(state, action) {
       const data = action.payload;
-      state.givenPoints = data;
+      state.givenPointsMale = data;
     },
-    loadForPoints(state, action) {
+    loadForPointsMale(state, action) {
       const data = action.payload;
-      state.forPoints = data;
+      state.forPointsMale = data;
     },
-    loadGivenDiscount(state, action) {
+    loadGivenDiscountMale(state, action) {
       const data = action.payload;
-      state.givenDiscount = data;
+      state.givenDiscountMale = data;
+    },
+    loadForRupeeFemale(state, action) {
+      const data = action.payload;
+      state.forRupeeFemale = data;
+    },
+    loadGivenPointsFemale(state, action) {
+      const data = action.payload;
+      state.givenPointsFemale = data;
+    },
+    loadForPointsFemale(state, action) {
+      const data = action.payload;
+      state.forPointsFemale = data;
+    },
+    loadGivenDiscountFemale(state, action) {
+      const data = action.payload;
+      state.givenDiscountFemale = data;
     },
   },
 });

@@ -19,12 +19,27 @@ const BillingModal = ({ onHideBillingModal, customerId }) => {
   const toast = useToast();
   const dis = useDispatch();
 
+  const currCustomer = useSelector(
+    (state) => state.currentCustomer.currentCustomer
+  );
+
   const branchId = useSelector((state) => state.authentication.branchId);
   const services = useSelector((state) => state.serviceList.services);
-  const forRupee = useSelector((state) => state.pointsCalculator.forRupee);
-  const givenPoints = useSelector(
-    (state) => state.pointsCalculator.givenPoints
+  const forRupeeMale = useSelector(
+    (state) => state.pointsCalculator.forRupeeMale
   );
+  const forRupeeFemale = useSelector(
+    (state) => state.pointsCalculator.forRupeeFemale
+  );
+  const givenPointsMale = useSelector(
+    (state) => state.pointsCalculator.givenPointsMale
+  );
+  const givenPointsFemale = useSelector(
+    (state) => state.pointsCalculator.givenPointsFemale
+  );
+  const forRupee = currCustomer.gender === "M" ? forRupeeMale : forRupeeFemale;
+  const givenPoints =
+    currCustomer.gender === "M" ? givenPointsMale : givenPointsFemale;
   const inventoryItems = useSelector((state) => state.inventory.inventoryItems);
   let currentBranchInventoryItem = [];
   inventoryItems.forEach((item) => {
@@ -138,9 +153,16 @@ const BillingModal = ({ onHideBillingModal, customerId }) => {
       selectedInventoryItems[selectedItemIndex].quantity =
         selectedInventoryItems[selectedItemIndex].maxQuantity;
     }
+
+    setPromo("");
+    setDiscountFromPromoCode(0);
     setRender((state) => !state);
     setSelectedInventoryItems(selectedInventoryItems);
   };
+
+  // console.log("customer gender", currCustomer.gender);
+  // console.log("For Rupee", forRupee);
+  // console.log("Given Points", givenPoints);
 
   return (
     <Modal onHideModal={onHideBillingModal}>

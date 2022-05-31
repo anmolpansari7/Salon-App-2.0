@@ -34,26 +34,15 @@ const TotalingDetails = ({
     const currPromo = e.target.value;
     setPromo(currPromo);
     let validPromo = activePromos.find((code) => code.promoCode === currPromo);
-    // console.log(validPromo);
 
-    let totalServiceAmount = selectedServices.reduce(
-      (total, item) => item.cost + total,
-      0
-    );
-
-    let totalInventoryAmount = selectedInventoryItems.reduce(
-      (total, item) => item.cost + total,
-      0
-    );
-
-    const totalAmount = totalServiceAmount + totalInventoryAmount;
     let discountAmount = 0;
 
+    console.log(validPromo);
     if (validPromo && validPromo.discountType === "rupee") {
       discountAmount = validPromo.discountValue;
       setDiscountFromPromoCode(discountAmount);
     } else if (validPromo && validPromo.discountType === "percentage") {
-      discountAmount = Math.floor((50 / 100) * totalAmount);
+      discountAmount = Math.floor((validPromo.discountValue / 100) * cartValue);
       setDiscountFromPromoCode(discountAmount);
     } else {
       setDiscountFromPromoCode(0);

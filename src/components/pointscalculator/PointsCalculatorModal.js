@@ -13,34 +13,55 @@ const PointsCalculatorModal = ({ onHideModal }) => {
   const dispatch = useDispatch();
   const toast = useToast();
 
-  const fR = useSelector((state) => state.pointsCalculator.forRupee);
-  const gP = useSelector((state) => state.pointsCalculator.givenPoints);
-  const fP = useSelector((state) => state.pointsCalculator.forPoints);
-  const gD = useSelector((state) => state.pointsCalculator.givenDiscount);
+  const fRM = useSelector((state) => state.pointsCalculator.forRupeeMale);
+  const gPM = useSelector((state) => state.pointsCalculator.givenPointsMale);
+  const fPM = useSelector((state) => state.pointsCalculator.forPointsMale);
+  const gDM = useSelector((state) => state.pointsCalculator.givenDiscountMale);
+  const fRF = useSelector((state) => state.pointsCalculator.forRupeeFemale);
+  const gPF = useSelector((state) => state.pointsCalculator.givenPointsFemale);
+  const fPF = useSelector((state) => state.pointsCalculator.forPointsFemale);
+  const gDF = useSelector(
+    (state) => state.pointsCalculator.givenDiscountFemale
+  );
 
-  const [forRupee, setForRupee] = useState(fR);
-  const [givenPoints, setGivenPoints] = useState(gP);
-  const [forPoints, setForPoints] = useState(fP);
-  const [givenDiscount, setGivenDiscount] = useState(gD);
+  console.log(fRM);
+
+  const [forRupeeMale, setForRupeeMale] = useState(fRM);
+  const [givenPointsMale, setGivenPointsMale] = useState(gPM);
+  const [forPointsMale, setForPointsMale] = useState(fPM);
+  const [givenDiscountMale, setGivenDiscountMale] = useState(gDM);
+  const [forRupeeFemale, setForRupeeFemale] = useState(fRF);
+  const [givenPointsFemale, setGivenPointsFemale] = useState(gPF);
+  const [forPointsFemale, setForPointsFemale] = useState(fPF);
+  const [givenDiscountFemale, setGivenDiscountFemale] = useState(gDF);
 
   const onChangePointsCalculator = () => {
     const calc = {
-      forRupee,
-      givenPoints,
-      forPoints,
-      givenDiscount,
+      forRupeeMale,
+      givenPointsMale,
+      forPointsMale,
+      givenDiscountMale,
+      forRupeeFemale,
+      givenPointsFemale,
+      forPointsFemale,
+      givenDiscountFemale,
       toast,
     };
+
     if (!validatePointsCalculator(calc, toast)) {
       return;
     }
 
     dispatch(
       updatePointsCalculatorData(
-        forRupee,
-        givenPoints,
-        forPoints,
-        givenDiscount,
+        forRupeeMale,
+        givenPointsMale,
+        forPointsMale,
+        givenDiscountMale,
+        forRupeeFemale,
+        givenPointsFemale,
+        forPointsFemale,
+        givenDiscountFemale,
         toast
       )
     );
@@ -49,58 +70,112 @@ const PointsCalculatorModal = ({ onHideModal }) => {
 
   return (
     <Modal onHideModal={onHideModal}>
-      <h3 className=" text-lg border-b border-dashed border-black mb-7">
-        Points Calculator
-      </h3>
-      <div className="flex justify-between mb-5 border-b border-black border-dashed pb-2">
-        <Input
-          type={"number"}
-          variant="filled"
-          width={"4rem"}
-          size={"sm"}
-          value={forRupee}
-          onChange={(e) => {
-            setForRupee(e.target.value);
-          }}
-        />
-        <p className=" self-end">Rs. will give customer</p>
-        <Input
-          type={"number"}
-          variant="filled"
-          width={"4rem"}
-          size={"sm"}
-          value={givenPoints}
-          onChange={(e) => {
-            setGivenPoints(e.target.value);
-          }}
-        />
-        <p className=" self-end">Pts.</p>
+      <div>
+        <h3 className=" text-lg border-b border-dashed border-black mb-7">
+          Points Calculator for Male
+        </h3>
+        <div className="flex justify-between mb-5 border-b border-black border-dashed pb-2">
+          <Input
+            type={"number"}
+            variant="filled"
+            width={"4rem"}
+            size={"sm"}
+            value={forRupeeMale}
+            onChange={(e) => {
+              setForRupeeMale(e.target.value);
+            }}
+          />
+          <p className=" self-end">Rs. will give customer</p>
+          <Input
+            type={"number"}
+            variant="filled"
+            width={"4rem"}
+            size={"sm"}
+            value={givenPointsMale}
+            onChange={(e) => {
+              setGivenPointsMale(e.target.value);
+            }}
+          />
+          <p className=" self-end">Pts.</p>
+        </div>
+        <div className="flex justify-between mb-5 border-b border-black border-dashed pb-2 space-x-4">
+          <Input
+            type="number"
+            variant="filled"
+            width={"4rem"}
+            size={"sm"}
+            value={forPointsMale}
+            onChange={(e) => {
+              setForPointsMale(e.target.value);
+            }}
+          />
+          <p className=" self-end">Pts. will give disount of</p>
+          <Input
+            type="number"
+            variant="filled"
+            width={"4rem"}
+            size={"sm"}
+            value={givenDiscountMale}
+            onChange={(e) => {
+              setGivenDiscountMale(e.target.value);
+            }}
+          />
+          <p className=" self-end">Rs.</p>
+        </div>
       </div>
-      <div className="flex justify-between mb-5 border-b border-black border-dashed pb-2 space-x-4">
-        <Input
-          type="number"
-          variant="filled"
-          width={"4rem"}
-          size={"sm"}
-          value={forPoints}
-          onChange={(e) => {
-            setForPoints(e.target.value);
-          }}
-        />
-        <p className=" self-end">Pts. will give disount of</p>
-        <Input
-          type="number"
-          variant="filled"
-          width={"4rem"}
-          size={"sm"}
-          value={givenDiscount}
-          onChange={(e) => {
-            setGivenDiscount(e.target.value);
-          }}
-        />
-        <p className=" self-end">Rs.</p>
+      <div>
+        <h3 className=" text-lg border-b border-dashed border-black mb-7">
+          Points Calculator for Female
+        </h3>
+        <div className="flex justify-between mb-5 border-b border-black border-dashed pb-2">
+          <Input
+            type={"number"}
+            variant="filled"
+            width={"4rem"}
+            size={"sm"}
+            value={forRupeeFemale}
+            onChange={(e) => {
+              setForRupeeFemale(e.target.value);
+            }}
+          />
+          <p className=" self-end">Rs. will give customer</p>
+          <Input
+            type={"number"}
+            variant="filled"
+            width={"4rem"}
+            size={"sm"}
+            value={givenPointsFemale}
+            onChange={(e) => {
+              setGivenPointsFemale(e.target.value);
+            }}
+          />
+          <p className=" self-end">Pts.</p>
+        </div>
+        <div className="flex justify-between mb-5 border-b border-black border-dashed pb-2 space-x-4">
+          <Input
+            type="number"
+            variant="filled"
+            width={"4rem"}
+            size={"sm"}
+            value={forPointsFemale}
+            onChange={(e) => {
+              setForPointsFemale(e.target.value);
+            }}
+          />
+          <p className=" self-end">Pts. will give disount of</p>
+          <Input
+            type="number"
+            variant="filled"
+            width={"4rem"}
+            size={"sm"}
+            value={givenDiscountFemale}
+            onChange={(e) => {
+              setGivenDiscountFemale(e.target.value);
+            }}
+          />
+          <p className=" self-end">Rs.</p>
+        </div>
       </div>
-
       <PrimaryButton
         type={"button"}
         content={"Save Changes"}

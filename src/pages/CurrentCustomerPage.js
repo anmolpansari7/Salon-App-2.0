@@ -72,12 +72,12 @@ const CurrentCustomerPage = () => {
         <>
           <FloatingButton
             content={"New Order"}
-            className={" bottom-8 right-12 "}
+            className={" bottom-8 right-36 "}
             onClick={onShowBillingModal}
           />
           <FloatingButton
             content={"Clear Due"}
-            className={" bottom-8 right-44 "}
+            className={" bottom-8 right-64 "}
             onClick={onShowClearDueModal}
           />
         </>
