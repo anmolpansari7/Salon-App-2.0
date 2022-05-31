@@ -26,7 +26,6 @@ const AddStaffModal = ({ onHideModal }) => {
     setIsLoading(true);
     let formData = new FormData();
     formData.append("image", selectedFile);
-
     const fileName = await postImage(formData);
     console.log("fileName", fileName);
     const newStaff = {
@@ -35,7 +34,7 @@ const AddStaffModal = ({ onHideModal }) => {
       contact,
       dob,
       address,
-      fileName: fileName.Key,
+      fileName: fileName?.Key,
     };
 
     dispatch(sendNewStaffData(newStaff, toast));

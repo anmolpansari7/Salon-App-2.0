@@ -11,6 +11,7 @@ import {
 } from "../store/current-customer-actions";
 import FloatingButton from "./../components/custom_ui/FloatingButton";
 import BillingModal from "../components/bill/BillingModal";
+import ClearDueModal from "../components/bill/ClearDueModal";
 
 const CurrentCustomerPage = () => {
   const { id } = useParams();
@@ -74,15 +75,21 @@ const CurrentCustomerPage = () => {
             className={" bottom-8 right-12 "}
             onClick={onShowBillingModal}
           />
-          {/* <FloatingButton
+          <FloatingButton
             content={"Clear Due"}
             className={" bottom-8 right-44 "}
             onClick={onShowClearDueModal}
-          /> */}
+          />
         </>
       )}
       {showBillingModal && (
         <BillingModal onHideBillingModal={onHideBillingModal} customerId={id} />
+      )}
+      {showClearDueModal && (
+        <ClearDueModal
+          onHideClearDueModal={onHideClearDueModal}
+          customerId={id}
+        />
       )}
     </PageContainer>
   );

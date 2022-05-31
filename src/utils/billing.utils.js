@@ -1,4 +1,16 @@
-export const validateNewOrder = (newOrder, inventoryItems, branchId, toast) => {
+export const validateNewOrder = (newOrder, branchId, toast) => {
+  if (branchId === "") {
+    toast({
+      title: "Something went wrong!",
+      description: "Please Logout and Login again!",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+
+    return false;
+  }
+
   if (
     newOrder.serviceIds.length === 0 &&
     newOrder.inventoryItemIds.length === 0
@@ -42,6 +54,58 @@ export const validateNewOrder = (newOrder, inventoryItems, branchId, toast) => {
     toast({
       title: "Negative value in points used!",
       description: "Enter a valid value greater than zero.",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+
+    return false;
+  }
+
+  if (newOrder.servedBy === "") {
+    toast({
+      title: "Staff not selected !",
+      description: "",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+
+    return false;
+  }
+
+  return true;
+};
+
+export const validClearDue = (newOrder, branchId, toast) => {
+  if (branchId === "") {
+    toast({
+      title: "Something went wrong!",
+      description: "Please Logout and Login again!",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+
+    return false;
+  }
+
+  if (newOrder.paidAmount < 0) {
+    toast({
+      title: "Negative Paid Amount!",
+      description: "Enter a valid Paid Amount greater than zero.",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+
+    return false;
+  }
+
+  if (newOrder.paymentMode === "") {
+    toast({
+      title: "Payment Mode is not selected!",
+      description: "Select Payment mode to proceed.",
       status: "error",
       duration: 3000,
       isClosable: true,
