@@ -49,7 +49,6 @@ const CurrentCustomerPage = () => {
       getCurrentCustomerOrders(id, staffFilter, startDateFilter, endDateFilter)
     );
   }, [dispatch, id, staffFilter, startDateFilter, endDateFilter]);
-  console.log(currCustomer);
 
   return (
     <PageContainer>
