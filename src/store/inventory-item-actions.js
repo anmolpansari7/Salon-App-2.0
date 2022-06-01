@@ -55,7 +55,6 @@ export const sendNewInventoryItemData = (newInventoryItem, toast) => {
           isClosable: true,
         });
         dispatch(getInventoryItems());
-        console.log("Item Added !");
       })
       .catch((err) => {
         if (err.response) {
@@ -99,7 +98,6 @@ export const updateInventoryItem = (id, gender, name, cost, toast) => {
           isClosable: true,
         });
         dispatch(getInventoryItems());
-        console.log("Item Updated !");
       })
       .catch((err) => {
         if (err.response) {

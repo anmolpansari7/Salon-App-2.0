@@ -49,8 +49,6 @@ export const sendServiceData = (gender, category, name, cost) => {
         { headers: { Authorization: `Bearer ${token}` } }
       )
       .then(() => {
-        // toast.success("Item Added! 👍");
-        console.log("success");
         dispatch(getServicesData());
       })
       .catch((err) => {
@@ -86,8 +84,6 @@ export const deleteServiceData = (id) => {
         }
       )
       .then(() => {
-        // toast.success("Item Removed! ✌");
-        console.log("Item Removed!");
         dispatch(getServicesData());
       })
       .catch((err) => {

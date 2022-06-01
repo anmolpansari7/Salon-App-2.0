@@ -13,8 +13,6 @@ const ConfirmDeleteModal = ({ id, n, onHideModal }) => {
   const [name, setName] = useState("");
 
   const onConfirmDelete = () => {
-    console.log("n : ", n);
-    console.log("name : ", name);
     n = n.toLowerCase().replace(/\s/g, "");
     if (name !== n) {
       toast({

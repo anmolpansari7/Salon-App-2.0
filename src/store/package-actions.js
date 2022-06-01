@@ -33,7 +33,6 @@ export const sendNewPackageData = (newPackage, toast) => {
         });
         dispatch(getPreviousPackageData());
         dispatch(getAllActivePackages());
-        // console.log("Package Added !");
       })
       .catch((err) => {
         if (err.response) {
@@ -172,7 +171,6 @@ export const assignPackage = (customerId, pack, toast) => {
         }
       )
       .then((res) => {
-        console.log("Package Assigned ! ");
         toast({
           title: "Package Assigned !",
           description: "Package has been assigned to the selected customers.",
@@ -213,7 +211,6 @@ export const deletePackage = (packageId, toast) => {
         }
       )
       .then((res) => {
-        console.log("Package Deleted ! ");
         toast({
           title: "Package Deleted !",
           description: "",

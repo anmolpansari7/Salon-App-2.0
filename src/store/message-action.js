@@ -48,7 +48,6 @@ export const sendMessage = (messageBody, recipients) => {
         }
       )
       .then((res) => {
-        console.log("Previous Messages : ", res.data);
         dispatch(messageSliceActions.loadPreviousMessages(res.data));
       })
       .catch((err) => {

@@ -22,7 +22,6 @@ const ReportPage = () => {
   const [endDateFilter, setEndDateFilter] = useState("");
   const [nameFilter, setNameFilter] = useState("");
   const report = useSelector((state) => state.report.report);
-  console.log("branchFilter", branchFilter);
   const todaysReportSummary = useSelector(
     (state) => state.report.todaysReportSummary
   );

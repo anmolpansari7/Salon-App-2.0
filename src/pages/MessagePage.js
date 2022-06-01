@@ -87,8 +87,6 @@ const MessagePage = () => {
     g.forEach((ele) => {
       recipients.push(ele.values.id);
     });
-    console.log("message : ", message);
-    console.log("recipients : ", recipients);
     // dispatch(sendMessage(message, recipients));
   };
 

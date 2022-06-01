@@ -39,7 +39,6 @@ const EditStaffModal = ({ onHideModal, staffMember }) => {
       formData.append("image", selectedFile);
       if (staffMember.aadhar) {
         const delRes = await deleteImage(staffMember.aadhar);
-        console.log(delRes);
       }
       const fileObj = await postImage(formData);
       fileName = fileObj.Key;

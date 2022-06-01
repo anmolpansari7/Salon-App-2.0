@@ -37,7 +37,6 @@ const TotalingDetails = ({
 
     let discountAmount = 0;
 
-    console.log(validPromo);
     if (validPromo && validPromo.discountType === "rupee") {
       discountAmount = validPromo.discountValue;
       setDiscountFromPromoCode(discountAmount);

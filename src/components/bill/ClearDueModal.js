@@ -41,7 +41,6 @@ const ClearDueModal = ({ onHideClearDueModal, customerId }) => {
     if (!validClearDue(newOrder, branchId, toast)) {
       return;
     }
-    console.log(newOrder);
 
     dis(sendNewOrderData(newOrder, toast));
     dis(

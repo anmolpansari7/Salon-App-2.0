@@ -22,6 +22,16 @@ export const sendNewPromoCodeData = (newPromoCode, toast) => {
         }
       )
       .then((res) => {
+        if (res?.data?.exists) {
+          toast({
+            title: "Already Exists",
+            description: res.data.message,
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+          return;
+        }
         toast({
           title: "New PromoCode Created.",
           description: "Now you can send this promo code to any customer.",

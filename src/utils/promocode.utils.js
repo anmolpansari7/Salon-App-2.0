@@ -37,7 +37,7 @@ export const validatePromoCode = (newPromoCode, toast) => {
   if (newPromoCode.validFrom > newPromoCode.validTill) {
     toast({
       title: "Invalid Case",
-      description: "Valid From is Greater than Valid Till.",
+      description: "Valid From date can not exceed Valid Till date.",
       status: "error",
       duration: 3000,
       isClosable: true,

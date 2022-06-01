@@ -27,7 +27,6 @@ const AddStaffModal = ({ onHideModal }) => {
     let formData = new FormData();
     formData.append("image", selectedFile);
     const fileName = await postImage(formData);
-    console.log("fileName", fileName);
     const newStaff = {
       name,
       gender,

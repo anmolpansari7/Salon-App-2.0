@@ -98,7 +98,6 @@ export const getTodaysReportSummary = () => {
       })
       .then((res) => {
         dispatch(reportActions.loadTodaysReportSummary(res.data));
-        console.log(res.data);
       })
       .catch((err) => {
         if (err.response) {

@@ -210,7 +210,6 @@ export const getExpenseSummary = (
         }
       )
       .then((res) => {
-        console.log("Request of Summary sent!");
         dispatch(expenseActions.loadExpenseSummary(res.data));
       })
       .catch((err) => {

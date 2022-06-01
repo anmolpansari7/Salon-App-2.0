@@ -79,9 +79,7 @@ const SelectInventoryItem = ({
   // };
 
   const onItemDelete = (idx) => {
-    console.log("idx", idx);
     let currList = selectedItems.filter((item) => item.idx !== idx);
-    console.log("item delete", selectedItems);
     setSelectedItems(currList);
     // updateCartValue();
     setPromo("");

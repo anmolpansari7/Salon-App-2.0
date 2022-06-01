@@ -24,8 +24,6 @@ const PointsCalculatorModal = ({ onHideModal }) => {
     (state) => state.pointsCalculator.givenDiscountFemale
   );
 
-  console.log(fRM);
-
   const [forRupeeMale, setForRupeeMale] = useState(fRM);
   const [givenPointsMale, setGivenPointsMale] = useState(gPM);
   const [forPointsMale, setForPointsMale] = useState(fPM);

@@ -13,8 +13,6 @@ export const getPointsCalculatorData = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        console.log(res.data);
-
         dispatch(
           pointCalculatorActions.loadForRupeeMale(res.data.forRupeeMale)
         );

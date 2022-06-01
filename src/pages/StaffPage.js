@@ -57,7 +57,6 @@ const StaffPage = () => {
   const data = useMemo(
     () =>
       staff.map((member) => {
-        console.log(member);
         const age = member.dob ? getAge(member.dob) : "--";
         const contactNo = member.contact ? `+91 ${member.contact}` : "--";
         return {

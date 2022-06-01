@@ -36,7 +36,6 @@ export const sendNewCustomerData = (newCustomer, navigate, toast) => {
         navigate(`/customer/${newCustomerId}`);
         // dispatch(currentCustomerActions.clearCurrCustomerOrders());
         // dispatch(currentCustomerActions.setPageNumberOne());
-        console.log("Customer Added !");
       })
       .catch((err) => {
         if (err.response) {
