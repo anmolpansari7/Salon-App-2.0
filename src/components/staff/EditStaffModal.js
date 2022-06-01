@@ -188,7 +188,7 @@ const EditStaffModal = ({ onHideModal, staffMember }) => {
           />
           <div className="flex space-x-2">
             <PrimaryButton
-              content="Edit"
+              content="Update"
               type="submit"
               disabled={isUploading}
             />
