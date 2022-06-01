@@ -1,6 +1,6 @@
 import React from "react";
 
-const FloatingButton = ({ className, content, onClick }) => {
+const FloatingButton = ({ className, content, onClick, disabled }) => {
   return (
     <button
       className={
@@ -8,6 +8,7 @@ const FloatingButton = ({ className, content, onClick }) => {
         className
       }
       onClick={onClick}
+      disabled={disabled}
     >
       {content}
     </button>

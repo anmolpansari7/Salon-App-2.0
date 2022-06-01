@@ -23,6 +23,9 @@ const CurrentCustomerPage = () => {
   const [startDateFilter, setStartDateFilter] = useState("");
   const [endDateFilter, setEndDateFilter] = useState("");
   const [showClearDueModal, setShowClearDueModal] = useState(false);
+  const currCustomer = useSelector(
+    (state) => state.currentCustomer.currentCustomer
+  );
 
   const onShowBillingModal = () => {
     setShowBillingModal(true);
@@ -46,6 +49,7 @@ const CurrentCustomerPage = () => {
       getCurrentCustomerOrders(id, staffFilter, startDateFilter, endDateFilter)
     );
   }, [dispatch, id, staffFilter, startDateFilter, endDateFilter]);
+  console.log(currCustomer);
 
   return (
     <PageContainer>
@@ -79,6 +83,7 @@ const CurrentCustomerPage = () => {
             content={"Clear Due"}
             className={" bottom-8 right-64 "}
             onClick={onShowClearDueModal}
+            disabled={currCustomer.dues === 0}
           />
         </>
       )}
